@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run PHPStan",
+            "type": "shell",
+            "command": "php",
+            "args": [
+                "-d", "xdebug.start_with_request=no",
+                "${workspaceFolder}/vendor/bin/phpstan",
+                "analyse",
+                "--configuration=${workspaceFolder}/phpstan.neon"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": [
+                {
+                    "owner": "phpstan",
+                    "pattern": [
+                        {
+                            "regexp": "^(.*):(\\d+)\\s+(.+)$",
+                            "file": 1,
+                            "line": 2,
+                            "message": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
