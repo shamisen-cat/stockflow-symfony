@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Shared\Trait;
+namespace App\Domain\Shared\Exception\Trait;
 
 /**
  * 例外メッセージで使用する値の短縮表示を生成するトレイト
@@ -22,7 +22,7 @@ trait ExceptionExcerptTrait
      *
      * @return string 値の短縮表示
      */
-    private function getExcerpt(string $value): string
+    private static function getExcerpt(string $value): string
     {
         return mb_strlen($value) > self::EXCERPT_LENGTH
             ? mb_substr($value, 0, self::EXCERPT_LENGTH).self::EXCERPT_ELLIPSIS
