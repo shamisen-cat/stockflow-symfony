@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Shared\Trait;
+namespace App\Domain\Shared\Exception\Trait;
 
 /**
  * 例外メッセージで使用する値の短縮表示を生成するトレイト
