@@ -1,0 +1,38 @@
+{
+    // PHP
+    "[php]": {
+        "editor.defaultFormatter": "junstyle.php-cs-fixer",
+        "editor.formatOnSave": true
+    },
+
+    // PHP Intelephense
+    "intelephense.environment.phpVersion": "8.4",
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.diagnostics.enable": true,
+    "intelephense.format.enable": false,
+    "intelephense.telemetry.enabled": false,
+
+    // PHP CS Fixer
+    "php-cs-fixer.executablePath": "${workspaceFolder}/bin/php-cs-fixer.sh",
+    "php-cs-fixer.config": ".php-cs-fixer.dist.php",
+    "php-cs-fixer.rules": "@Symfony",
+    "php-cs-fixer.allowRisky": true,
+    "php-cs-fixer.onsave": true,
+
+    // PHP Debug
+    "php.debug.executablePath": "/opt/homebrew/opt/php@8.4/bin/php",
+
+    // Symfony
+    "symfony-vscode.phpExecutablePath": "/opt/homebrew/opt/php@8.4/bin/php",
+
+    // File Associations
+    "files.associations": {
+        "*.php": "php",
+        "*.inc": "php",
+        "*.modele": "php",
+        "*.phtml": "php",
+        ".env.local.php": "php",
+        "*.dist": "php",
+        "*.twig": "twig"
+    }
+}

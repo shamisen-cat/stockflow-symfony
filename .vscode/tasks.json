@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "PHPStan: Analyse",
+            "type": "shell",
+            "command": "php",
+            "args": [
+                "-d", "memory_limit=2G",
+                "-d", "xdebug.start_with_request=no",
+                "${workspaceFolder}/vendor/bin/phpstan",
+                "analyse",
+                "--no-progress",
+                "--error-format=raw",
+                "--configuration=${workspaceFolder}/phpstan.dist.neon"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": [
+                {
+                    "owner": "phpstan",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": [
+                        {
+                            "regexp": "^(.+):(\\d+):(.+)$",
+                            "file": 1,
+                            "line": 2,
+                            "message": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

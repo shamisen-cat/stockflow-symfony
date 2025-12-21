@@ -1,0 +1,17 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "dbname",
+        "ecretf",
+        "hashers",
+        "importmap",
+        "javascripts",
+        "phpstan",
+        "symfony"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
