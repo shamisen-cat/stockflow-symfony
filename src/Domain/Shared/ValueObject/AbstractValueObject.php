@@ -26,9 +26,9 @@ abstract readonly class AbstractValueObject
     public function __toString(): string
     {
         $value = $this->value();
-        assert(is_scalar($value) || $value instanceof \Stringable);
+        assert(is_null($value) || is_scalar($value) || $value instanceof \Stringable);
 
-        return (string) $value;
+        return (string) ($value ?? '');
     }
 
     /**
