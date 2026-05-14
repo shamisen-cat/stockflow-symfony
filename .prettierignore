@@ -1,0 +1,8 @@
+**/*.json
+**/*.yaml
+**/*.yml
+
+assets/controllers/csrf_protection_controller.js
+node_modules/
+public/build/
+vendor/

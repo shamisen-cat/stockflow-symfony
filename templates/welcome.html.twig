@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block body %}
+  <h1 data-testid="welcome-heading">Welcome, {{ name }}!</h1>
+  <p
+    data-controller="hello"
+    data-testid="stimulus-hello"
+  >If Stimulus runs, this sentence is replaced by hello_controller.js.</p>
+{% endblock %}

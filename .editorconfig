@@ -17,6 +17,9 @@ indent_style = tab
 [{compose.*yaml,.devcontainer/compose.*yaml,.github/**/*.yaml}]
 indent_size = 2
 
+[{package.json,*.twig}]
+indent_size = 2
+
 [**.md]
 indent_size = unset
 indent_style = unset

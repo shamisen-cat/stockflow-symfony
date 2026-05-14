@@ -1,5 +1,5 @@
 {
-    "name": "Symfony Docker",
+    "name": "Stockflow",
     "dockerComposeFile": [
         "../compose.yaml",
         "../compose.override.yaml",
@@ -8,22 +8,26 @@
     "service": "php",
     "workspaceFolder": "/app",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {},
-        "ghcr.io/devcontainers-extra/features/claude-code:2": {}
+        "ghcr.io/devcontainers/features/node:1": {}
     },
     "remoteUser": "nonroot",
-    "postCreateCommand": "npm install -g intelephense && ln -sf .devcontainer/AGENTS.md AGENTS.md && ln -sf .devcontainer/AGENTS.md CLAUDE.md && ln -sfn .devcontainer/.claude .claude",
+    "postCreateCommand": "npm install -g intelephense && ln -sf .devcontainer/AGENTS.md AGENTS.md",
     "postStartCommand": "sudo .devcontainer/init-firewall.sh",
     "customizations": {
         "vscode": {
             "extensions": [
-                "anthropic.claude-code",
                 "bmewburn.vscode-intelephense-client",
-                "xdebug.php-debug"
+                "davidanson.vscode-markdownlint",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "gruntfuggly.todo-tree",
+                "junstyle.php-cs-fixer",
+                "mblode.twig-language-2",
+                "streetsidesoftware.code-spell-checker",
+                "xdebug.php-debug",
+                "yzhang.markdown-all-in-one"
             ],
             "settings": {
-                "claudeCode.allowDangerouslySkipPermissions": true,
-                "claudeCode.initialPermissionMode": "bypassPermissions",
                 "launch": {
                     "version": "0.2.0",
                     "configurations": [

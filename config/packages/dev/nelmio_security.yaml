@@ -1,0 +1,8 @@
+nelmio_security:
+    forced_ssl:
+        enabled: false
+
+    csp:
+        enforce:
+            connect-src:
+                - "https://cdn.jsdelivr.net"

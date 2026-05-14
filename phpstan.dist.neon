@@ -1,0 +1,14 @@
+parameters:
+
+    level: 9
+    inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: true
+
+    paths:
+        - src/
+        - tests/
+
+    excludePaths:
+        - tests/bootstrap.php
+
+    tmpDir: var/cache/phpstan

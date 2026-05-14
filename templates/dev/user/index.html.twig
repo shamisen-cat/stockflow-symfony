@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stockflow | Users - dev{% endblock %}
+
+{% block body %}
+  <main>
+    <h1>Users</h1>
+
+    <form
+      method="post"
+      action="{{ path('app_dev_users_create') }}"
+    >
+      <input
+        type="hidden"
+        name="_token"
+        value="{{ csrf_token('dev_user_create') }}"
+      >
+      <button type="submit">Create dev user</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td><code>{{ user.id.toRfc4122() }}</code></td>
+            <td>{{ user.email }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="2">No users yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+{% endblock %}
