@@ -7,5 +7,14 @@
         "javascripts",
         "stockflow",
         "symfony"
+    ],
+    "overrides": [
+        {
+            "filename": "**/*.twig",
+            "ignoreRegExpList": [
+                "/\\{%[\\s\\S]*?%\\}/",
+                "/\\{\\{[\\s\\S]*?\\}\\}/"
+            ]
+        }
     ]
 }
