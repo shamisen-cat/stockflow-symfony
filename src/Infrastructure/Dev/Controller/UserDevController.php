@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Dev\Controller;
 
 use App\Domain\User\Entity\User;
+use App\Domain\User\ValueObject\Email\Email;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,13 +66,13 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $email = $repository->findOneBy(['email' => self::DEV_USER_EMAIL]) === null
+        $email = $repository->findOneBy(['email.value' => self::DEV_USER_EMAIL]) === null
             ? self::DEV_USER_EMAIL
             : sprintf('dev-%s@example.com', bin2hex(random_bytes(8)));
 
         $user = new User(
             id: Uuid::v7(),
-            email: $email,
+            email: Email::of($email),
         );
 
         $entityManager->persist($user);

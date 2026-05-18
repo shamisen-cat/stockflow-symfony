@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\User\ValueObject\Email\Email;
 use App\Infrastructure\User\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -23,17 +23,15 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     public private(set) Uuid $id;
 
-    #[ORM\Column(
-        name: 'email',
-        type: Types::STRING,
-        length: 255,
-        unique: true,
+    #[ORM\Embedded(
+        class: Email::class,
+        columnPrefix: false,
     )]
-    public private(set) string $email;
+    public private(set) Email $email;
 
     public function __construct(
         Uuid $id,
-        string $email,
+        Email $email,
     ) {
         $this->id    = $id;
         $this->email = $email;
