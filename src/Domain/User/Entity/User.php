@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\Shared\Entity\SoftDeletableTrait;
+use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +16,15 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
+#[ORM\UniqueConstraint(
+    name: 'uniq_user_email_active',
+    columns: ['email'],
+    options: ['where' => 'deleted_at IS NULL'],
+)]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use SoftDeletableTrait;
+
     #[ORM\Id]
     #[ORM\Column(
         name: 'id',
@@ -35,6 +44,15 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     ) {
         $this->id    = $id;
         $this->email = $email;
+    }
+
+    public function softDelete(\DateTimeImmutable $deletedAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        $this->markDeletedAt($deletedAt);
     }
 
     /**
