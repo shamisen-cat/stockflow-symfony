@@ -53,8 +53,8 @@ final class UserDevController extends AbstractController
     )]
     public function create(
         Request $request,
-        EntityManagerInterface $entityManager,
         UserRepository $repository,
+        EntityManagerInterface $entityManager,
     ): Response {
         if ($this->getParameter('kernel.environment') !== 'dev') {
             throw new NotFoundHttpException();
@@ -74,6 +74,41 @@ final class UserDevController extends AbstractController
             id: Uuid::v7(),
             email: Email::of($email),
         );
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_dev_users');
+    }
+
+    #[Route(
+        path: '/users/{id}/delete',
+        name: 'app_dev_users_delete',
+        methods: ['POST'],
+    )]
+    public function delete(
+        Request $request,
+        string $id,
+        UserRepository $repository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if ($this->getParameter('kernel.environment') !== 'dev') {
+            throw new NotFoundHttpException();
+        }
+
+        $token = $request->request->getString('_token');
+
+        if (!$this->isCsrfTokenValid('dev_user_delete', $token)) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $user = $repository->find(Uuid::fromString($id));
+
+        if ($user === null) {
+            throw new NotFoundHttpException();
+        }
+
+        $user->softDelete(new \DateTimeImmutable());
 
         $entityManager->persist($user);
         $entityManager->flush();
