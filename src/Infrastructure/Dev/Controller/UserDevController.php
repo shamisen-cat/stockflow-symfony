@@ -8,14 +8,17 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Infrastructure\Security\Voter\DevToolsVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/dev')]
+#[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
     /**
@@ -32,10 +35,6 @@ final class UserDevController extends AbstractController
     )]
     public function index(UserRepository $repository): Response
     {
-        if ($this->getParameter('kernel.environment') !== 'dev') {
-            throw new NotFoundHttpException();
-        }
-
         $users = $repository->findBy(
             criteria: [],
             orderBy: ['id' => 'ASC'],
@@ -56,10 +55,6 @@ final class UserDevController extends AbstractController
         UserRepository $repository,
         EntityManagerInterface $entityManager,
     ): Response {
-        if ($this->getParameter('kernel.environment') !== 'dev') {
-            throw new NotFoundHttpException();
-        }
-
         $token = $request->request->getString('_token');
 
         if (!$this->isCsrfTokenValid('dev_user_create', $token)) {
@@ -92,10 +87,6 @@ final class UserDevController extends AbstractController
         UserRepository $repository,
         EntityManagerInterface $entityManager,
     ): Response {
-        if ($this->getParameter('kernel.environment') !== 'dev') {
-            throw new NotFoundHttpException();
-        }
-
         $token = $request->request->getString('_token');
 
         if (!$this->isCsrfTokenValid('dev_user_delete', $token)) {
