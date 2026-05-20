@@ -96,7 +96,18 @@ listen-address=127.0.0.2
 bind-interfaces
 # Populate the allowed-domains ipset with every IP returned when resolving
 # any of these domains (or their subdomains)
-ipset=/github.com/anthropic.com/sentry.io/statsig.com/registry.npmjs.org/packagist.org/cdn.jsdelivr.net/data.jsdelivr.com/marketplace.visualstudio.com/vscode.blob.core.windows.net/update.code.visualstudio.com/allowed-domains
+ipset=/github.com/allowed-domains
+ipset=/release-assets.githubusercontent.com/allowed-domains
+ipset=/anthropic.com/allowed-domains
+ipset=/sentry.io/allowed-domains
+ipset=/statsig.com/allowed-domains
+ipset=/registry.npmjs.org/allowed-domains
+ipset=/packagist.org/allowed-domains
+ipset=/cdn.jsdelivr.net/allowed-domains
+ipset=/data.jsdelivr.com/allowed-domains
+ipset=/marketplace.visualstudio.com/allowed-domains
+ipset=/vscode.blob.core.windows.net/allowed-domains
+ipset=/update.code.visualstudio.com/allowed-domains
 EOF
 
 # Ensure idempotency when run as a postStartCommand: stop any existing dnsmasq.
