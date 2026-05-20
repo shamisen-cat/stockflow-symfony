@@ -3,8 +3,9 @@
     "language": "en",
     "words": [
         "frankenphp",
-        "importmap",
-        "javascripts",
+        "mercure",
+        "phpstan",
+        "phpunit",
         "stockflow",
         "symfony"
     ],
