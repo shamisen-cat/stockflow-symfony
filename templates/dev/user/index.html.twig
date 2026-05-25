@@ -1,66 +1,145 @@
-{% extends 'base.html.twig' %}
+{% extends 'dev/layout.html.twig' %}
 
-{% block title %}Stockflow | Users - dev{% endblock %}
+{% block title %}Stockflow | ユーザー管理 - dev{% endblock %}
 
-{% block body %}
-  <main>
-    <h1>Users</h1>
+{% block main_body %}
+  <div class="max-w-6xl mx-auto px-4 pb-8 sm:px-6 lg:px-8">
+    <header class="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm font-medium text-amber-700">
+          Development only
+        </p>
+        <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          ユーザー管理
+        </h1>
+        <p class="mt-2 text-sm text-slate-600">
+          開発用のユーザー一覧・作成・論理削除
+        </p>
+      </div>
+      <form method="post" action="{{ path('app_dev_users_create') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('dev_user_create') }}">
+        <button
+          type="submit"
+          class="
+            inline-flex items-center justify-center w-full px-4 py-2.5
+            text-sm font-semibold text-white bg-slate-900 rounded-lg shadow-sm transition
+            hover:bg-slate-800
+            focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2
+            sm:w-auto
+          "
+        >
+          dev ユーザーを作成
+        </button>
+      </form>
+    </header>
 
-    <form
-      method="post"
-      action="{{ path('app_dev_users_create') }}"
-    >
-      <input
-        type="hidden"
-        name="_token"
-        value="{{ csrf_token('dev_user_create') }}"
-      >
-      <button type="submit">Create dev user</button>
-    </form>
-
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col">email</th>
-          <th scope="col">deleted_at</th>
-          <th scope="col">actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-          <tr>
-            <td><code>{{ user.id.toRfc4122() }}</code></td>
-            <td>{{ user.email }}</td>
-            <td>
-              {% if user.deletedAt %}
-                <time datetime="{{ user.deletedAt|date('c') }}">{{ user.deletedAt|date('Y-m-d H:i:s') }}</time>
-              {% else %}
-                —
-              {% endif %}
-            </td>
-            <td>
-              {% if not user.isDeleted %}
-                <form
-                  method="post"
-                  action="{{ path('app_dev_users_delete', { id: user.id.toRfc4122() }) }}"
-                >
-                  <input
-                    type="hidden"
-                    name="_token"
-                    value="{{ csrf_token('dev_user_delete') }}"
-                  >
-                  <button type="submit">Delete</button>
-                </form>
-              {% endif %}
-            </td>
-          </tr>
-        {% else %}
-          <tr>
-            <td colspan="4">No users yet.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </main>
+    <section class="overflow-hidden bg-white border border-slate-200 rounded-xl shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+          <thead class="bg-slate-50">
+            <tr>
+              <th scope="col" class="px-4 py-3 font-semibold text-slate-700 sm:px-6">
+                ID
+              </th>
+              <th scope="col" class="px-4 py-3 font-semibold text-slate-700 sm:px-6">
+                メールアドレス
+              </th>
+              <th scope="col" class="px-4 py-3 font-semibold text-slate-700 sm:px-6">
+                削除日時
+              </th>
+              <th scope="col" class="px-4 py-3 font-semibold text-slate-700 sm:px-6">
+                操作
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for user in users %}
+              <tr
+                class="
+                  {% if user.isDeleted %}
+                    bg-slate-50/80
+                  {% else %}
+                    hover:bg-slate-50
+                  {% endif %}
+                "
+              >
+                <td class="px-4 sm:px-6 py-4 align-top">
+                  <code class="block max-w-xs break-all text-xs font-mono text-slate-600">
+                    {{- user.id.toRfc4122() -}}
+                  </code>
+                </td>
+                <td class="px-4 sm:px-6 py-4 align-top">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span
+                      class="
+                        {% if user.isDeleted %}
+                          text-slate-500 line-through
+                        {% else %}
+                          font-medium text-slate-900
+                        {% endif %}
+                      "
+                    >
+                      {{ user.email }}
+                    </span>
+                    {% if user.isDeleted %}
+                      <span
+                        class="
+                          inline-flex px-2 py-0.5
+                          text-xs font-medium text-slate-700 bg-slate-200 rounded-full
+                        "
+                      >
+                        削除済み
+                      </span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td class="px-4 py-4 align-top text-slate-600 sm:px-6">
+                  {% if user.deletedAt %}
+                    <time datetime="{{ user.deletedAt|date('c') }}">
+                      {{ user.deletedAt|date('Y-m-d H:i:s') }}
+                    </time>
+                  {% else %}
+                    <span class="text-slate-400">—</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-4 align-top sm:px-6">
+                  {% if not user.isDeleted %}
+                    <form
+                      method="post"
+                      action="{{ path('app_dev_users_delete', { id: user.id.toRfc4122() }) }}"
+                    >
+                      <input
+                        type="hidden"
+                        name="_token" value="{{ csrf_token('dev_user_delete') }}"
+                      >
+                      <button
+                        type="submit"
+                        class="
+                          inline-flex items-center px-3 py-1.5
+                          text-sm font-medium text-red-700
+                          bg-white border border-red-200 rounded-lg transition
+                          hover:bg-red-50
+                          focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+                        "
+                      >
+                        削除
+                      </button>
+                    </form>
+                  {% else %}
+                    <span class="text-xs text-slate-400">—</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="px-4 py-12 text-center text-slate-500 sm:px-6">
+                  ユーザーがまだありません。上のボタンから作成してください。
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 {% endblock %}
