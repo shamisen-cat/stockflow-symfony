@@ -13,17 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 final class EmailTest extends TestCase
 {
-    private const string VALID_EMAIL = 'test@example.com';
-
     #[Test]
     public function ofReturnsExpectedValueForValidEmail(): void
     {
-        $email = self::VALID_EMAIL;
-
+        $email   = 'test@example.com';
         $emailVo = Email::of($email);
-        $value   = $emailVo->value();
 
-        self::assertSame($email, $value);
+        self::assertSame($email, $emailVo->value());
     }
 
     #[Test]
@@ -31,7 +27,6 @@ final class EmailTest extends TestCase
     public function ofThrowsWhenEmailIsInvalid(string $email): void
     {
         $this->expectException(InvalidEmailException::class);
-
         Email::of($email);
     }
 
@@ -49,8 +44,7 @@ final class EmailTest extends TestCase
     #[Test]
     public function equalsReturnsTrueWhenValuesAreEqual(): void
     {
-        $email = self::VALID_EMAIL;
-
+        $email = 'test@example.com';
         $left  = Email::of($email);
         $right = Email::of($email);
 
@@ -60,11 +54,8 @@ final class EmailTest extends TestCase
     #[Test]
     public function equalsReturnsFalseWhenValuesAreNotEqual(): void
     {
-        $email = self::VALID_EMAIL;
-        $other = 'u'.substr($email, 1);
-
-        $left  = Email::of($email);
-        $right = Email::of($other);
+        $left  = Email::of('test@example.com');
+        $right = Email::of('uest@example.com');
 
         self::assertFalse($left->equals($right));
     }
@@ -72,12 +63,10 @@ final class EmailTest extends TestCase
     #[Test]
     public function toStringReturnsExpectedValue(): void
     {
-        $email = self::VALID_EMAIL;
-
+        $email   = 'test@example.com';
         $emailVo = Email::of($email);
-        $string  = (string) $emailVo;
 
-        self::assertSame($email, $string);
+        self::assertSame($email, (string) $emailVo);
     }
 
     /**
@@ -86,7 +75,7 @@ final class EmailTest extends TestCase
     public static function provideEmailAndExpectedResult(): iterable
     {
         yield 'valid' => [
-            self::VALID_EMAIL,
+            'test@example.com',
             EmailValidationResult::VALID,
         ];
 

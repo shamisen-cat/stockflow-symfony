@@ -16,14 +16,13 @@ final class InvalidEmailExceptionTest extends TestCase
     #[Test]
     public function fromValidationResultThrowsWhenResultIsValid(): void
     {
-        $email   = 'test@example.com';
-        $result  = EmailValidationResult::VALID;
-        $message = 'Cannot create InvalidEmailException from VALID result.';
-
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessage('Cannot create InvalidEmailException from VALID result.');
 
-        InvalidEmailException::fromValidationResult($email, $result);
+        InvalidEmailException::fromValidationResult(
+            email: 'test@example.com',
+            result: EmailValidationResult::VALID,
+        );
     }
 
     #[Test]

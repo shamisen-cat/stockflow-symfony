@@ -11,17 +11,14 @@ use Symfony\Component\Uid\Uuid;
 
 final class UserAlreadyDeletedExceptionTest extends TestCase
 {
-    private const string TEST_ID = '00000000-0000-7000-8000-000000000001';
-
     #[Test]
     public function forUserReturnsExpectedProperties(): void
     {
-        $userId  = Uuid::fromString(self::TEST_ID);
-        $message = 'User is already deleted.';
+        $userId = Uuid::fromString('00000000-0000-7000-8000-000000000001');
 
         $exception = UserAlreadyDeletedException::forUser($userId);
 
-        self::assertSame($message, $exception->getMessage());
-        self::assertSame(self::TEST_ID, $exception->userId->toRfc4122());
+        self::assertSame('User is already deleted.', $exception->getMessage());
+        self::assertSame($userId, $exception->userId);
     }
 }

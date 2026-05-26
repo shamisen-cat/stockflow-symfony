@@ -15,48 +15,42 @@ final class DevToolsVoterTest extends TestCase
     #[Test]
     public function grantsAccessInDevEnvironment(): void
     {
-        $voter    = new DevToolsVoter('dev');
-        $token    = new NullToken();
-        $expected = VoterInterface::ACCESS_GRANTED;
+        $voter = new DevToolsVoter('dev');
 
         $result = $voter->vote(
-            token: $token,
+            token: new NullToken(),
             subject: null,
             attributes: [DevToolsVoter::ACCESS_DEV_TOOLS],
         );
 
-        self::assertSame($expected, $result);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
     }
 
     #[Test]
     public function deniesAccessOutsideDevEnvironment(): void
     {
-        $voter    = new DevToolsVoter('prod');
-        $token    = new NullToken();
-        $expected = VoterInterface::ACCESS_DENIED;
+        $voter = new DevToolsVoter('prod');
 
         $result = $voter->vote(
-            token: $token,
+            token: new NullToken(),
             subject: null,
             attributes: [DevToolsVoter::ACCESS_DEV_TOOLS],
         );
 
-        self::assertSame($expected, $result);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     #[Test]
     public function abstainsForUnsupportedAttribute(): void
     {
-        $voter    = new DevToolsVoter('dev');
-        $token    = new NullToken();
-        $expected = VoterInterface::ACCESS_ABSTAIN;
+        $voter = new DevToolsVoter('dev');
 
         $result = $voter->vote(
-            token: $token,
+            token: new NullToken(),
             subject: null,
-            attributes: ['B'.substr(DevToolsVoter::ACCESS_DEV_TOOLS, 1)],
+            attributes: ['BCCESS_DEV_TOOLS'],
         );
 
-        self::assertSame($expected, $result);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 }
