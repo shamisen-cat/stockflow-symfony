@@ -5,6 +5,7 @@
         "frankenphp",
         "hotwired",
         "mercure",
+        "nowrap",
         "phpstan",
         "phpunit",
         "stockflow",

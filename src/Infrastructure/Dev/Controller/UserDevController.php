@@ -6,9 +6,9 @@ namespace App\Infrastructure\Dev\Controller;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\ValueObject\Email\Email;
+use App\Infrastructure\Security\Voter\DevToolsVoter;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Infrastructure\Security\Voter\DevToolsVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +21,6 @@ use Symfony\Component\Uid\Uuid;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
-    /**
-     * 開発時の検証作業用メールアドレス
-     *
-     * 未作成時のみ生成し、以降はランダム値を付与する。
-     */
     private const string DEV_USER_EMAIL = 'dev@example.com';
 
     #[Route(
@@ -63,7 +58,7 @@ final class UserDevController extends AbstractController
 
         $email = $repository->findOneBy(['email.value' => self::DEV_USER_EMAIL]) === null
             ? self::DEV_USER_EMAIL
-            : sprintf('dev-%s@example.com', bin2hex(random_bytes(8)));
+            : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
 
         $user = new User(
             id: Uuid::v7(),
@@ -102,6 +97,35 @@ final class UserDevController extends AbstractController
         $user->softDelete(new \DateTimeImmutable());
 
         $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_dev_users');
+    }
+
+    #[Route(
+        path: '/users/{id}/purge',
+        name: 'app_dev_users_purge',
+        methods: ['POST'],
+    )]
+    public function purge(
+        Request $request,
+        string $id,
+        UserRepository $repository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $token = $request->request->getString('_token');
+
+        if (!$this->isCsrfTokenValid('dev_user_purge', $token)) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $user = $repository->find(Uuid::fromString($id));
+
+        if ($user === null) {
+            throw new NotFoundHttpException();
+        }
+
+        $entityManager->remove($user);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_dev_users');
