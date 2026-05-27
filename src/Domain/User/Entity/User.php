@@ -39,7 +39,17 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     public private(set) Email $email;
 
-    public function __construct(
+    public static function create(
+        Uuid $id,
+        Email $email,
+    ): self {
+        return new self(
+            id: $id,
+            email: $email,
+        );
+    }
+
+    private function __construct(
         Uuid $id,
         Email $email,
     ) {
@@ -86,8 +96,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    #[\Deprecated('since Symfony 7.3, erase credentials using the "__serialize()" method instead')]
     #[\Override]
+    #[\Deprecated('since Symfony 7.3, erase credentials using the "__serialize()" method instead')]
     public function eraseCredentials(): void
     {
     }

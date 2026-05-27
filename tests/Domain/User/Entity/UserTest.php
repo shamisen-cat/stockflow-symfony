@@ -33,12 +33,12 @@ final class UserTest extends TestCase
     }
 
     #[Test]
-    public function constructorSetsProvidedValues(): void
+    public function createReturnsUserWithProvidedValues(): void
     {
         $id    = Uuid::fromString('00000000-0000-7000-8000-000000000001');
         $email = Email::of('test@example.com');
 
-        $user = new User(
+        $user = User::create(
             id: $id,
             email: $email,
         );
@@ -87,7 +87,7 @@ final class UserTest extends TestCase
         $id    = Uuid::fromString('00000000-0000-7000-8000-000000000001');
         $email = Email::of('test@example.com');
 
-        $user = new User(
+        $user = User::create(
             id: $id,
             email: $email,
         );
@@ -115,7 +115,7 @@ final class UserTest extends TestCase
         ?Uuid $id = null,
         ?Email $email = null,
     ): User {
-        return new User(
+        return User::create(
             id: $id       ?? Uuid::fromString('00000000-0000-7000-8000-000000000001'),
             email: $email ?? Email::of('test@example.com'),
         );

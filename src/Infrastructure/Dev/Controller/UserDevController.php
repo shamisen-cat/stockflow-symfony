@@ -60,7 +60,7 @@ final class UserDevController extends AbstractController
             ? self::DEV_USER_EMAIL
             : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
 
-        $user = new User(
+        $user = User::create(
             id: Uuid::v7(),
             email: Email::of($email),
         );
