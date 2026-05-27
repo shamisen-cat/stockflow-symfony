@@ -1,44 +1,39 @@
 <!DOCTYPE html>
+
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  {% block meta %}{% endblock %}
+    {% block meta %}{% endblock %}
 
-  <title>
-    {% block title %}Stockflow{% endblock %}
-  </title>
+    <title>
+      {% block title %}Stockflow{% endblock %}
+    </title>
 
-  {% block javascripts %}
-    {% block importmap %}
-      {{ importmap('app', attributes = { nonce: csp_nonce('script') }) }}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    {% block javascripts %}
+      {% block importmap %}
+        {{ importmap('app', attributes = { nonce: csp_nonce('script') }) }}
+      {% endblock %}
     {% endblock %}
-  {% endblock %}
 
-  {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+    {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
 
-  {% if frankenphpHotReload %}
-    <meta
-      name="frankenphp-hot-reload:url"
-      content="{{ frankenphpHotReload }}"
-    >
-    <script
-      src="https://cdn.jsdelivr.net/npm/idiomorph"
-      nonce="{{ csp_nonce('script') }}"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm"
-      type="module"
-      nonce="{{ csp_nonce('script') }}"
-    ></script>
-  {% endif %}
-</head>
+    {% if frankenphpHotReload %}
+      <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
+      <script
+        src="https://cdn.jsdelivr.net/npm/idiomorph"
+        nonce="{{ csp_nonce('script') }}"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm"
+        type="module"
+        nonce="{{ csp_nonce('script') }}"
+      ></script>
+    {% endif %}
+  </head>
 
-<body>
   {% block body %}{% endblock %}
-</body>
 </html>

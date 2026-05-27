@@ -1,0 +1,14 @@
+{% extends 'layout/two_column.html.twig' %}
+
+{% block sidebar_body %}
+  <ul class="space-y-1">
+    <li>
+      <a
+        href="{{ path('app_dev_users') }}"
+        class="block px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg"
+      >
+        ユーザー管理
+      </a>
+    </li>
+  </ul>
+{% endblock %}

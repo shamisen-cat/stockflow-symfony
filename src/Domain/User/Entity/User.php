@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Domain\User\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Domain\Shared\Entity\SoftDeletableTrait;
+use App\Domain\User\Exception\UserAlreadyDeletedException;
+use App\Domain\User\ValueObject\Email\Email;
+use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,8 +16,16 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
+#[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
+#[ORM\UniqueConstraint(
+    name: 'uniq_user_email_active',
+    columns: ['email'],
+    options: ['where' => 'deleted_at IS NULL'],
+)]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use SoftDeletableTrait;
+
     #[ORM\Id]
     #[ORM\Column(
         name: 'id',
@@ -23,20 +33,27 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     public private(set) Uuid $id;
 
-    #[ORM\Column(
-        name: 'email',
-        type: Types::STRING,
-        length: 255,
-        unique: true,
+    #[ORM\Embedded(
+        class: Email::class,
+        columnPrefix: false,
     )]
-    public private(set) string $email;
+    public private(set) Email $email;
 
     public function __construct(
         Uuid $id,
-        string $email,
+        Email $email,
     ) {
         $this->id    = $id;
         $this->email = $email;
+    }
+
+    public function softDelete(\DateTimeImmutable $deletedAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        $this->markDeletedAt($deletedAt);
     }
 
     /**

@@ -3,9 +3,21 @@
     "language": "en",
     "words": [
         "frankenphp",
-        "importmap",
-        "javascripts",
+        "hotwired",
+        "mercure",
+        "nowrap",
+        "phpstan",
+        "phpunit",
         "stockflow",
         "symfony"
+    ],
+    "overrides": [
+        {
+            "filename": "**/*.twig",
+            "ignoreRegExpList": [
+                "/\\{%[\\s\\S]*?%\\}/",
+                "/\\{\\{[\\s\\S]*?\\}\\}/"
+            ]
+        }
     ]
 }

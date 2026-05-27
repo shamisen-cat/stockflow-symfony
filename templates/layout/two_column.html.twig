@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <body
+    class="
+      group/sidebar min-h-screen text-slate-900 antialiased bg-slate-50
+      max-xl:data-[sidebar-open-value=true]:overflow-hidden
+    "
+    data-controller="sidebar"
+    data-sidebar-open-value="false"
+  >
+    <header
+      class="
+        fixed top-0 left-0 right-0 z-20
+        h-14 pl-4 pr-20 bg-white border-b border-slate-200
+        xl:h-12 xl:pr-4
+      "
+    >
+      <div class="flex items-center justify-between gap-4 h-full min-w-0">
+        <a
+          href="{{ path('app_dev_users') }}"
+          class="
+            inline-flex items-center gap-1 min-w-0
+            text-lg font-semibold text-slate-900 hover:text-slate-700
+          "
+        >
+          {{ ux_icon('lucide:package', { class: 'size-4 shrink-0' }) }}
+          <span class="truncate">Stockflow</span>
+        </a>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            class="
+              inline-flex items-center justify-center gap-1.5 h-11 w-11 shrink-0
+              rounded-lg text-sm font-medium text-slate-700 transition
+              hover:bg-slate-100 hover:text-slate-900
+              focus:outline-none focus:ring-2 focus:ring-slate-900
+              xl:h-9 xl:w-auto xl:px-3
+            "
+            aria-label="Log out"
+          >
+            {{ ux_icon('lucide:log-out', { class: 'size-6 shrink-0 xl:size-4' }) }}
+            <span class="hidden xl:inline">ログアウト</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="min-w-0 pt-14 xl:ml-64 xl:pt-12">
+      {% block main_body %}{% endblock %}
+    </main>
+
+    <button
+      type="button"
+      class="
+        group fixed top-1.5 right-2.5 z-50
+        inline-flex items-center justify-center h-11 w-11
+        bg-transparent rounded-lg text-slate-900 transition
+        hover:bg-slate-50
+        focus:outline-none focus:ring-2 focus:ring-slate-900
+        xl:hidden
+      "
+      data-sidebar-target="toggle"
+      data-action="click->sidebar#toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="app-sidebar"
+    >
+      <span class="relative block h-6 w-6">
+        <span
+          class="
+            absolute top-0 left-0
+            block h-0.5 w-6 bg-slate-900 origin-center transition-all duration-300
+            group-aria-expanded:top-1/2 group-aria-expanded:-translate-y-1/2
+            group-aria-expanded:rotate-45
+          "
+        ></span>
+        <span
+          class="
+            absolute top-2.5 left-0
+            block h-0.5 w-6 bg-slate-900 origin-center transition-all duration-300
+            group-aria-expanded:top-1/2 group-aria-expanded:-translate-y-1/2
+            group-aria-expanded:opacity-0
+          "
+        ></span>
+        <span
+          class="
+            absolute top-5 left-0
+            block h-0.5 w-6 bg-slate-900 origin-center transition-all duration-300
+            group-aria-expanded:top-1/2 group-aria-expanded:-translate-y-1/2
+            group-aria-expanded:-rotate-45
+          "
+        ></span>
+      </span>
+    </button>
+
+    <aside
+      id="app-sidebar"
+      class="
+        fixed inset-y-0 right-0 z-40
+        flex flex-col w-64 translate-x-full
+        bg-white border-l border-slate-200 shadow-xl transition-transform duration-300
+        xl:top-12 xl:bottom-0 xl:left-0 xl:right-auto
+        xl:translate-x-0 max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
+        xl:border-l-0 xl:border-r xl:shadow-none
+      "
+      data-sidebar-target="sidebar"
+      aria-hidden="true"
+    >
+      <div class="flex items-center h-14 shrink-0 pl-4 pr-16 border-b border-slate-200 xl:hidden">
+        <span class="text-sm font-semibold text-slate-900">メニュー</span>
+      </div>
+      <nav class="flex-1 overflow-y-auto px-2 py-4 xl:pt-3">
+        {% block sidebar_body %}{% endblock %}
+      </nav>
+    </aside>
+
+    <div
+      class="
+        fixed inset-0 z-30
+        bg-slate-900/50 opacity-0 transition-opacity duration-300 pointer-events-none
+        max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
+        max-xl:group-data-[sidebar-open-value=true]/sidebar:pointer-events-auto
+        xl:hidden
+      "
+      data-sidebar-target="overlay"
+      data-action="click->sidebar#close"
+    ></div>
+  </body>
+{% endblock %}
