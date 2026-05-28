@@ -57,6 +57,9 @@ final readonly class Email extends AbstractValueObject
         return EmailValidationResult::VALID;
     }
 
+    /**
+     * @see AbstractValueObject
+     */
     #[\Override]
     public function value(): string
     {

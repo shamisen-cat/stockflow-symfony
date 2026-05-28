@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class EmailValidationResultTest extends TestCase
 {
     #[Test]
-    #[DataProvider('provideResultAndExpectedIsValid')]
+    #[DataProvider('provideIsValidCases')]
     public function isValidReturnsExpectedForEachResult(
         EmailValidationResult $result,
         bool $expected,
@@ -23,7 +23,7 @@ final class EmailValidationResultTest extends TestCase
     /**
      * @return iterable<string, array{EmailValidationResult, bool}>
      */
-    public static function provideResultAndExpectedIsValid(): iterable
+    public static function provideIsValidCases(): iterable
     {
         foreach (EmailValidationResult::cases() as $result) {
             yield strtolower($result->name) => [
