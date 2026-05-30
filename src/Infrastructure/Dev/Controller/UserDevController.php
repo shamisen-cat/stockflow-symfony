@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Dev\Controller;
 
 use App\Domain\User\Entity\User;
+use App\Domain\User\Password\PlainPasswordHasherInterface;
 use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Password\HashedPassword;
+use App\Domain\User\ValueObject\Password\PlainPassword;
 use App\Infrastructure\Security\Voter\DevToolsVoter;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,6 +52,7 @@ final class UserDevController extends AbstractController
         Request $request,
         UserRepository $repository,
         EntityManagerInterface $entityManager,
+        PlainPasswordHasherInterface $plainPasswordHasher,
     ): Response {
         $token = $request->request->getString('_token');
 
@@ -62,13 +64,13 @@ final class UserDevController extends AbstractController
             ? self::DEV_EMAIL
             : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
 
-        $hashedPassword = password_hash(self::DEV_PASSWORD, PASSWORD_ARGON2ID);
-        $password       = HashedPassword::of($hashedPassword);
+        $plainPassword  = PlainPassword::of(self::DEV_PASSWORD);
+        $hashedPassword = $plainPasswordHasher->hash($plainPassword);
 
         $user = User::create(
             id: Uuid::v7(),
             email: Email::of($email),
-            password: $password,
+            password: $hashedPassword,
         );
 
         $entityManager->persist($user);
