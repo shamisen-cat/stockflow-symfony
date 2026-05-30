@@ -81,8 +81,13 @@ final class UserTest extends TestCase
 
         $secondDeletedAt = $this->nowAfter();
 
-        $this->expectException(UserAlreadyDeletedException::class);
-        $user->softDelete($secondDeletedAt);
+        try {
+            $user->softDelete($secondDeletedAt);
+            self::fail('Expected UserAlreadyDeletedException was not thrown.');
+        } catch (UserAlreadyDeletedException $e) {
+            self::assertSame('User is already deleted.', $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+        }
     }
 
     #[Test]
