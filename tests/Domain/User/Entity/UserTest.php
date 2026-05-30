@@ -7,6 +7,7 @@ namespace App\Tests\Domain\User\Entity;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
+use App\Domain\User\ValueObject\Password\HashedPassword;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
@@ -35,16 +36,19 @@ final class UserTest extends TestCase
     #[Test]
     public function createReturnsUserWithProvidedValues(): void
     {
-        $id    = Uuid::fromString('00000000-0000-7000-8000-000000000001');
-        $email = Email::of('test@example.com');
+        $id       = Uuid::fromString('00000000-0000-7000-8000-000000000001');
+        $email    = Email::of('test@example.com');
+        $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
 
         $user = User::create(
             id: $id,
             email: $email,
+            password: $password,
         );
 
         self::assertSame($id, $user->id);
         self::assertTrue($email->equals($user->email));
+        self::assertTrue($password->equals($user->password));
     }
 
     #[Test]
@@ -84,13 +88,8 @@ final class UserTest extends TestCase
     #[Test]
     public function getUserIdentifierReturnsIdAsRfc4122(): void
     {
-        $id    = Uuid::fromString('00000000-0000-7000-8000-000000000001');
-        $email = Email::of('test@example.com');
-
-        $user = User::create(
-            id: $id,
-            email: $email,
-        );
+        $id   = Uuid::fromString('00000000-0000-7000-8000-000000000001');
+        $user = $this->createUser(id: $id);
 
         self::assertSame($id->toRfc4122(), $user->getUserIdentifier());
     }
@@ -104,20 +103,24 @@ final class UserTest extends TestCase
     }
 
     #[Test]
-    public function getPasswordReturnsEmptyString(): void
+    public function getPasswordReturnsHashedPasswordValue(): void
     {
-        $user = $this->createUser();
+        $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
+        $user     = $this->createUser(password: $password);
 
-        self::assertSame('', $user->getPassword());
+        self::assertSame($password->value(), $user->getPassword());
     }
 
     private function createUser(
         ?Uuid $id = null,
         ?Email $email = null,
+        ?HashedPassword $password = null,
     ): User {
         return User::create(
             id: $id       ?? Uuid::fromString('00000000-0000-7000-8000-000000000001'),
             email: $email ?? Email::of('test@example.com'),
+            password: $password
+                ?? HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash'),
         );
     }
 }
