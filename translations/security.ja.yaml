@@ -1,0 +1,2 @@
+'Invalid credentials.': '認証情報が正しくありません。'
+'Invalid CSRF token.': '再読み込みして、もう一度お試しください。'
