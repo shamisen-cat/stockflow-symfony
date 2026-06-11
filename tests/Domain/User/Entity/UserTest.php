@@ -8,6 +8,7 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
+use App\Tests\Support\UserTestFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\MockClock;
@@ -54,7 +55,7 @@ final class UserTest extends TestCase
     #[Test]
     public function isDeletedReturnsFalseForNewUser(): void
     {
-        $user = $this->createUser();
+        $user = UserTestFactory::create();
 
         self::assertNull($user->deletedAt);
         self::assertFalse($user->isDeleted());
@@ -63,7 +64,7 @@ final class UserTest extends TestCase
     #[Test]
     public function softDeleteSetsDeletedAt(): void
     {
-        $user      = $this->createUser();
+        $user      = UserTestFactory::create();
         $deletedAt = $this->clock->now();
 
         $user->softDelete($deletedAt);
@@ -75,7 +76,7 @@ final class UserTest extends TestCase
     #[Test]
     public function softDeleteThrowsWhenUserIsAlreadyDeleted(): void
     {
-        $user      = $this->createUser();
+        $user      = UserTestFactory::create();
         $deletedAt = $this->clock->now();
         $user->softDelete($deletedAt);
 
@@ -94,7 +95,7 @@ final class UserTest extends TestCase
     public function getUserIdentifierReturnsIdAsRfc4122(): void
     {
         $id   = Uuid::fromString('00000000-0000-7000-8000-000000000001');
-        $user = $this->createUser(id: $id);
+        $user = UserTestFactory::create(id: $id);
 
         self::assertSame($id->toRfc4122(), $user->getUserIdentifier());
     }
@@ -102,7 +103,7 @@ final class UserTest extends TestCase
     #[Test]
     public function getRolesReturnsRoleUser(): void
     {
-        $user = $this->createUser();
+        $user = UserTestFactory::create();
 
         self::assertSame(['ROLE_USER'], $user->getRoles());
     }
@@ -111,21 +112,8 @@ final class UserTest extends TestCase
     public function getPasswordReturnsHashedPasswordValue(): void
     {
         $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
-        $user     = $this->createUser(password: $password);
+        $user     = UserTestFactory::create(password: $password);
 
         self::assertSame($password->value(), $user->getPassword());
-    }
-
-    private function createUser(
-        ?Uuid $id = null,
-        ?Email $email = null,
-        ?HashedPassword $password = null,
-    ): User {
-        return User::create(
-            id: $id       ?? Uuid::fromString('00000000-0000-7000-8000-000000000001'),
-            email: $email ?? Email::of('test@example.com'),
-            password: $password
-                ?? HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash'),
-        );
     }
 }
