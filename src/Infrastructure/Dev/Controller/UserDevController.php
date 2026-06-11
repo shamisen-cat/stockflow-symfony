@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Dev\Controller;
 
 use App\Domain\User\Entity\User;
+use App\Domain\User\Password\PlainPasswordHasherInterface;
 use App\Domain\User\ValueObject\Email\Email;
+use App\Domain\User\ValueObject\Password\PlainPassword;
 use App\Infrastructure\Security\Voter\DevToolsVoter;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +23,8 @@ use Symfony\Component\Uid\Uuid;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
-    private const string DEV_USER_EMAIL = 'dev@example.com';
+    private const string DEV_EMAIL    = 'dev@example.com';
+    private const string DEV_PASSWORD = 'stockflow-dev';
 
     #[Route(
         path: '/users',
@@ -49,6 +52,7 @@ final class UserDevController extends AbstractController
         Request $request,
         UserRepository $repository,
         EntityManagerInterface $entityManager,
+        PlainPasswordHasherInterface $plainPasswordHasher,
     ): Response {
         $token = $request->request->getString('_token');
 
@@ -56,13 +60,17 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $email = $repository->findOneBy(['email.value' => self::DEV_USER_EMAIL]) === null
-            ? self::DEV_USER_EMAIL
+        $email = $repository->findOneBy(['email.value' => self::DEV_EMAIL]) === null
+            ? self::DEV_EMAIL
             : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
 
-        $user = new User(
+        $plainPassword  = PlainPassword::of(self::DEV_PASSWORD);
+        $hashedPassword = $plainPasswordHasher->hash($plainPassword);
+
+        $user = User::create(
             id: Uuid::v7(),
             email: Email::of($email),
+            password: $hashedPassword,
         );
 
         $entityManager->persist($user);

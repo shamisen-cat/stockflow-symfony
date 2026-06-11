@@ -26,7 +26,7 @@ final class InvalidEmailExceptionTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('provideResultAndExpectedProperties')]
+    #[DataProvider('provideInvalidResultCases')]
     public function fromValidationResultReturnsExpectedPropertiesForEachInvalidResult(
         string $email,
         EmailValidationResult $result,
@@ -42,7 +42,7 @@ final class InvalidEmailExceptionTest extends TestCase
     /**
      * @return iterable<string, array{string, EmailValidationResult, string}>
      */
-    public static function provideResultAndExpectedProperties(): iterable
+    public static function provideInvalidResultCases(): iterable
     {
         yield 'empty' => [
             '',

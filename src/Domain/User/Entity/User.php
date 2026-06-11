@@ -7,6 +7,7 @@ namespace App\Domain\User\Entity;
 use App\Domain\Shared\Entity\SoftDeletableTrait;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
+use App\Domain\User\ValueObject\Password\HashedPassword;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -39,12 +40,32 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     public private(set) Email $email;
 
-    public function __construct(
+    #[ORM\Embedded(
+        class: HashedPassword::class,
+        columnPrefix: false,
+    )]
+    public private(set) HashedPassword $password;
+
+    public static function create(
         Uuid $id,
         Email $email,
+        HashedPassword $password,
+    ): self {
+        return new self(
+            id: $id,
+            email: $email,
+            password: $password,
+        );
+    }
+
+    private function __construct(
+        Uuid $id,
+        Email $email,
+        HashedPassword $password,
     ) {
-        $this->id    = $id;
-        $this->email = $email;
+        $this->id       = $id;
+        $this->email    = $email;
+        $this->password = $password;
     }
 
     public function softDelete(\DateTimeImmutable $deletedAt): void
@@ -80,14 +101,14 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[\Override]
     public function getPassword(): string
     {
-        return '';
+        return $this->password->value();
     }
 
     /**
      * @see UserInterface
      */
-    #[\Deprecated('since Symfony 7.3, erase credentials using the "__serialize()" method instead')]
     #[\Override]
+    #[\Deprecated('since Symfony 7.3, erase credentials using the "__serialize()" method instead')]
     public function eraseCredentials(): void
     {
     }

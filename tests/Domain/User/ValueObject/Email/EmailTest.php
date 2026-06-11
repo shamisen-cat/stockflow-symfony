@@ -23,7 +23,7 @@ final class EmailTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('provideInvalidEmail')]
+    #[DataProvider('provideInvalidEmailCases')]
     public function ofThrowsWhenEmailIsInvalid(string $email): void
     {
         $this->expectException(InvalidEmailException::class);
@@ -31,7 +31,7 @@ final class EmailTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('provideEmailAndExpectedResult')]
+    #[DataProvider('provideEmailValidationCases')]
     public function validateReturnsExpectedResultForEachEmail(
         string $email,
         EmailValidationResult $expected,
@@ -72,7 +72,7 @@ final class EmailTest extends TestCase
     /**
      * @return iterable<string, array{string, EmailValidationResult}>
      */
-    public static function provideEmailAndExpectedResult(): iterable
+    public static function provideEmailValidationCases(): iterable
     {
         yield 'valid' => [
             'test@example.com',
@@ -89,7 +89,7 @@ final class EmailTest extends TestCase
             EmailValidationResult::TOO_LONG,
         ];
 
-        // TODO: provideEmailAndExpectedResult に INVALID_FORMAT の yield を追加
+        // TODO: provideEmailValidationCases に INVALID_FORMAT の yield を追加
         yield 'invalid_format' => [
             'invalid-format',
             EmailValidationResult::INVALID_FORMAT,
@@ -99,9 +99,9 @@ final class EmailTest extends TestCase
     /**
      * @return iterable<string, array{string}>
      */
-    public static function provideInvalidEmail(): iterable
+    public static function provideInvalidEmailCases(): iterable
     {
-        foreach (self::provideEmailAndExpectedResult() as $name => [$email, $expected]) {
+        foreach (self::provideEmailValidationCases() as $name => [$email, $expected]) {
             if ($expected === EmailValidationResult::VALID) {
                 continue;
             }

@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\User\ValueObject\Email;
+namespace App\Tests\Domain\User\ValueObject\Password;
 
-use App\Domain\User\ValueObject\Email\EmailValidationResult;
+use App\Domain\User\ValueObject\Password\PlainPasswordValidationResult;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-final class EmailValidationResultTest extends TestCase
+final class PlainPasswordValidationResultTest extends TestCase
 {
     #[Test]
     #[DataProvider('provideIsValidCases')]
     public function isValidReturnsExpectedForEachResult(
-        EmailValidationResult $result,
+        PlainPasswordValidationResult $result,
         bool $expected,
     ): void {
         self::assertSame($expected, $result->isValid());
     }
 
     /**
-     * @return iterable<string, array{EmailValidationResult, bool}>
+     * @return iterable<string, array{PlainPasswordValidationResult, bool}>
      */
     public static function provideIsValidCases(): iterable
     {
-        foreach (EmailValidationResult::cases() as $result) {
+        foreach (PlainPasswordValidationResult::cases() as $result) {
             yield strtolower($result->name) => [
                 $result,
-                $result === EmailValidationResult::VALID,
+                $result === PlainPasswordValidationResult::VALID,
             ];
         }
     }
