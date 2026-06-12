@@ -16,7 +16,7 @@ final class EmailTest extends TestCase
     #[Test]
     public function ofReturnsExpectedValueForValidEmail(): void
     {
-        $email   = 'test@example.com';
+        $email = 'test@example.com';
         $emailVo = Email::of($email);
 
         self::assertSame($email, $emailVo->value());
@@ -27,6 +27,7 @@ final class EmailTest extends TestCase
     public function ofThrowsWhenEmailIsInvalid(string $email): void
     {
         $this->expectException(InvalidEmailException::class);
+
         Email::of($email);
     }
 
@@ -45,7 +46,7 @@ final class EmailTest extends TestCase
     public function equalsReturnsTrueWhenValuesAreEqual(): void
     {
         $email = 'test@example.com';
-        $left  = Email::of($email);
+        $left = Email::of($email);
         $right = Email::of($email);
 
         self::assertTrue($left->equals($right));
@@ -54,7 +55,7 @@ final class EmailTest extends TestCase
     #[Test]
     public function equalsReturnsFalseWhenValuesAreNotEqual(): void
     {
-        $left  = Email::of('test@example.com');
+        $left = Email::of('test@example.com');
         $right = Email::of('uest@example.com');
 
         self::assertFalse($left->equals($right));
@@ -63,7 +64,7 @@ final class EmailTest extends TestCase
     #[Test]
     public function toStringReturnsExpectedValue(): void
     {
-        $email   = 'test@example.com';
+        $email = 'test@example.com';
         $emailVo = Email::of($email);
 
         self::assertSame($email, (string) $emailVo);

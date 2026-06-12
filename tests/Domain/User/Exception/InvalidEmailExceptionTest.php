@@ -19,10 +19,7 @@ final class InvalidEmailExceptionTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot create InvalidEmailException from VALID result.');
 
-        InvalidEmailException::fromValidationResult(
-            email: 'test@example.com',
-            result: EmailValidationResult::VALID,
-        );
+        InvalidEmailException::fromValidationResult('test@example.com', EmailValidationResult::VALID);
     }
 
     #[Test]

@@ -18,8 +18,6 @@ final class UserAlreadyDeletedException extends EntityException
 
     public static function forUser(Uuid $userId): self
     {
-        $message = 'User is already deleted.';
-
-        return new self($message, $userId);
+        return new self('User is already deleted.', $userId);
     }
 }

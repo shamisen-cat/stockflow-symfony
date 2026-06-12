@@ -18,14 +18,17 @@ final class InvalidHashedPasswordException extends InvalidValueObjectException
 
     public static function empty(): self
     {
-        return new self('Hashed password must not be empty.', null);
+        return new self(
+            message: 'Hashed password must not be empty.',
+            algorithm: null,
+        );
     }
 
     public static function tooLong(): self
     {
         return new self(
-            sprintf('Hashed password must not exceed %d characters.', HashedPassword::MAX_LENGTH),
-            null,
+            message: sprintf('Hashed password must not exceed %d characters.', HashedPassword::MAX_LENGTH),
+            algorithm: null,
         );
     }
 

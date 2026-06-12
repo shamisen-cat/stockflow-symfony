@@ -20,7 +20,7 @@ final class PlainPasswordHasherTest extends KernelTestCase
 
         self::assertInstanceOf(PlainPasswordHasherInterface::class, $plainPasswordHasher);
 
-        $plainPassword  = PlainPassword::of('test-password');
+        $plainPassword = PlainPassword::of('test-password');
         $hashedPassword = $plainPasswordHasher->hash($plainPassword);
 
         self::assertStringStartsWith('$argon2id$', $hashedPassword->value());

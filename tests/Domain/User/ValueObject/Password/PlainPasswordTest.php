@@ -16,7 +16,7 @@ final class PlainPasswordTest extends TestCase
     #[Test]
     public function ofReturnsExpectedValueForValidPlain(): void
     {
-        $plainPassword   = 'test-password';
+        $plainPassword = 'test-password';
         $plainPasswordVo = PlainPassword::of($plainPassword);
 
         self::assertSame($plainPassword, $plainPasswordVo->value());
@@ -27,6 +27,7 @@ final class PlainPasswordTest extends TestCase
     public function ofThrowsWhenPlainIsInvalid(string $plainPassword): void
     {
         $this->expectException(InvalidPlainPasswordException::class);
+
         PlainPassword::of($plainPassword);
     }
 
@@ -45,8 +46,8 @@ final class PlainPasswordTest extends TestCase
     public function equalsReturnsTrueWhenValuesAreEqual(): void
     {
         $plainPassword = 'test-password';
-        $left          = PlainPassword::of($plainPassword);
-        $right         = PlainPassword::of($plainPassword);
+        $left = PlainPassword::of($plainPassword);
+        $right = PlainPassword::of($plainPassword);
 
         self::assertTrue($left->equals($right));
     }
@@ -54,7 +55,7 @@ final class PlainPasswordTest extends TestCase
     #[Test]
     public function equalsReturnsFalseWhenValuesAreNotEqual(): void
     {
-        $left  = PlainPassword::of('test-password');
+        $left = PlainPassword::of('test-password');
         $right = PlainPassword::of('uest-password');
 
         self::assertFalse($left->equals($right));
@@ -63,7 +64,7 @@ final class PlainPasswordTest extends TestCase
     #[Test]
     public function toStringReturnsExpectedValue(): void
     {
-        $plainPassword   = 'test-password';
+        $plainPassword = 'test-password';
         $plainPasswordVo = PlainPassword::of($plainPassword);
 
         self::assertSame($plainPassword, (string) $plainPasswordVo);

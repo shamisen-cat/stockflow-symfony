@@ -23,18 +23,12 @@ final class InvalidEmailException extends InvalidValueObjectException
         EmailValidationResult $result,
     ): self {
         if ($result === EmailValidationResult::VALID) {
-            throw new \LogicException(sprintf(
-                'Cannot create InvalidEmailException from %s result.',
-                $result->name,
-            ));
+            throw new \LogicException(sprintf('Cannot create InvalidEmailException from %s result.', $result->name));
         }
 
         $message = match ($result) {
-            EmailValidationResult::EMPTY    => 'Email must not be empty.',
-            EmailValidationResult::TOO_LONG => sprintf(
-                'Email must not exceed %d characters.',
-                Email::MAX_LENGTH,
-            ),
+            EmailValidationResult::EMPTY => 'Email must not be empty.',
+            EmailValidationResult::TOO_LONG => sprintf('Email must not exceed %d characters.', Email::MAX_LENGTH),
             EmailValidationResult::INVALID_FORMAT => 'Email format is invalid.',
         };
 
