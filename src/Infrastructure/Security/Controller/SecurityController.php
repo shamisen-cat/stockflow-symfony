@@ -24,11 +24,11 @@ final class SecurityController extends AbstractController
         }
 
         $lastUsername = $authenticationUtils->getLastUsername();
-        $error        = $authenticationUtils->getLastAuthenticationError();
+        $error = $authenticationUtils->getLastAuthenticationError();
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
         ]);
     }
 
@@ -39,8 +39,6 @@ final class SecurityController extends AbstractController
     )]
     public function logout(): void
     {
-        throw new \LogicException(
-            'Logout is intercepted by main firewall in config/packages/security.yaml.',
-        );
+        throw new \LogicException('Logout is intercepted by main firewall in config/packages/security.yaml.');
     }
 }

@@ -63,8 +63,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         Email $email,
         HashedPassword $password,
     ) {
-        $this->id       = $id;
-        $this->email    = $email;
+        $this->id = $id;
+        $this->email = $email;
         $this->password = $password;
     }
 

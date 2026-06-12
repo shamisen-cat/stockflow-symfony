@@ -23,7 +23,7 @@ use Symfony\Component\Uid\Uuid;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
-    private const string DEV_EMAIL    = 'dev@example.com';
+    private const string DEV_EMAIL = 'dev@example.com';
     private const string DEV_PASSWORD = 'stockflow-dev';
 
     #[Route(
@@ -33,10 +33,7 @@ final class UserDevController extends AbstractController
     )]
     public function index(UserRepository $repository): Response
     {
-        $users = $repository->findBy(
-            criteria: [],
-            orderBy: ['id' => 'ASC'],
-        );
+        $users = $repository->findBy([], ['id' => 'ASC']);
 
         return $this->render('dev/user/index.html.twig', [
             'users' => $users,
@@ -64,7 +61,7 @@ final class UserDevController extends AbstractController
             ? self::DEV_EMAIL
             : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
 
-        $plainPassword  = PlainPassword::of(self::DEV_PASSWORD);
+        $plainPassword = PlainPassword::of(self::DEV_PASSWORD);
         $hashedPassword = $plainPasswordHasher->hash($plainPassword);
 
         $user = User::create(

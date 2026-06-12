@@ -29,13 +29,12 @@ final class LoginFormAuthenticatorTest extends TestCase
     #[Test]
     public function authenticateReturnsPassportWithCredentialsFromRequest(): void
     {
-        $username  = 'test@example.com';
-        $password  = 'test-password';
+        $username = 'test@example.com';
+        $password = 'test-password';
         $csrfToken = 'test-csrf-token';
 
         $authenticator = $this->createAuthenticator();
-        $request       = $this->createLoginRequest($username, $password, $csrfToken);
-
+        $request = $this->createLoginRequest($username, $password, $csrfToken);
         $passport = $authenticator->authenticate($request);
 
         $userBadge = $passport->getBadge(UserBadge::class);
@@ -58,7 +57,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     #[Test]
     public function authenticateLoadsUserFromProvider(): void
     {
-        $user    = UserTestFactory::create();
+        $user = UserTestFactory::create();
         $request = $this->createLoginRequest(username: $user->email->value());
 
         $userProvider = $this->createMock(UserProviderInterface::class);
@@ -69,7 +68,6 @@ final class LoginFormAuthenticatorTest extends TestCase
             ->willReturn($user);
 
         $authenticator = $this->createAuthenticator(userProvider: $userProvider);
-
         $passport = $authenticator->authenticate($request);
 
         self::assertSame($user, $passport->getUser());
@@ -81,8 +79,8 @@ final class LoginFormAuthenticatorTest extends TestCase
         $firewallName = self::FIREWALL_NAME;
 
         $targetPathSessionKey = '_security.'.$firewallName.'.target_path';
-        $targetPath           = '/target/page';
-        $exception            = new AuthenticationException('Invalid credentials.');
+        $targetPath = '/target/page';
+        $exception = new AuthenticationException('Invalid credentials.');
 
         $session = new Session(new MockArraySessionStorage());
         $session->set($targetPathSessionKey, $targetPath);
@@ -94,7 +92,6 @@ final class LoginFormAuthenticatorTest extends TestCase
         $token = self::createStub(TokenInterface::class);
 
         $authenticator = $this->createAuthenticator();
-
         $response = $authenticator->onAuthenticationSuccess($request, $token, $firewallName);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
@@ -113,7 +110,6 @@ final class LoginFormAuthenticatorTest extends TestCase
         $token = self::createStub(TokenInterface::class);
 
         $authenticator = $this->createAuthenticator();
-
         $response = $authenticator->onAuthenticationSuccess($request, $token, self::FIREWALL_NAME);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
@@ -124,10 +120,9 @@ final class LoginFormAuthenticatorTest extends TestCase
     public function onAuthenticationSuccessRedirectsToDefaultTargetPathWhenRequestHasNoSession(): void
     {
         $request = Request::create('/login');
-        $token   = self::createStub(TokenInterface::class);
+        $token = self::createStub(TokenInterface::class);
 
         $authenticator = $this->createAuthenticator();
-
         $response = $authenticator->onAuthenticationSuccess($request, $token, self::FIREWALL_NAME);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
@@ -137,8 +132,9 @@ final class LoginFormAuthenticatorTest extends TestCase
     #[Test]
     public function onAuthenticationFailureStoresSessionDataAndRedirectsToLogin(): void
     {
-        $username  = 'lastUsername';
+        $username = 'lastUsername';
         $exception = new AuthenticationException('Invalid credentials.');
+        $loginUrl = '/login';
 
         $session = new Session(new MockArraySessionStorage());
 
@@ -154,14 +150,13 @@ final class LoginFormAuthenticatorTest extends TestCase
                 [],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
             )
-            ->willReturn('/login');
+            ->willReturn($loginUrl);
 
         $authenticator = $this->createAuthenticator(urlGenerator: $urlGenerator);
-
         $response = $authenticator->onAuthenticationFailure($request, $exception);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/login', $response->getTargetUrl());
+        self::assertSame($loginUrl, $response->getTargetUrl());
         self::assertSame($username, $session->get(SecurityRequestAttributes::LAST_USERNAME));
         self::assertSame($exception, $session->get(SecurityRequestAttributes::AUTHENTICATION_ERROR));
     }
@@ -185,8 +180,8 @@ final class LoginFormAuthenticatorTest extends TestCase
         string $csrfToken = 'test-csrf-token',
     ): Request {
         return Request::create('/login', 'POST', [
-            '_username'   => $username,
-            '_password'   => $password,
+            '_username' => $username,
+            '_password' => $password,
             '_csrf_token' => $csrfToken,
         ]);
     }

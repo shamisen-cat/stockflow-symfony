@@ -25,7 +25,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const string LOGIN_ROUTE  = 'app_login';
+    public const string LOGIN_ROUTE = 'app_login';
     public const string LOGOUT_ROUTE = '_logout_main';
 
     public const string CSRF_TOKEN_ID = 'authenticate';
@@ -47,8 +47,8 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     #[\Override]
     public function authenticate(Request $request): Passport
     {
-        $username  = $request->request->getString('_username');
-        $password  = $request->request->getString('_password');
+        $username = $request->request->getString('_username');
+        $password = $request->request->getString('_password');
         $csrfToken = $request->request->getString('_csrf_token');
 
         $userBadge = new UserBadge(
@@ -57,12 +57,8 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
                 return $this->userProvider->loadUserByIdentifier($identifier);
             },
         );
-
         $credentials = new PasswordCredentials($password);
-
-        $badges = [
-            new CsrfTokenBadge(self::CSRF_TOKEN_ID, $csrfToken),
-        ];
+        $badges = [new CsrfTokenBadge(self::CSRF_TOKEN_ID, $csrfToken)];
 
         return new Passport($userBadge, $credentials, $badges);
     }
@@ -103,7 +99,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         AuthenticationException $exception,
     ): Response {
         if ($request->hasSession()) {
-            $session  = $request->getSession();
+            $session = $request->getSession();
             $username = $request->request->getString('_username');
 
             $session->set(SecurityRequestAttributes::LAST_USERNAME, $username);

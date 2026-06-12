@@ -22,7 +22,7 @@ final readonly class PlainPasswordHasher implements PlainPasswordHasherInterface
     {
         $hasher = $this->passwordHasherFactory->getPasswordHasher(User::class);
 
-        $hash           = $hasher->hash($plainPassword->value());
+        $hash = $hasher->hash($plainPassword->value());
         $hashedPassword = HashedPassword::of($hash);
 
         return $hashedPassword;

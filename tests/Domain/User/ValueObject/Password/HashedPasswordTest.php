@@ -15,7 +15,7 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function ofReturnsExpectedValueForValidHash(): void
     {
-        $hash           = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
+        $hash = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
         $hashedPassword = HashedPassword::of($hash);
 
         self::assertSame($hash, $hashedPassword->value());
@@ -24,11 +24,13 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function ofThrowsWhenHashIsEmpty(): void
     {
+        $message = 'Hashed password must not be empty.';
+
         try {
             HashedPassword::of('');
             self::fail('Expected InvalidHashedPasswordException was not thrown.');
         } catch (InvalidHashedPasswordException $e) {
-            self::assertSame('Hashed password must not be empty.', $e->getMessage());
+            self::assertSame($message, $e->getMessage());
             self::assertNull($e->algorithm);
         }
     }
@@ -36,17 +38,13 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function ofThrowsWhenHashIsTooLong(): void
     {
+        $message = sprintf('Hashed password must not exceed %d characters.', HashedPassword::MAX_LENGTH);
+
         try {
             HashedPassword::of(str_repeat('a', HashedPassword::MAX_LENGTH + 1));
             self::fail('Expected InvalidHashedPasswordException was not thrown.');
         } catch (InvalidHashedPasswordException $e) {
-            self::assertSame(
-                sprintf(
-                    'Hashed password must not exceed %d characters.',
-                    HashedPassword::MAX_LENGTH,
-                ),
-                $e->getMessage(),
-            );
+            self::assertSame($message, $e->getMessage());
             self::assertNull($e->algorithm);
         }
     }
@@ -55,11 +53,13 @@ final class HashedPasswordTest extends TestCase
     #[DataProvider('provideNonArgon2idHashCases')]
     public function ofThrowsWhenHashIsNotArgon2id(string $hash, string $expectedAlgorithm): void
     {
+        $message = 'Hashed password must use Argon2id.';
+
         try {
             HashedPassword::of($hash);
             self::fail('Expected InvalidHashedPasswordException was not thrown.');
         } catch (InvalidHashedPasswordException $e) {
-            self::assertSame('Hashed password must use Argon2id.', $e->getMessage());
+            self::assertSame($message, $e->getMessage());
             self::assertSame($expectedAlgorithm, $e->algorithm);
         }
     }
@@ -67,8 +67,8 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function equalsReturnsTrueWhenValuesAreEqual(): void
     {
-        $hash  = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
-        $left  = HashedPassword::of($hash);
+        $hash = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
+        $left = HashedPassword::of($hash);
         $right = HashedPassword::of($hash);
 
         self::assertTrue($left->equals($right));
@@ -77,7 +77,7 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function equalsReturnsFalseWhenValuesAreNotEqual(): void
     {
-        $left  = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
+        $left = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
         $right = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hasi');
 
         self::assertFalse($left->equals($right));
@@ -86,7 +86,7 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function toStringReturnsExpectedValue(): void
     {
-        $hash           = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
+        $hash = '$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash';
         $hashedPassword = HashedPassword::of($hash);
 
         self::assertSame($hash, (string) $hashedPassword);

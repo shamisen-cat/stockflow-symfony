@@ -46,9 +46,7 @@ final readonly class EmailUserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(
-                sprintf('User class "%s" is not supported.', get_debug_type($user)),
-            );
+            throw new UnsupportedUserException(sprintf('User class "%s" is not supported.', get_debug_type($user)));
         }
 
         $refreshedUser = $this->userRepository->findActiveById($user->id);

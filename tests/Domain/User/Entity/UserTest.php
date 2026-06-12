@@ -24,7 +24,7 @@ final class UserTest extends TestCase
         parent::setUp();
 
         $baseDateTime = new \DateTimeImmutable('2024-01-01 10:00:00');
-        $this->clock  = new MockClock($baseDateTime);
+        $this->clock = new MockClock($baseDateTime);
     }
 
     private function nowAfter(int $seconds = 3600): \DateTimeImmutable
@@ -37,8 +37,8 @@ final class UserTest extends TestCase
     #[Test]
     public function createReturnsUserWithProvidedValues(): void
     {
-        $id       = Uuid::fromString('00000000-0000-7000-8000-000000000001');
-        $email    = Email::of('test@example.com');
+        $id = Uuid::fromString('00000000-0000-7000-8000-000000000001');
+        $email = Email::of('test@example.com');
         $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
 
         $user = User::create(
@@ -64,7 +64,7 @@ final class UserTest extends TestCase
     #[Test]
     public function softDeleteSetsDeletedAt(): void
     {
-        $user      = UserTestFactory::create();
+        $user = UserTestFactory::create();
         $deletedAt = $this->clock->now();
 
         $user->softDelete($deletedAt);
@@ -76,7 +76,9 @@ final class UserTest extends TestCase
     #[Test]
     public function softDeleteThrowsWhenUserIsAlreadyDeleted(): void
     {
-        $user      = UserTestFactory::create();
+        $message = 'User is already deleted.';
+
+        $user = UserTestFactory::create();
         $deletedAt = $this->clock->now();
         $user->softDelete($deletedAt);
 
@@ -86,7 +88,7 @@ final class UserTest extends TestCase
             $user->softDelete($secondDeletedAt);
             self::fail('Expected UserAlreadyDeletedException was not thrown.');
         } catch (UserAlreadyDeletedException $e) {
-            self::assertSame('User is already deleted.', $e->getMessage());
+            self::assertSame($message, $e->getMessage());
             self::assertSame($user->id, $e->userId);
         }
     }
@@ -94,7 +96,7 @@ final class UserTest extends TestCase
     #[Test]
     public function getUserIdentifierReturnsIdAsRfc4122(): void
     {
-        $id   = Uuid::fromString('00000000-0000-7000-8000-000000000001');
+        $id = Uuid::fromString('00000000-0000-7000-8000-000000000001');
         $user = UserTestFactory::create(id: $id);
 
         self::assertSame($id->toRfc4122(), $user->getUserIdentifier());
@@ -112,7 +114,7 @@ final class UserTest extends TestCase
     public function getPasswordReturnsHashedPasswordValue(): void
     {
         $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
-        $user     = UserTestFactory::create(password: $password);
+        $user = UserTestFactory::create(password: $password);
 
         self::assertSame($password->value(), $user->getPassword());
     }

@@ -21,14 +21,14 @@ final class EmailUserProviderTest extends TestCase
     public function loadUserByIdentifierReturnsActiveUser(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $user           = UserTestFactory::create();
+        $user = UserTestFactory::create();
         $userRepository
             ->expects(self::once())
             ->method('findActiveByEmail')
             ->with($user->email->value())
             ->willReturn($user);
 
-        $provider   = new EmailUserProvider($userRepository);
+        $provider = new EmailUserProvider($userRepository);
         $loadedUser = $provider->loadUserByIdentifier($user->email->value());
 
         self::assertSame($user, $loadedUser);
@@ -38,7 +38,7 @@ final class EmailUserProviderTest extends TestCase
     public function loadUserByIdentifierThrowsWhenActiveUserNotFound(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $email          = 'unknown@example.com';
+        $email = 'unknown@example.com';
         $userRepository
             ->expects(self::once())
             ->method('findActiveByEmail')
@@ -59,8 +59,8 @@ final class EmailUserProviderTest extends TestCase
     public function refreshUserReturnsRefreshedUser(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $user           = UserTestFactory::create();
-        $refreshedUser  = UserTestFactory::create(
+        $user = UserTestFactory::create();
+        $refreshedUser = UserTestFactory::create(
             id: $user->id,
             email: Email::of('refreshed@example.com'),
         );
@@ -71,7 +71,7 @@ final class EmailUserProviderTest extends TestCase
             ->willReturn($refreshedUser);
 
         $provider = new EmailUserProvider($userRepository);
-        $result   = $provider->refreshUser($user);
+        $result = $provider->refreshUser($user);
 
         self::assertSame($refreshedUser, $result);
     }
@@ -80,7 +80,7 @@ final class EmailUserProviderTest extends TestCase
     public function refreshUserThrowsWhenActiveUserNotFound(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $user           = UserTestFactory::create();
+        $user = UserTestFactory::create();
         $userRepository
             ->expects(self::once())
             ->method('findActiveById')
@@ -126,14 +126,13 @@ final class EmailUserProviderTest extends TestCase
             }
         };
 
+        $message = sprintf('User class "%s" is not supported.', get_debug_type($unsupportedUser));
+
         try {
             $provider->refreshUser($unsupportedUser);
             self::fail('Expected UnsupportedUserException was not thrown.');
         } catch (UnsupportedUserException $e) {
-            self::assertSame(
-                sprintf('User class "%s" is not supported.', get_debug_type($unsupportedUser)),
-                $e->getMessage(),
-            );
+            self::assertSame($message, $e->getMessage());
         }
     }
 
@@ -141,7 +140,7 @@ final class EmailUserProviderTest extends TestCase
     public function supportsClassReturnsTrueForUser(): void
     {
         $userRepository = self::createStub(UserRepositoryInterface::class);
-        $provider       = new EmailUserProvider($userRepository);
+        $provider = new EmailUserProvider($userRepository);
 
         self::assertTrue($provider->supportsClass(User::class));
     }
@@ -150,7 +149,7 @@ final class EmailUserProviderTest extends TestCase
     public function supportsClassReturnsFalseForUserInterface(): void
     {
         $userRepository = self::createStub(UserRepositoryInterface::class);
-        $provider       = new EmailUserProvider($userRepository);
+        $provider = new EmailUserProvider($userRepository);
 
         self::assertFalse($provider->supportsClass(UserInterface::class));
     }
