@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\User\Entity;
 
 use App\Domain\Shared\Entity\SoftDeletableTrait;
+use App\Domain\Shared\Entity\TimestampableTrait;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
@@ -26,6 +27,7 @@ use Symfony\Component\Uid\Uuid;
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use SoftDeletableTrait;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\Column(
@@ -50,11 +52,13 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         Uuid $id,
         Email $email,
         HashedPassword $password,
+        \DateTimeImmutable $createdAt,
     ): self {
         return new self(
             id: $id,
             email: $email,
             password: $password,
+            createdAt: $createdAt,
         );
     }
 
@@ -62,10 +66,13 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         Uuid $id,
         Email $email,
         HashedPassword $password,
+        \DateTimeImmutable $createdAt,
     ) {
         $this->id = $id;
         $this->email = $email;
         $this->password = $password;
+
+        $this->markCreatedAt($createdAt);
     }
 
     public function softDelete(\DateTimeImmutable $deletedAt): void
@@ -75,6 +82,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->markDeletedAt($deletedAt);
+        $this->markUpdatedAt($deletedAt);
     }
 
     /**

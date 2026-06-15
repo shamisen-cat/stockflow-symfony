@@ -19,11 +19,13 @@ final class UserTestFactory
         ?Uuid $id = null,
         ?Email $email = null,
         ?HashedPassword $password = null,
+        ?\DateTimeImmutable $createdAt = null,
     ): User {
         return User::create(
             id: $id ?? Uuid::fromString(self::DEFAULT_ID),
             email: $email ?? Email::of(self::DEFAULT_EMAIL),
             password: $password ?? HashedPassword::of(self::DEFAULT_PASSWORD),
+            createdAt: $createdAt ?? new \DateTimeImmutable(TestClock::BASE_DATETIME),
         );
     }
 }

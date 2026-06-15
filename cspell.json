@@ -10,7 +10,8 @@
         "phpstan",
         "phpunit",
         "stockflow",
-        "symfony"
+        "symfony",
+        "timestampable"
     ],
     "overrides": [
         {

@@ -3,7 +3,7 @@
 {% block title %}Stockflow | ユーザー管理 - DevTools{% endblock %}
 
 {% block main %}
-  <div class="max-w-6xl mx-auto px-4 pt-3 pb-8 sm:px-6 lg:px-8">
+  <div class="mx-auto px-4 pt-3 pb-8 sm:px-6 lg:px-8">
     <header class="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="text-sm font-medium text-amber-700">
@@ -54,6 +54,12 @@
                 scope="col"
                 class="px-4 py-3 font-semibold text-slate-700 whitespace-nowrap sm:px-6 lg:py-2"
               >
+                作成日時
+              </th>
+              <th
+                scope="col"
+                class="px-4 py-3 font-semibold text-slate-700 whitespace-nowrap sm:px-6 lg:py-2"
+              >
                 削除日時
               </th>
               <th
@@ -72,7 +78,7 @@
                     title="{{ user.id.toRfc4122() }}"
                     class="block font-mono text-xs text-slate-600"
                   >
-                    {{- user.id.toRfc4122()|slice(0, 8) -}}…
+                    {{- user.id.toRfc4122()|slice(0, 12) -}}…
                   </code>
                 </td>
                 <td class="px-4 py-4 sm:px-6 lg:py-2.5">
@@ -89,6 +95,11 @@
                   >
                     {{ user.email }}
                   </span>
+                </td>
+                <td class="px-4 py-4 text-xs text-slate-600 whitespace-nowrap sm:px-6 lg:py-2.5">
+                  <time datetime="{{ user.createdAt|date('c') }}">
+                    {{ user.createdAt|date('Y-m-d H:i:s') }}
+                  </time>
                 </td>
                 <td class="px-4 py-4 text-xs text-slate-600 whitespace-nowrap sm:px-6 lg:py-2.5">
                   {% if user.deletedAt %}
@@ -145,7 +156,7 @@
               </tr>
             {% else %}
               <tr>
-                <td colspan="4" class="px-4 py-12 text-center text-slate-500 sm:px-6">
+                <td colspan="5" class="px-4 py-12 text-center text-slate-500 sm:px-6">
                   登録されているユーザーがありません。「新規作成」からユーザーを追加できます。
                 </td>
               </tr>

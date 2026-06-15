@@ -8,30 +8,21 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
+use App\Tests\Support\MockClockTestTrait;
 use App\Tests\Support\UserTestFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Uid\Uuid;
 
 final class UserTest extends TestCase
 {
-    private MockClock $clock;
+    use MockClockTestTrait;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
-        $baseDateTime = new \DateTimeImmutable('2024-01-01 10:00:00');
-        $this->clock = new MockClock($baseDateTime);
-    }
-
-    private function nowAfter(int $seconds = 3600): \DateTimeImmutable
-    {
-        $this->clock->sleep($seconds);
-
-        return $this->clock->now();
+        $this->initializeClock();
     }
 
     #[Test]
@@ -40,22 +31,20 @@ final class UserTest extends TestCase
         $id = Uuid::fromString('00000000-0000-7000-8000-000000000001');
         $email = Email::of('test@example.com');
         $password = HashedPassword::of('$argon2id$v=19$m=65536,t=4,p=1$dummy-argon2id-hash');
+        $createdAt = $this->now();
 
         $user = User::create(
             id: $id,
             email: $email,
             password: $password,
+            createdAt: $createdAt,
         );
 
         self::assertSame($id, $user->id);
         self::assertTrue($email->equals($user->email));
         self::assertTrue($password->equals($user->password));
-    }
-
-    #[Test]
-    public function isDeletedReturnsFalseForNewUser(): void
-    {
-        $user = UserTestFactory::create();
+        self::assertSame($createdAt, $user->createdAt);
+        self::assertSame($createdAt, $user->updatedAt);
 
         self::assertNull($user->deletedAt);
         self::assertFalse($user->isDeleted());
@@ -64,12 +53,13 @@ final class UserTest extends TestCase
     #[Test]
     public function softDeleteSetsDeletedAt(): void
     {
-        $user = UserTestFactory::create();
-        $deletedAt = $this->clock->now();
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
 
         $user->softDelete($deletedAt);
 
         self::assertSame($deletedAt, $user->deletedAt);
+        self::assertSame($deletedAt, $user->updatedAt);
         self::assertTrue($user->isDeleted());
     }
 
@@ -78,8 +68,8 @@ final class UserTest extends TestCase
     {
         $message = 'User is already deleted.';
 
-        $user = UserTestFactory::create();
-        $deletedAt = $this->clock->now();
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
         $user->softDelete($deletedAt);
 
         $secondDeletedAt = $this->nowAfter();
@@ -90,6 +80,8 @@ final class UserTest extends TestCase
         } catch (UserAlreadyDeletedException $e) {
             self::assertSame($message, $e->getMessage());
             self::assertSame($user->id, $e->userId);
+            self::assertSame($deletedAt, $user->deletedAt);
+            self::assertSame($deletedAt, $user->updatedAt);
         }
     }
 
