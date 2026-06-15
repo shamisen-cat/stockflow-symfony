@@ -23,9 +23,6 @@ use Symfony\Component\Uid\Uuid;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
-    private const string DEV_EMAIL = 'dev@example.com';
-    private const string DEV_PASSWORD = 'stockflow-dev';
-
     #[Route(
         path: '/users',
         name: 'app_dev_users',
@@ -47,7 +44,6 @@ final class UserDevController extends AbstractController
     )]
     public function create(
         Request $request,
-        UserRepository $repository,
         EntityManagerInterface $entityManager,
         PlainPasswordHasherInterface $plainPasswordHasher,
     ): Response {
@@ -57,17 +53,17 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $email = $repository->findOneBy(['email.value' => self::DEV_EMAIL]) === null
-            ? self::DEV_EMAIL
-            : sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
+        $email = sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
+        $password = 'stockflow-dev';
 
-        $plainPassword = PlainPassword::of(self::DEV_PASSWORD);
+        $plainPassword = PlainPassword::of($password);
         $hashedPassword = $plainPasswordHasher->hash($plainPassword);
 
         $user = User::create(
             id: Uuid::v7(),
             email: Email::of($email),
             password: $hashedPassword,
+            createdAt: new \DateTimeImmutable(),
         );
 
         $entityManager->persist($user);
