@@ -1,0 +1,19 @@
+{#
+  Scrollable list table for list_page list_body (embed only).
+
+  Blocks:
+  - table_head: table header cells (<th> elements)
+  - table_body: table body rows (<tr> elements)
+#}
+<div class="flex-1 min-h-0 overflow-auto">
+  <table class="min-w-full text-left text-sm">
+    <thead class="bg-slate-50">
+      <tr>
+        {% block table_head %}{% endblock %}
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% block table_body %}{% endblock %}
+    </tbody>
+  </table>
+</div>

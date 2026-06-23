@@ -1,0 +1,64 @@
+{#
+  Pagination navigation for server-side paginated lists.
+
+  Required variables (include ... with):
+  - pagination: Pagerfanta instance (from the controller)
+#}
+{% if pagination.nbResults > 0 %}
+  {% set btnBase = 'inline-flex items-center px-3 py-1.5 border rounded-lg text-sm font-medium' %}
+  {% set btnEnabled = btnBase
+    ~ ' bg-white border-slate-200 text-slate-700 transition'
+    ~ ' hover:bg-slate-50'
+    ~ ' focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2'
+  %}
+  {% set btnDisabled = btnBase
+    ~ ' bg-white border-slate-200 text-slate-400 opacity-50 cursor-not-allowed'
+  %}
+
+  <nav
+    class="
+      flex flex-col gap-3 px-4 py-3 border-t border-slate-200
+      sm:flex-row sm:items-center sm:px-6
+    "
+    aria-label="Pagination"
+  >
+    <div class="flex gap-4">
+      {% if pagination.hasPreviousPage %}
+        <a
+          href="{{ path(
+            app.request.attributes.get('_route'),
+            app.request.query.all|merge({ page: pagination.previousPage }),
+          ) }}"
+          class="{{ btnEnabled }}"
+        >
+          前へ
+        </a>
+      {% else %}
+        <span class="{{ btnDisabled }}" aria-disabled="true">
+          前へ
+        </span>
+      {% endif %}
+
+      {% if pagination.hasNextPage %}
+        <a
+          href="{{ path(
+            app.request.attributes.get('_route'),
+            app.request.query.all|merge({ page: pagination.nextPage }),
+          ) }}"
+          class="{{ btnEnabled }}"
+        >
+          次へ
+        </a>
+      {% else %}
+        <span class="{{ btnDisabled }}" aria-disabled="true">
+          次へ
+        </span>
+      {% endif %}
+    </div>
+
+    <p class="text-sm text-slate-600 sm:ml-auto">
+      全 {{ pagination.nbResults }} 件中
+      {{ pagination.currentPageOffsetStart }}–{{ pagination.currentPageOffsetEnd }} 件を表示
+    </p>
+  </nav>
+{% endif %}

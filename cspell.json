@@ -7,6 +7,7 @@
         "hotwired",
         "mercure",
         "nowrap",
+        "pagerfanta",
         "phpstan",
         "phpunit",
         "stockflow",

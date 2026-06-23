@@ -1,0 +1,48 @@
+{#
+  Sortable table header cell.
+
+  Required variables (include ... with):
+  - label: Column header text
+  - sortKey: Key for the ?sort= query parameter (must match sortMap in the controller)
+  - currentKey: Currently active sort key (from the controller)
+  - currentDirection: 'asc' or 'desc' (from the controller)
+#}
+{% if currentKey == sortKey %}
+  {% set ariaSort = currentDirection == 'asc' ? 'ascending' : 'descending' %}
+  {% set nextDirection = currentDirection == 'asc' ? 'desc' : 'asc' %}
+{% else %}
+  {% set ariaSort = 'none' %}
+  {% set nextDirection = 'asc' %}
+{% endif %}
+
+<th
+  scope="col"
+  class="
+    sticky top-0 z-10 px-4 py-3 bg-slate-50 border-b border-slate-200 whitespace-nowrap
+    sm:px-6 lg:py-2
+  "
+  aria-sort="{{ ariaSort }}"
+>
+  <a
+    href="{{ path(
+      app.request.attributes.get('_route'),
+      app.request.query.all|merge({
+        sort: sortKey,
+        direction: nextDirection,
+        page: 1,
+      }),
+    ) }}"
+    class="
+      inline-flex items-center gap-1 rounded font-semibold text-slate-700 transition
+      hover:text-slate-900
+      focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2
+    "
+  >
+    {{ label }}
+    {% if currentKey == sortKey %}
+      <span class="text-xs text-slate-400" aria-hidden="true">
+        {{ currentDirection == 'asc' ? '↑' : '↓' }}
+      </span>
+    {% endif %}
+  </a>
+</th>

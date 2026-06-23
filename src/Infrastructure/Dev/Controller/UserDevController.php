@@ -9,6 +9,9 @@ use App\Domain\User\Password\PlainPasswordHasherInterface;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\PlainPassword;
 use App\Infrastructure\Security\Voter\DevToolsVoter;
+use App\Infrastructure\Shared\Pagination\PaginationFactory;
+use App\Infrastructure\Shared\Pagination\SortDirection;
+use App\Infrastructure\Shared\Pagination\SortResolver;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,12 +31,41 @@ final class UserDevController extends AbstractController
         name: 'app_dev_users',
         methods: ['GET'],
     )]
-    public function index(UserRepository $repository): Response
-    {
-        $users = $repository->findBy([], ['id' => 'ASC']);
+    public function index(
+        Request $request,
+        UserRepository $userRepository,
+        SortResolver $sortResolver,
+        PaginationFactory $paginationFactory,
+    ): Response {
+        $defaultKey = 'updated_at';
+        $sortMap = [
+            'id' => 'u.id',
+            'email' => 'u.email.value',
+            'created_at' => 'u.createdAt',
+            $defaultKey => 'u.updatedAt',
+        ];
+
+        $sort = $sortResolver->resolve(
+            $request,
+            $sortMap,
+            $defaultKey,
+            SortDirection::Desc,
+        );
+
+        $queryBuilder = $userRepository->createListQueryBuilder();
+        $userRepository->applyListSort($queryBuilder, $sort);
+
+        $pager = $paginationFactory->create(
+            queryBuilder: $queryBuilder,
+            page: $request->query->getInt('page', 1),
+            maxPerPage: $request->query->getInt('per_page', 20),
+        );
 
         return $this->render('dev/user/index.html.twig', [
-            'users' => $users,
+            'users' => $pager->getCurrentPageResults(),
+            'pagination' => $pager,
+            'currentKey' => $sort->key,
+            'currentDirection' => $sort->direction,
         ]);
     }
 
@@ -53,7 +85,7 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $email = sprintf('dev-%s@example.com', bin2hex(random_bytes(16)));
+        $email = sprintf('%s@example.com', bin2hex(random_bytes(16)));
         $password = 'stockflow-dev';
 
         $plainPassword = PlainPassword::of($password);
@@ -80,7 +112,7 @@ final class UserDevController extends AbstractController
     public function delete(
         Request $request,
         string $id,
-        UserRepository $repository,
+        UserRepository $userRepository,
         EntityManagerInterface $entityManager,
     ): Response {
         $token = $request->request->getString('_token');
@@ -89,7 +121,7 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $user = $repository->find(Uuid::fromString($id));
+        $user = $userRepository->find(Uuid::fromString($id));
 
         if ($user === null) {
             throw new NotFoundHttpException();
@@ -111,7 +143,7 @@ final class UserDevController extends AbstractController
     public function purge(
         Request $request,
         string $id,
-        UserRepository $repository,
+        UserRepository $userRepository,
         EntityManagerInterface $entityManager,
     ): Response {
         $token = $request->request->getString('_token');
@@ -120,7 +152,7 @@ final class UserDevController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
 
-        $user = $repository->find(Uuid::fromString($id));
+        $user = $userRepository->find(Uuid::fromString($id));
 
         if ($user === null) {
             throw new NotFoundHttpException();
