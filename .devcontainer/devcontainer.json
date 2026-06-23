@@ -17,15 +17,11 @@
         "vscode": {
             "extensions": [
                 "bmewburn.vscode-intelephense-client",
-                "davidanson.vscode-markdownlint",
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "gruntfuggly.todo-tree",
                 "junstyle.php-cs-fixer",
                 "mblode.twig-language-2",
-                "streetsidesoftware.code-spell-checker",
-                "xdebug.php-debug",
-                "yzhang.markdown-all-in-one"
+                "xdebug.php-debug"
             ],
             "settings": {
                 "launch": {
