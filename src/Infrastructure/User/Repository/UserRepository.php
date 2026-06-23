@@ -6,7 +6,9 @@ namespace App\Infrastructure\User\Repository;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Infrastructure\Shared\Pagination\SortCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -53,5 +55,17 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
         }
 
         return $user;
+    }
+
+    public function createListQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('u');
+    }
+
+    public function applyListSort(
+        QueryBuilder $queryBuilder,
+        SortCriteria $sort,
+    ): void {
+        $queryBuilder->orderBy($sort->field, $sort->direction);
     }
 }
