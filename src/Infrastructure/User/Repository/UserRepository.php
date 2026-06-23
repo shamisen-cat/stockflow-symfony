@@ -28,9 +28,14 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
     #[\Override]
     public function findActiveById(Uuid $id): ?User
     {
-        $user = $this->find($id);
+        $user = $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->andWhere('u.deletedAt IS NULL')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
 
-        if (!$user instanceof User || $user->isDeleted()) {
+        if (!$user instanceof User) {
             return null;
         }
 
