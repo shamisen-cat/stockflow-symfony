@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Shared\ValueObject;
 
 /**
- * @template T 値の型
+ * @template T Value type
  */
 abstract readonly class AbstractValueObject
 {
