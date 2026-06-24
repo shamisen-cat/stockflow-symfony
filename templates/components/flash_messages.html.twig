@@ -1,0 +1,45 @@
+{#
+  Session flash messages (include once per layout).
+
+  Expected flash labels: success, error, warning.
+  Unknown labels fall back to info styling.
+#}
+{% set flashStyles = {
+  success: {
+    box: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+    icon: 'lucide:circle-check',
+  },
+  error: {
+    box: 'bg-red-50 border-red-200 text-red-800',
+    icon: 'lucide:circle-alert',
+  },
+  warning: {
+    box: 'bg-amber-50 border-amber-200 text-amber-800',
+    icon: 'lucide:triangle-alert',
+  },
+} %}
+
+{% set flashStyleFallback = {
+  box: 'bg-slate-50 border-slate-200 text-slate-800',
+  icon: 'lucide:circle-alert',
+} %}
+
+{% set flashes = app.flashes %}
+
+{% if flashes is not empty %}
+  <div class="shrink-0 space-y-2 px-4 pt-3" aria-live="polite">
+    {% for label, messages in flashes %}
+      {% for message in messages %}
+        {% set flashStyle = flashStyles[label] ?? flashStyleFallback %}
+
+        <div
+          role="alert"
+          class="flex items-center gap-2 px-4 py-3 border rounded-lg text-sm {{ flashStyle.box }}"
+        >
+          {{ ux_icon(flashStyle.icon, { class: 'size-4 shrink-0' }) }}
+          <span class="min-w-0">{{ message }}</span>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %}

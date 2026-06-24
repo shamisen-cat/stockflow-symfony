@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/dev')]
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
@@ -78,6 +79,7 @@ final class UserDevController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         PlainPasswordHasherInterface $plainPasswordHasher,
+        TranslatorInterface $translator,
     ): Response {
         $token = $request->request->getString('_token');
 
@@ -101,6 +103,12 @@ final class UserDevController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        $flashMessage = $translator->trans('dev.user.flash.created', [
+            '%email%' => $email,
+        ]);
+
+        $this->addFlash('success', $flashMessage);
+
         return $this->redirectToRoute('app_dev_users');
     }
 
@@ -114,6 +122,7 @@ final class UserDevController extends AbstractController
         string $id,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
     ): Response {
         $token = $request->request->getString('_token');
 
@@ -132,6 +141,12 @@ final class UserDevController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        $flashMessage = $translator->trans('dev.user.flash.deleted', [
+            '%email%' => $user->email->value(),
+        ]);
+
+        $this->addFlash('success', $flashMessage);
+
         return $this->redirectToRoute('app_dev_users');
     }
 
@@ -145,6 +160,7 @@ final class UserDevController extends AbstractController
         string $id,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
     ): Response {
         $token = $request->request->getString('_token');
 
@@ -158,8 +174,16 @@ final class UserDevController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        $email = $user->email->value();
+
         $entityManager->remove($user);
         $entityManager->flush();
+
+        $flashMessage = $translator->trans('dev.user.flash.purged', [
+            '%email%' => $email,
+        ]);
+
+        $this->addFlash('warning', $flashMessage);
 
         return $this->redirectToRoute('app_dev_users');
     }

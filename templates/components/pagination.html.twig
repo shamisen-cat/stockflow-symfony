@@ -31,11 +31,11 @@
           ) }}"
           class="{{ btnEnabled }}"
         >
-          前へ
+          {{ 'pagination.previous'|trans }}
         </a>
       {% else %}
         <span class="{{ btnDisabled }}" aria-disabled="true">
-          前へ
+          {{ 'pagination.previous'|trans }}
         </span>
       {% endif %}
 
@@ -47,18 +47,21 @@
           ) }}"
           class="{{ btnEnabled }}"
         >
-          次へ
+          {{ 'pagination.next'|trans }}
         </a>
       {% else %}
         <span class="{{ btnDisabled }}" aria-disabled="true">
-          次へ
+          {{ 'pagination.next'|trans }}
         </span>
       {% endif %}
     </div>
 
     <p class="text-sm text-slate-600 sm:ml-auto">
-      全 {{ pagination.nbResults }} 件中
-      {{ pagination.currentPageOffsetStart }}–{{ pagination.currentPageOffsetEnd }} 件を表示
+      {{ 'pagination.summary'|trans({
+        '%start%': pagination.currentPageOffsetStart,
+        '%end%': pagination.currentPageOffsetEnd,
+        '%total%': pagination.nbResults,
+      }) }}
     </p>
   </nav>
 {% endif %}
