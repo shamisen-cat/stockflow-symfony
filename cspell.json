@@ -4,8 +4,12 @@
     "words": [
         "autofocus",
         "frankenphp",
+        "focusin",
+        "focusout",
         "hotwired",
         "mercure",
+        "mouseenter",
+        "mouseleave",
         "nowrap",
         "pagerfanta",
         "phpstan",

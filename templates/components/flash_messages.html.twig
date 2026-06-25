@@ -1,0 +1,72 @@
+{#
+  Session flash messages (include once per layout).
+
+  Expected flash labels: success, error, warning.
+  Unknown labels fall back to info styling.
+#}
+{% set flashStyles = {
+  success: {
+    box: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+    icon: 'lucide:circle-check',
+  },
+  error: {
+    box: 'bg-red-50 border-red-200 text-red-800',
+    icon: 'lucide:circle-alert',
+  },
+  warning: {
+    box: 'bg-amber-50 border-amber-200 text-amber-800',
+    icon: 'lucide:triangle-alert',
+  },
+} %}
+
+{% set flashStyleFallback = {
+  box: 'bg-slate-50 border-slate-200 text-slate-800',
+  icon: 'lucide:circle-alert',
+} %}
+
+{% set flashDismissAfter = {
+  success: 5000,
+  warning: 0,
+  error: 0,
+} %}
+
+{% set flashes = app.flashes %}
+
+{% if flashes is not empty %}
+  <div class="shrink-0 space-y-2 px-4 pt-3" aria-live="polite">
+    {% for label, messages in flashes %}
+      {% for message in messages %}
+        {% set flashStyle = flashStyles[label] ?? flashStyleFallback %}
+
+        <div
+          role="alert"
+          data-controller="flash-message"
+          data-flash-message-dismiss-after-value="{{ flashDismissAfter[label] ?? 0 }}"
+          data-action="
+            mouseenter->flash-message#pauseTimer
+            mouseleave->flash-message#resumeTimer
+            focusin->flash-message#pauseTimer
+            focusout->flash-message#resumeTimer
+          "
+          class="flex items-center gap-2 px-4 py-3 border rounded-lg text-sm {{ flashStyle.box }}"
+        >
+          {{ ux_icon(flashStyle.icon, { class: 'size-4 shrink-0' }) }}
+          <span class="flex-1 min-w-0">{{ message }}</span>
+          <button
+            type="button"
+            data-action="flash-message#dismiss"
+            class="
+              inline-flex items-center justify-center w-7 h-7 shrink-0 rounded-md opacity-70
+              transition
+              hover:bg-black/5 hover:opacity-100
+              focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-1
+            "
+            aria-label="{{ 'flash.close'|trans }}"
+          >
+            {{ ux_icon('lucide:x', { class: 'size-4 shrink-0' }) }}
+          </button>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %}

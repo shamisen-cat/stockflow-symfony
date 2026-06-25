@@ -1,0 +1,35 @@
+login.title: 'Stockflow | Log in'
+login.heading: Log in
+login.instructions: Enter your email address and password.
+login.label.email: Email address
+login.label.password: Password
+login.button.submit: Log in
+
+layout.menu: Menu
+layout.logout: Log out
+layout.sidebar.open: Open menu
+layout.sidebar.close: Close menu
+
+flash.close: Close notification
+
+dev.user.title: 'Stockflow | User management - DevTools'
+dev.user.nav: User management
+dev.user.heading: User management
+dev.user.description: 'List, create, edit, and delete users'
+dev.user.button.create: Create user
+dev.user.column.id: ID
+dev.user.column.email: Email address
+dev.user.column.created_at: Created at
+dev.user.column.updated_at: Updated at
+dev.user.column.actions: Actions
+dev.user.button.delete: Delete
+dev.user.button.purge: Delete permanently
+dev.user.empty: 'No users yet. Use Create user to add one.'
+
+dev.user.flash.created: 'User created (%email%).'
+dev.user.flash.deleted: 'User deleted (%email%).'
+dev.user.flash.purged: 'User permanently deleted (%email%).'
+
+pagination.previous: Previous
+pagination.next: Next
+pagination.summary: 'Showing %start%–%end% of %total%'

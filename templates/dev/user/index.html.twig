@@ -1,6 +1,6 @@
 {% extends 'layout/two_column.html.twig' %}
 
-{% block title %}Stockflow | ユーザー管理 - DevTools{% endblock %}
+{% block title %}{{ 'dev.user.title'|trans }}{% endblock %}
 
 {% block sidebar %}
   <ul class="space-y-1">
@@ -9,7 +9,7 @@
         href="{{ path('app_dev_users') }}"
         class="block px-3 py-2 bg-slate-100 rounded-lg text-sm font-medium text-slate-900"
       >
-        ユーザー管理
+        {{ 'dev.user.nav'|trans }}
       </a>
     </li>
   </ul>
@@ -21,10 +21,10 @@
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            ユーザー管理
+            {{ 'dev.user.heading'|trans }}
           </h1>
           <p class="mt-2 text-sm text-slate-600">
-            ユーザー一覧・新規作成・編集・削除
+            {{ 'dev.user.description'|trans }}
           </p>
         </div>
 
@@ -40,7 +40,7 @@
               sm:w-auto
             "
           >
-            新規作成
+            {{ 'dev.user.button.create'|trans }}
           </button>
         </form>
       </div>
@@ -50,34 +50,36 @@
       {% embed 'components/list_table.html.twig' %}
         {% block table_head %}
           {% include 'components/sortable_th.html.twig' with {
-            label: 'ID',
+            label: 'dev.user.column.id'|trans,
             sortKey: 'id',
             currentKey: currentKey,
             currentDirection: currentDirection,
           } only %}
 
           {% include 'components/sortable_th.html.twig' with {
-            label: 'メールアドレス',
+            label: 'dev.user.column.email'|trans,
             sortKey: 'email',
             currentKey: currentKey,
             currentDirection: currentDirection,
           } only %}
 
           {% include 'components/sortable_th.html.twig' with {
-            label: '作成日時',
+            label: 'dev.user.column.created_at'|trans,
             sortKey: 'created_at',
             currentKey: currentKey,
             currentDirection: currentDirection,
           } only %}
 
           {% include 'components/sortable_th.html.twig' with {
-            label: '更新日時',
+            label: 'dev.user.column.updated_at'|trans,
             sortKey: 'updated_at',
             currentKey: currentKey,
             currentDirection: currentDirection,
           } only %}
 
-          {% include 'components/static_th.html.twig' with { label: '操作' } only %}
+          {% include 'components/static_th.html.twig' with {
+            label: 'dev.user.column.actions'|trans,
+          } only %}
         {% endblock %}
 
         {% block table_body %}
@@ -140,7 +142,7 @@
                         focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
                       "
                     >
-                      削除
+                      {{ 'dev.user.button.delete'|trans }}
                     </button>
                   </form>
                 {% else %}
@@ -162,7 +164,7 @@
                         focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2
                       "
                     >
-                      物理削除
+                      {{ 'dev.user.button.purge'|trans }}
                     </button>
                   </form>
                 {% endif %}
@@ -171,7 +173,7 @@
           {% else %}
             <tr>
               <td colspan="5" class="px-4 py-12 text-center text-slate-500 sm:px-6">
-                登録されているユーザーがありません。「新規作成」からユーザーを追加できます。
+                {{ 'dev.user.empty'|trans }}
               </td>
             </tr>
           {% endfor %}

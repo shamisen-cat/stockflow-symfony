@@ -1,6 +1,6 @@
 {% extends 'layout/centered.html.twig' %}
 
-{% block title %}Stockflow | ログイン{% endblock %}
+{% block title %}{{ 'login.title'|trans }}{% endblock %}
 
 {% block content %}
   <section
@@ -21,7 +21,7 @@
         "
       >
         {{ ux_icon('lucide:log-in', { class: 'size-6 shrink-0' }) }}
-        <span>ログイン</span>
+        <span>{{ 'login.heading'|trans }}</span>
       </h1>
 
       {% if error %}
@@ -41,7 +41,7 @@
 
       <form method="post" action="{{ path('app_login') }}">
         <p class="text-sm text-slate-600">
-          メールアドレスとパスワードを入力してください
+          {{ 'login.instructions'|trans }}
         </p>
 
         <div class="mt-5">
@@ -50,7 +50,7 @@
             class="flex items-center gap-1.5 pl-1 text-sm font-medium text-slate-700"
           >
             {{ ux_icon('lucide:mail', { class: 'size-4 shrink-0' }) }}
-            <span>メールアドレス</span>
+            <span>{{ 'login.label.email'|trans }}</span>
           </label>
           <input
             type="email"
@@ -76,7 +76,7 @@
             class="flex items-center gap-1.5 pl-1 text-sm font-medium text-slate-700"
           >
             {{ ux_icon('lucide:lock', { class: 'size-4 shrink-0' }) }}
-            <span>パスワード</span>
+            <span>{{ 'login.label.password'|trans }}</span>
           </label>
           <input
             type="password"
@@ -103,7 +103,7 @@
             focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2
           "
         >
-          ログイン
+          {{ 'login.button.submit'|trans }}
         </button>
       </form>
     </div>
