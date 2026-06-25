@@ -10,6 +10,8 @@ layout.logout: ログアウト
 layout.sidebar.open: メニューを開く
 layout.sidebar.close: メニューを閉じる
 
+flash.close: 通知を閉じる
+
 dev.user.title: 'Stockflow | ユーザー管理 - DevTools'
 dev.user.nav: ユーザー管理
 dev.user.heading: ユーザー管理

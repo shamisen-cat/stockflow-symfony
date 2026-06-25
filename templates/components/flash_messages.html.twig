@@ -24,6 +24,12 @@
   icon: 'lucide:circle-alert',
 } %}
 
+{% set flashDismissAfter = {
+  success: 5000,
+  warning: 0,
+  error: 0,
+} %}
+
 {% set flashes = app.flashes %}
 
 {% if flashes is not empty %}
@@ -34,10 +40,31 @@
 
         <div
           role="alert"
+          data-controller="flash-message"
+          data-flash-message-dismiss-after-value="{{ flashDismissAfter[label] ?? 0 }}"
+          data-action="
+            mouseenter->flash-message#pauseTimer
+            mouseleave->flash-message#resumeTimer
+            focusin->flash-message#pauseTimer
+            focusout->flash-message#resumeTimer
+          "
           class="flex items-center gap-2 px-4 py-3 border rounded-lg text-sm {{ flashStyle.box }}"
         >
           {{ ux_icon(flashStyle.icon, { class: 'size-4 shrink-0' }) }}
-          <span class="min-w-0">{{ message }}</span>
+          <span class="flex-1 min-w-0">{{ message }}</span>
+          <button
+            type="button"
+            data-action="flash-message#dismiss"
+            class="
+              inline-flex items-center justify-center w-7 h-7 shrink-0 rounded-md opacity-70
+              transition
+              hover:bg-black/5 hover:opacity-100
+              focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-1
+            "
+            aria-label="{{ 'flash.close'|trans }}"
+          >
+            {{ ux_icon('lucide:x', { class: 'size-4 shrink-0' }) }}
+          </button>
         </div>
       {% endfor %}
     {% endfor %}

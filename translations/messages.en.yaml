@@ -10,6 +10,8 @@ layout.logout: Log out
 layout.sidebar.open: Open menu
 layout.sidebar.close: Close menu
 
+flash.close: Close notification
+
 dev.user.title: 'Stockflow | User management - DevTools'
 dev.user.nav: User management
 dev.user.heading: User management
