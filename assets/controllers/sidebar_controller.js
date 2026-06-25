@@ -6,15 +6,19 @@ import { Controller } from '@hotwired/stimulus';
  * @typedef SidebarControllerContext
  *
  * @property {HTMLButtonElement} toggleTarget
- * @property {HTMLElement}       sidebarTarget
- * @property {HTMLDivElement}    overlayTarget
- * @property {boolean}           openValue
- * @property {string}            openLabelValue
- * @property {string}            closeLabelValue
- * @property {function(): void}  openValueChanged
- * @property {function(): void}  toggle
- * @property {function(): void}  open
- * @property {function(): void}  close
+ * @property {HTMLElement} sidebarTarget
+ * @property {HTMLDivElement} overlayTarget
+ *
+ * @property {boolean} openValue
+ * @property {string} openLabelValue
+ * @property {string} closeLabelValue
+ *
+ * @property {function(): void} connect
+ * @property {function(): void} disconnect
+ * @property {function(): void} openValueChanged
+ * @property {function(): void} toggle
+ * @property {function(): void} open
+ * @property {function(): void} close
  */
 
 /**
