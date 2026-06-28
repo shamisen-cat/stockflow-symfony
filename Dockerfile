@@ -76,7 +76,8 @@ RUN <<-EOF
 	install-php-extensions xdebug
 	rm -rf /var/lib/apt/lists/*
 	useradd -m -s /bin/bash nonroot
-	echo "nonroot ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nonroot
+	echo "nonroot ALL=(root) NOPASSWD: /app/.devcontainer/init-firewall.sh" > /etc/sudoers.d/init-firewall
+	chmod 0440 /etc/sudoers.d/init-firewall
 	git config --system --add safe.directory /app
 EOF
 

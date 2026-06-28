@@ -12,7 +12,7 @@
     },
     "remoteUser": "nonroot",
     "postCreateCommand": "npm install -g intelephense && ln -sf .devcontainer/AGENTS.md AGENTS.md",
-    "postStartCommand": "sudo .devcontainer/init-firewall.sh",
+    "postStartCommand": "sudo /app/.devcontainer/init-firewall.sh",
     "customizations": {
         "vscode": {
             "extensions": [

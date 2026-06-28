@@ -38,6 +38,11 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		fi
 	fi
 
+	# Dev Container runs as nonroot; entrypoint init creates /app/var as root.
+	if id nonroot >/dev/null 2>&1 && [ -d /app/var ]; then
+		chown -R nonroot:nonroot /app/var
+	fi
+
 	echo 'PHP app ready!'
 fi
 
