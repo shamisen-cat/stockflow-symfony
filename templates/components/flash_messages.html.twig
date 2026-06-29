@@ -33,7 +33,12 @@
 {% set flashes = app.flashes %}
 
 {% if flashes is not empty %}
-  <div class="shrink-0 space-y-2 px-4 pt-3" aria-live="polite">
+  <div
+    data-controller="flash-messages"
+    data-action="flash-message:dismissed->flash-messages#onDismissed"
+    class="shrink-0 space-y-2 px-4 pb-2 sm:px-6"
+    aria-live="polite"
+  >
     {% for label, messages in flashes %}
       {% for message in messages %}
         {% set flashStyle = flashStyles[label] ?? flashStyleFallback %}
@@ -54,7 +59,7 @@
           <span class="flex-1 min-w-0">{{ message }}</span>
           <button
             type="button"
-            data-action="flash-message#dismiss"
+            data-action="click->flash-message#dismiss"
             class="
               inline-flex items-center justify-center w-7 h-7 shrink-0 rounded-md opacity-70
               transition

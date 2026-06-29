@@ -22,6 +22,20 @@ import { Controller } from '@hotwired/stimulus';
  */
 
 /**
+ * App sidebar toggle (body controller in two_column.html.twig).
+ *
+ * Targets:
+ * - toggle: hamburger button
+ * - sidebar: aside navigation panel
+ * - overlay: backdrop on narrow viewports
+ *
+ * Values:
+ * - open: whether the sidebar is visible
+ * - openLabel / closeLabel: aria-label text for the toggle button
+ *
+ * Actions:
+ * - toggle / open / close: control sidebar visibility
+ *
  * @extends {Controller}
  */
 export default class extends Controller {
