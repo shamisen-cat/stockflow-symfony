@@ -15,6 +15,7 @@ import { Controller } from '@hotwired/stimulus';
  * @property {function(): void} connect
  * @property {function(): void} disconnect
  * @property {function(): void} dismiss
+ * @property {function(string, Object=): CustomEvent} dispatch
  * @property {function(): void} pauseTimer
  * @property {function(): void} resumeTimer
  * @property {function(): void} startTimer
@@ -22,6 +23,16 @@ import { Controller } from '@hotwired/stimulus';
  */
 
 /**
+ * Single session flash alert (child controller).
+ *
+ * Attached to each role="alert" element in flash_messages.html.twig.
+ * Values:
+ * - dismissAfter: auto-dismiss delay in ms (0 = manual dismiss only)
+ *
+ * Actions:
+ * - dismiss: removes the alert and dispatches flash-message:dismissed
+ * - pauseTimer / resumeTimer: pause auto-dismiss on hover or focus
+ *
  * @extends {Controller}
  */
 export default class extends Controller {
@@ -56,6 +67,7 @@ export default class extends Controller {
     /** @this {FlashMessageControllerContext} */
     dismiss() {
         this.clearTimer();
+        this.dispatch('dismissed', { bubbles: true });
         this.element.remove();
     }
 
