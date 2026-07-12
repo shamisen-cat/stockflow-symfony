@@ -4,81 +4,161 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Dev\Controller;
 
+use App\Application\User\ListUsers\ListUsersHandler;
+use App\Application\User\ListUsers\ListUsersInput;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Password\PlainPasswordHasherInterface;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\PlainPassword;
+use App\Infrastructure\Dev\Sidebar\DevSidebarFactory;
+use App\Infrastructure\Dev\Sidebar\DevSidebarLinkId;
 use App\Infrastructure\Security\Voter\DevToolsVoter;
-use App\Infrastructure\Shared\Pagination\PaginationFactory;
-use App\Infrastructure\Shared\Pagination\SortDirection;
-use App\Infrastructure\Shared\Pagination\SortResolver;
 use App\Infrastructure\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route(path: '/dev')]
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
     #[Route(
-        path: '/users',
+        path: '/dev/users',
         name: 'app_dev_users',
         methods: ['GET'],
     )]
     public function index(
         Request $request,
-        UserRepository $userRepository,
-        SortResolver $sortResolver,
-        PaginationFactory $paginationFactory,
+        ListUsersHandler $listUsersHandler,
+        DevSidebarFactory $devSidebarFactory,
     ): Response {
-        $defaultKey = 'updated_at';
-        $sortMap = [
-            'id' => 'u.id',
-            'email' => 'u.email.value',
-            'created_at' => 'u.createdAt',
-            $defaultKey => 'u.updatedAt',
-        ];
+        $email = trim($request->query->getString('email'));
+        $sortKey = $request->query->getString('sort');
+        $direction = $request->query->getString('direction');
+        $page = $request->query->getInt('page', 1);
+        $perPage = $request->query->getInt('per_page', 20);
 
-        $sort = $sortResolver->resolve(
-            $request,
-            $sortMap,
-            $defaultKey,
-            SortDirection::Desc,
+        $listUsersInput = ListUsersInput::create(
+            email: $email,
+            sortKey: $sortKey,
+            direction: $direction,
+            page: $page,
+            perPage: $perPage,
         );
 
-        $queryBuilder = $userRepository->createListQueryBuilder();
-        $userRepository->applyListSort($queryBuilder, $sort);
+        $result = $listUsersHandler->handle($listUsersInput);
 
-        $pager = $paginationFactory->create(
-            queryBuilder: $queryBuilder,
-            page: $request->query->getInt('page', 1),
-            maxPerPage: $request->query->getInt('per_page', 20),
-        );
+        /** @var list<User> $users */
+        $users = $result->pagination->getCurrentPageResults();
+
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
         return $this->render('dev/user/index.html.twig', [
-            'users' => $pager->getCurrentPageResults(),
-            'pagination' => $pager,
-            'currentKey' => $sort->key,
-            'currentDirection' => $sort->direction,
+            'users' => $users,
+            'pagination' => $result->pagination,
+            'currentKey' => $result->currentSortKey,
+            'currentDirection' => $result->currentSortDirection,
+            'searchEmail' => $result->searchEmail,
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentLink' => $sidebar->currentLink,
         ]);
     }
 
     #[Route(
-        path: '/users/create',
+        path: '/dev/users/export',
+        name: 'app_dev_users_export',
+        methods: ['GET'],
+    )]
+    public function export(
+        Request $request,
+        ListUsersHandler $listUsersHandler,
+        ClockInterface $clock,
+    ): Response {
+        $email = trim($request->query->getString('email'));
+        $sortKey = $request->query->getString('sort');
+        $direction = $request->query->getString('direction');
+        $page = $request->query->getInt('page', 1);
+        $perPage = $request->query->getInt('per_page', 20);
+
+        $listUsersInput = ListUsersInput::create(
+            email: $email,
+            sortKey: $sortKey,
+            direction: $direction,
+            page: $page,
+            perPage: $perPage,
+        );
+
+        $result = $listUsersHandler->handle($listUsersInput);
+        $now = $clock->now();
+
+        /** @var list<User> $users */
+        $users = $result->pagination->getCurrentPageResults();
+
+        $response = new StreamedResponse(function () use ($users): void {
+            $handle = fopen('php://output', 'w');
+
+            if ($handle === false) {
+                return;
+            }
+
+            fputcsv($handle, [
+                'id',
+                'email',
+                'created_at',
+                'updated_at',
+                'deleted_at',
+            ]);
+
+            foreach ($users as $user) {
+                fputcsv($handle, [
+                    $user->id->toRfc4122(),
+                    $user->email->value(),
+                    $user->createdAt->format('Y-m-d H:i:s'),
+                    $user->updatedAt->format('Y-m-d H:i:s'),
+                    $user->deletedAt?->format('Y-m-d H:i:s') ?? '',
+                ]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'text/csv; charset=UTF-8',
+        );
+
+        $filename = sprintf(
+            'users_%s_page-%d.csv',
+            $now->format('Ymd_His'),
+            $result->pagination->getCurrentPage(),
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            sprintf('attachment; filename="%s"', $filename),
+        );
+
+        return $response;
+    }
+
+    #[Route(
+        path: '/dev/users/create',
         name: 'app_dev_users_create',
         methods: ['POST'],
     )]
     public function create(
         Request $request,
-        EntityManagerInterface $entityManager,
         PlainPasswordHasherInterface $plainPasswordHasher,
+        ClockInterface $clock,
+        EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
     ): Response {
         $token = $request->request->getString('_token');
@@ -97,7 +177,7 @@ final class UserDevController extends AbstractController
             id: Uuid::v7(),
             email: Email::of($email),
             password: $hashedPassword,
-            createdAt: new \DateTimeImmutable(),
+            createdAt: $clock->now(),
         );
 
         $entityManager->persist($user);
@@ -113,7 +193,7 @@ final class UserDevController extends AbstractController
     }
 
     #[Route(
-        path: '/users/{id}/delete',
+        path: '/dev/users/{id}/delete',
         name: 'app_dev_users_delete',
         methods: ['POST'],
     )]
@@ -121,6 +201,7 @@ final class UserDevController extends AbstractController
         Request $request,
         string $id,
         UserRepository $userRepository,
+        ClockInterface $clock,
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
     ): Response {
@@ -136,7 +217,7 @@ final class UserDevController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $user->softDelete(new \DateTimeImmutable());
+        $user->softDelete($clock->now());
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -151,7 +232,7 @@ final class UserDevController extends AbstractController
     }
 
     #[Route(
-        path: '/users/{id}/purge',
+        path: '/dev/users/{id}/purge',
         name: 'app_dev_users_purge',
         methods: ['POST'],
     )]

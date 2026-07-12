@@ -27,7 +27,6 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const string LOGIN_ROUTE = 'app_login';
     public const string LOGOUT_ROUTE = '_logout_main';
-
     public const string CSRF_TOKEN_ID = 'authenticate';
 
     private const string DEFAULT_TARGET_PATH = '/dev/users';
@@ -36,8 +35,8 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
      * @param UserProviderInterface<User> $userProvider
      */
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly UserProviderInterface $userProvider,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

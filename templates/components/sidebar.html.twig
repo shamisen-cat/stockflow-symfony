@@ -1,0 +1,76 @@
+{#
+  Sidebar navigation.
+
+  Required variables (include ... with):
+  - sidebarLinks: list<DevSidebarLink> parent navigation links
+  - sidebarSubLinks: list<DevSidebarLink> sub links for the current section
+  - currentLink: DevSidebarLinkId active parent link id
+#}
+
+{% set linkBase = '
+  inline-flex items-center gap-2
+  w-full py-2
+  text-sm
+  focus:outline-none
+  focus:ring-2 focus:ring-inset focus:ring-slate-700
+' %}
+
+{% set linkActive = linkBase ~ '
+  pl-4
+  bg-slate-100
+  text-slate-900
+' %}
+
+{% set linkInactive = linkBase ~ '
+  pl-4
+  hover:bg-slate-100
+  text-slate-700 hover:text-slate-900
+  transition
+' %}
+
+{% set linkSub = linkBase ~ '
+  pl-6
+  hover:bg-slate-100
+  text-slate-700 hover:text-slate-900
+  transition
+' %}
+
+<ul class="divide-y divide-slate-100">
+  {% for link in sidebarLinks %}
+    <li>
+      <a
+        href="{{ link.href }}"
+        class="{{ link.id == currentLink ? linkActive : linkInactive }}"
+
+        {% if link.id == currentLink %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{ ux_icon(
+          link.icon,
+          { class: 'size-4 shrink-0' },
+        ) }}
+        <span>{{ link.label|trans }}</span>
+      </a>
+
+      {% if link.id == currentLink and sidebarSubLinks is not empty %}
+        <ul>
+          {% for subLink in sidebarSubLinks %}
+            <li>
+              <a
+                href="{{ subLink.href }}"
+                class="{{ linkSub }}"
+              >
+                {{ ux_icon(
+                  subLink.icon,
+                  { class: 'size-4 shrink-0' },
+                ) }}
+                <span>{{ subLink.label|trans }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

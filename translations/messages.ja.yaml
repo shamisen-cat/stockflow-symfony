@@ -1,3 +1,15 @@
+layout.menu: メニュー
+layout.user_settings: ユーザー設定
+layout.logout: ログアウト
+layout.sidebar.open: メニューを開く
+layout.sidebar.close: メニューを閉じる
+
+flash.close: 通知を閉じる
+
+pagination.previous: 前へ
+pagination.next: 次へ
+pagination.summary: '%total% 件中 %start%–%end% 件を表示'
+
 login.title: 'Stockflow | ログイン'
 login.heading: ログイン
 login.instructions: メールアドレスとパスワードを入力してください。
@@ -5,31 +17,27 @@ login.label.email: メールアドレス
 login.label.password: パスワード
 login.button.submit: ログイン
 
-layout.menu: メニュー
-layout.logout: ログアウト
-layout.sidebar.open: メニューを開く
-layout.sidebar.close: メニューを閉じる
-
-flash.close: 通知を閉じる
-
 dev.user.title: 'Stockflow | ユーザー管理 - DevTools'
-dev.user.nav: ユーザー管理
+dev.user.sidebar: ユーザー管理
+dev.organization.sidebar: 組織管理
+dev.membership.sidebar: 所属管理
+dev.sidebar.create: 新規作成
 dev.user.heading: ユーザー管理
-dev.user.description: ユーザーの一覧・作成・編集・削除
-dev.user.button.create: 新規作成
+dev.user.search.email_label: メールアドレス
+dev.user.search.email_placeholder: example@example.com の一部で検索
+dev.user.search.submit: 検索
+dev.user.search.clear: クリア
+dev.user.search.details: 詳細検索
 dev.user.column.id: ID
 dev.user.column.email: メールアドレス
 dev.user.column.created_at: 作成日時
 dev.user.column.updated_at: 更新日時
 dev.user.column.actions: 操作
+dev.user.button.csv_download: CSVダウンロード
+dev.user.button.create: 新規作成
 dev.user.button.delete: 論理削除
 dev.user.button.purge: 物理削除
 dev.user.empty: 登録されているユーザーがありません。「新規作成」からユーザーを追加できます。
-
 dev.user.flash.created: 'ユーザーを作成しました（%email%）。'
 dev.user.flash.deleted: 'ユーザーを論理削除しました（%email%）。'
 dev.user.flash.purged: 'ユーザーを物理削除しました（%email%）。'
-
-pagination.previous: 前へ
-pagination.next: 次へ
-pagination.summary: '%total% 件中 %start%–%end% 件を表示'

@@ -10,6 +10,7 @@ use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\PlainPassword;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,11 +26,12 @@ use Symfony\Component\Uid\Uuid;
 final class CreateUserCommand extends Command
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly PlainPasswordHasherInterface $plainPasswordHasher,
         #[Autowire(param: 'kernel.environment')]
         private readonly string $kernelEnvironment,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly PlainPasswordHasherInterface $plainPasswordHasher,
+        private readonly ClockInterface $clock,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }
@@ -63,7 +65,7 @@ final class CreateUserCommand extends Command
             id: Uuid::v7(),
             email: Email::of($email),
             password: $hashedPassword,
-            createdAt: new \DateTimeImmutable(),
+            createdAt: $this->clock->now(),
         );
 
         $this->entityManager->persist($user);

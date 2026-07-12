@@ -1,188 +1,62 @@
+{#
+  Dev user list page (UserDevController::index).
+
+  Variables from the controller:
+  - users: User[] current page results
+  - pagination: Pagerfanta instance
+  - currentKey: active sort key (id, email, created_at, updated_at)
+  - currentDirection: 'asc' or 'desc'
+  - searchEmail: current email search query (empty string when unset)
+  - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
+  - sidebarSubLinks: DevSidebarLink[] sub links for the current section
+  - currentLink: DevSidebarLinkId active parent sidebar link id
+#}
+
 {% extends 'layout/two_column.html.twig' %}
 
 {% block title %}{{ 'dev.user.title'|trans }}{% endblock %}
 
 {% block sidebar %}
-  <ul class="space-y-1">
-    <li>
-      <a
-        href="{{ path('app_dev_users') }}"
-        class="block px-3 py-2 bg-slate-100 rounded-lg text-sm font-medium text-slate-900"
-      >
-        {{ 'dev.user.nav'|trans }}
-      </a>
-    </li>
-  </ul>
+  {% include 'components/sidebar.html.twig' with {
+    sidebarLinks: sidebarLinks,
+    sidebarSubLinks: sidebarSubLinks,
+    currentLink: currentLink,
+  } only %}
 {% endblock %}
 
 {% block main %}
   {% embed 'layout/list_page.html.twig' %}
     {% block list_header %}
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            {{ 'dev.user.heading'|trans }}
-          </h1>
-          <p class="mt-2 text-sm text-slate-600">
-            {{ 'dev.user.description'|trans }}
-          </p>
-        </div>
+      {% include 'dev/user/_header.html.twig' only %}
+    {% endblock %}
 
-        <form method="post" action="{{ path('app_dev_users_create') }}">
-          <input type="hidden" name="_token" value="{{ csrf_token('dev_user_create') }}">
-          <button
-            type="submit"
-            class="
-              inline-flex items-center justify-center w-full px-4 py-2.5
-              bg-slate-900 rounded-lg shadow-sm text-sm font-semibold text-white transition
-              hover:bg-slate-800
-              focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2
-              sm:w-auto
-            "
-          >
-            {{ 'dev.user.button.create'|trans }}
-          </button>
-        </form>
-      </div>
+    {% block list_filters %}
+      {% include 'dev/user/_search_form.html.twig' with {
+        searchEmail: searchEmail,
+      } only %}
     {% endblock %}
 
     {% block list_body %}
       {% embed 'components/list_table.html.twig' %}
         {% block table_head %}
-          {% include 'components/sortable_th.html.twig' with {
-            label: 'dev.user.column.id'|trans,
-            sortKey: 'id',
+          {% include 'dev/user/_table_head.html.twig' with {
             currentKey: currentKey,
             currentDirection: currentDirection,
-          } only %}
-
-          {% include 'components/sortable_th.html.twig' with {
-            label: 'dev.user.column.email'|trans,
-            sortKey: 'email',
-            currentKey: currentKey,
-            currentDirection: currentDirection,
-          } only %}
-
-          {% include 'components/sortable_th.html.twig' with {
-            label: 'dev.user.column.created_at'|trans,
-            sortKey: 'created_at',
-            currentKey: currentKey,
-            currentDirection: currentDirection,
-          } only %}
-
-          {% include 'components/sortable_th.html.twig' with {
-            label: 'dev.user.column.updated_at'|trans,
-            sortKey: 'updated_at',
-            currentKey: currentKey,
-            currentDirection: currentDirection,
-          } only %}
-
-          {% include 'components/static_th.html.twig' with {
-            label: 'dev.user.column.actions'|trans,
           } only %}
         {% endblock %}
 
         {% block table_body %}
-          {% for user in users %}
-            <tr class="hover:bg-slate-50">
-              <td class="px-4 py-4 sm:px-6 lg:py-2.5">
-                <code
-                  title="{{ user.id.toRfc4122() }}"
-                  class="block font-mono text-xs text-slate-600"
-                >
-                  {{ user.id.toRfc4122()|slice(0, 12) }}…
-                </code>
-              </td>
-
-              <td class="px-4 py-4 sm:px-6 lg:py-2.5">
-                <span
-                  title="{{ user.email }}"
-                  class="
-                    block max-w-xs truncate
-                    {% if user.isDeleted %}
-                      line-through text-slate-500
-                    {% else %}
-                      font-medium text-slate-900
-                    {% endif %}
-                  "
-                >
-                  {{ user.email }}
-                </span>
-              </td>
-
-              <td class="px-4 py-4 text-xs text-slate-600 whitespace-nowrap sm:px-6 lg:py-2.5">
-                <time datetime="{{ user.createdAt|date('c') }}">
-                  {{ user.createdAt|date('Y-m-d H:i:s') }}
-                </time>
-              </td>
-
-              <td class="px-4 py-4 text-xs text-slate-600 whitespace-nowrap sm:px-6 lg:py-2.5">
-                <time datetime="{{ user.updatedAt|date('c') }}">
-                  {{ user.updatedAt|date('Y-m-d H:i:s') }}
-                </time>
-              </td>
-
-              <td class="px-4 py-4 sm:px-6 lg:py-2.5">
-                {% if not user.isDeleted %}
-                  <form
-                    method="post"
-                    action="{{ path(
-                      'app_dev_users_delete',
-                      { id: user.id.toRfc4122() },
-                    ) }}"
-                  >
-                    <input type="hidden" name="_token" value="{{ csrf_token('dev_user_delete') }}">
-                    <button
-                      type="submit"
-                      class="
-                        inline-flex items-center px-3 py-1.5
-                        bg-white border border-red-200 rounded-lg
-                        text-xs font-medium text-red-700 whitespace-nowrap transition
-                        hover:bg-slate-50
-                        focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
-                      "
-                    >
-                      {{ 'dev.user.button.delete'|trans }}
-                    </button>
-                  </form>
-                {% else %}
-                  <form
-                    method="post"
-                    action="{{ path(
-                      'app_dev_users_purge',
-                      { id: user.id.toRfc4122() },
-                    ) }}"
-                  >
-                    <input type="hidden" name="_token" value="{{ csrf_token('dev_user_purge') }}">
-                    <button
-                      type="submit"
-                      class="
-                        inline-flex items-center px-3 py-1.5 bg-red-50
-                        border border-red-300 rounded-lg
-                        text-xs font-medium text-red-900 whitespace-nowrap transition
-                        hover:bg-red-100
-                        focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2
-                      "
-                    >
-                      {{ 'dev.user.button.purge'|trans }}
-                    </button>
-                  </form>
-                {% endif %}
-              </td>
-            </tr>
-          {% else %}
-            <tr>
-              <td colspan="5" class="px-4 py-12 text-center text-slate-500 sm:px-6">
-                {{ 'dev.user.empty'|trans }}
-              </td>
-            </tr>
-          {% endfor %}
+          {% include 'dev/user/_table_body.html.twig' with {
+            users: users,
+          } only %}
         {% endblock %}
       {% endembed %}
     {% endblock %}
 
     {% block list_footer %}
-      {% include 'components/pagination.html.twig' with { pagination: pagination } only %}
+      {% include 'components/pagination.html.twig' with {
+        pagination: pagination,
+      } only %}
     {% endblock %}
   {% endembed %}
 {% endblock %}

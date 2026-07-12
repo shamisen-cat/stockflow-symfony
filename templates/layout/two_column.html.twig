@@ -5,6 +5,7 @@
   - sidebar: navigation in the aside
   - main: primary page content
 #}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -15,46 +16,71 @@
     data-sidebar-close-label-value="{{ 'layout.sidebar.close'|trans }}"
     class="
       group/sidebar
-      flex flex-col h-dvh overflow-hidden bg-slate-50 text-slate-900 antialiased
+      flex flex-col
+      overflow-hidden h-dvh
+      bg-slate-50
+      text-slate-900 antialiased
     "
   >
     <header
       class="
         relative z-20
-        flex items-center h-14 shrink-0 pl-4 pr-20 bg-white border-b border-slate-200
-        xl:h-12 xl:pr-4
+        flex items-center shrink-0
+        h-14 xl:h-12
+        pr-18 xl:pr-4
+        bg-white
+        border-b border-slate-200
       "
     >
-      <div class="flex items-center justify-between w-full min-w-0 gap-4">
+      <div
+        class="
+          flex items-center justify-between
+          w-full min-w-0
+        "
+      >
         <a
-          href="{{ path('app_dev_users') }}"
+          href="#"
           class="
-            inline-flex items-center min-w-0 gap-1 text-lg font-semibold text-slate-900
-            hover:text-slate-700
+            inline-flex items-center justify-center shrink-0 gap-1
+            min-w-0
+            min-h-11 xl:h-9
+            px-4
+            rounded-lg
+            text-lg
+            text-slate-900 hover:text-slate-700
+            focus:outline-none
+            focus:ring-2 focus:ring-slate-700
+            transition
           "
         >
-          {{ ux_icon('lucide:package', { class: 'size-5 shrink-0' }) }}
-          <span class="truncate">Stockflow</span>
+          {{ ux_icon(
+            'lucide:package',
+            { class: 'size-5 shrink-0' },
+          ) }}
+          <span>stockflow</span>
         </a>
 
-        <div class="flex items-center shrink-0 gap-2">
-          <form method="post" action="{{ logout_path() }}" class="inline-flex">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-            <button
-              type="submit"
-              class="
-                inline-flex flex-col items-center justify-center min-w-11 min-h-11 gap-0.5 px-1 py-1
-                rounded-lg text-xs font-medium text-slate-700 transition
-                hover:bg-slate-100 hover:text-slate-900
-                focus:outline-none focus:ring-2 focus:ring-slate-900
-                xl:flex-row xl:w-auto xl:min-h-0 xl:h-9 xl:gap-1.5 xl:px-3 xl:py-0 xl:text-sm
-              "
-              aria-label="{{ 'layout.logout'|trans }}"
-            >
-              {{ ux_icon('lucide:log-out', { class: 'size-5 shrink-0 xl:size-4' }) }}
-              <span class="text-[10px] leading-tight xl:text-sm">{{ 'layout.logout'|trans }}</span>
-            </button>
-          </form>
+        <div class="flex items-center shrink-0">
+          <a
+            href="#"
+            class="
+              inline-flex items-center justify-center
+              min-w-11 xl:w-9
+              min-h-11 xl:h-9
+              hover:bg-slate-100
+              rounded-lg
+              text-slate-700 hover:text-slate-900
+              focus:outline-none
+              focus:ring-2 focus:ring-slate-700
+              transition
+            "
+            aria-label="{{ 'layout.user_settings'|trans }}"
+          >
+            {{ ux_icon(
+              'lucide:circle-user',
+              { class: 'size-6 shrink-0' },
+            ) }}
+          </a>
         </div>
       </div>
     </header>
@@ -65,11 +91,14 @@
       data-action="click->sidebar#toggle"
       class="
         group/toggle
-        fixed top-1.5 right-2.5 z-50
-        inline-flex items-center justify-center w-11 h-11
-        bg-transparent rounded-lg text-slate-900 transition
-        hover:bg-slate-50
-        focus:outline-none focus:ring-2 focus:ring-slate-900
+        fixed top-1.5 right-4 z-50
+        inline-flex items-center justify-center
+        w-11 h-11
+        bg-transparent hover:bg-slate-100
+        rounded-lg
+        focus:outline-none
+        focus:ring-2 focus:ring-slate-700
+        transition
         xl:hidden
       "
       aria-controls="app-sidebar"
@@ -80,25 +109,37 @@
         <span
           class="
             absolute top-0 left-0
-            block w-6 h-0.5 bg-slate-900 origin-center transition-all duration-300
-            group-aria-expanded/toggle:top-1/2 group-aria-expanded/toggle:-translate-y-1/2
+            block w-6 h-0.5
+            bg-slate-900
+            origin-center
+            group-aria-expanded/toggle:top-1/2
+            group-aria-expanded/toggle:-translate-y-1/2
             group-aria-expanded/toggle:rotate-45
+            transition-all duration-300
           "
         ></span>
         <span
           class="
             absolute top-2.5 left-0
-            block w-6 h-0.5 bg-slate-900 origin-center transition-all duration-300
-            group-aria-expanded/toggle:top-1/2 group-aria-expanded/toggle:-translate-y-1/2
+            block w-6 h-0.5
+            bg-slate-900
+            origin-center
+            group-aria-expanded/toggle:top-1/2
+            group-aria-expanded/toggle:-translate-y-1/2
             group-aria-expanded/toggle:opacity-0
+            transition-all duration-300
           "
         ></span>
         <span
           class="
             absolute top-5 left-0
-            block w-6 h-0.5 bg-slate-900 origin-center transition-all duration-300
-            group-aria-expanded/toggle:top-1/2 group-aria-expanded/toggle:-translate-y-1/2
+            block w-6 h-0.5
+            bg-slate-900
+            origin-center
+            group-aria-expanded/toggle:top-1/2
+            group-aria-expanded/toggle:-translate-y-1/2
             group-aria-expanded/toggle:-rotate-45
+            transition-all duration-300
           "
         ></span>
       </span>
@@ -109,24 +150,83 @@
         id="app-sidebar"
         data-sidebar-target="sidebar"
         class="
-          fixed inset-y-0 right-0 z-40 translate-x-full
-          flex flex-col w-64 min-h-0 bg-white border-l border-slate-200 shadow-xl
-          transition-transform duration-300
+          fixed inset-y-0 right-0
+          z-40 xl:z-auto
+          flex flex-col
+          xl:shrink-0
+          w-64 xl:w-56
+          min-h-0
+          bg-white
+          border-l xl:border-l-0
+          xl:border-r
+          border-slate-200
+          shadow-xl xl:shadow-none
+          translate-x-full xl:translate-x-0
           max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
-          xl:static xl:z-auto xl:translate-x-0 xl:shrink-0 xl:border-l-0 xl:border-r xl:shadow-none
+          transition-transform duration-300
+          xl:static
         "
         aria-hidden="true"
       >
-        <div class="flex items-center h-14 shrink-0 pl-4 pr-16 border-b border-slate-200 xl:hidden">
-          <span class="text-sm font-semibold text-slate-900">{{ 'layout.menu'|trans }}</span>
+        <div
+          class="
+            flex items-center shrink-0
+            h-14
+            pl-4 pr-16
+            border-b border-slate-200
+            xl:hidden
+          "
+        >
+          <span class="text-sm">
+            {{ 'layout.menu'|trans }}
+          </span>
         </div>
 
-        <nav class="flex-1 min-h-0 overflow-y-auto px-2 py-4 xl:pt-3">
+        <nav class="flex-1 overflow-y-auto min-h-0">
           {% block sidebar %}{% endblock %}
         </nav>
+
+        <div class="shrink-0 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <form
+            method="post"
+            action="{{ logout_path() }}"
+          >
+            <input
+              type="hidden"
+              name="_csrf_token"
+              value="{{ csrf_token('logout') }}"
+            >
+            <button
+              type="submit"
+              class="
+                inline-flex items-center gap-2
+                w-full min-h-11
+                pl-4
+                hover:bg-slate-100
+                text-sm
+                text-slate-700 hover:text-slate-900
+                focus:outline-none
+                focus:ring-2 focus:ring-inset focus:ring-slate-700
+                transition
+              "
+              aria-label="{{ 'layout.logout'|trans }}"
+            >
+              {{ ux_icon(
+                'lucide:log-out',
+                { class: 'size-4 shrink-0' },
+              ) }}
+              <span>{{ 'layout.logout'|trans }}</span>
+            </button>
+          </form>
+        </div>
       </aside>
 
-      <main class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+      <main
+        class="
+          flex flex-col flex-1 overflow-hidden
+          min-w-0 min-h-0
+        "
+      >
         {% block main %}{% endblock %}
       </main>
     </div>
@@ -136,9 +236,12 @@
       data-action="click->sidebar#close"
       class="
         fixed inset-0 z-30
-        bg-slate-900/50 opacity-0 transition-opacity duration-300 pointer-events-none
+        bg-slate-900/50
+        opacity-0
+        pointer-events-none
         max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
         max-xl:group-data-[sidebar-open-value=true]/sidebar:pointer-events-auto
+        transition-opacity duration-300
         xl:hidden
       "
     ></div>
