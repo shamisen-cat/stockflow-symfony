@@ -1,0 +1,129 @@
+{#
+  Dev user list table body rows.
+
+  Required variables (include from parent):
+  - users
+#}
+
+{% for user in users %}
+  <tr class="hover:bg-slate-100">
+    <td class="px-4 py-2.5">
+      <code
+        title="{{ user.id.toRfc4122() }}"
+        class="block font-mono text-xs"
+      >
+        {{ user.id.toRfc4122()|slice(0, 8) }}…
+      </code>
+    </td>
+
+    <td class="px-4 py-2.5">
+      <span
+        title="{{ user.email }}"
+        class="
+          block truncate font-mono text-xs
+
+          {% if user.isDeleted %}
+            line-through
+          {% endif %}
+        "
+      >
+        {{ user.email }}
+      </span>
+    </td>
+
+    <td
+      class="
+        px-4 py-2.5
+        font-mono text-xs whitespace-nowrap
+      "
+    >
+      <time datetime="{{ user.createdAt|date('c') }}">
+        {{ user.createdAt|date('Y-m-d H:i:s') }}
+      </time>
+    </td>
+
+    <td
+      class="
+        px-4 py-2.5
+        font-mono text-xs whitespace-nowrap
+      "
+    >
+      <time datetime="{{ user.updatedAt|date('c') }}">
+        {{ user.updatedAt|date('Y-m-d H:i:s') }}
+      </time>
+    </td>
+
+    <td class="px-4 py-1">
+      {% if not user.isDeleted %}
+        <form
+          method="post"
+          action="{{ path(
+            'app_dev_users_delete',
+            { id: user.id.toRfc4122() },
+          ) }}"
+        >
+          <input
+            type="hidden"
+            name="_token"
+            value="{{ csrf_token('dev_user_delete') }}"
+          >
+          <button
+            type="submit"
+            class="
+              inline-flex items-center
+              px-2 py-1
+              bg-white hover:bg-red-100
+              border border-red-200
+              rounded-lg
+              text-xs text-red-700 whitespace-nowrap
+              focus:outline-none
+              focus:ring-2 focus:ring-red-700
+              transition
+            "
+          >
+            {{ 'dev.user.button.delete'|trans }}
+          </button>
+        </form>
+      {% else %}
+        <form
+          method="post"
+          action="{{ path(
+            'app_dev_users_purge',
+            { id: user.id.toRfc4122() },
+          ) }}"
+        >
+          <input
+            type="hidden"
+            name="_token"
+            value="{{ csrf_token('dev_user_purge') }}"
+          >
+          <button
+            type="submit"
+            class="
+              inline-flex items-center
+              px-2 py-1
+              bg-red-100 hover:bg-red-200
+              border border-red-300
+              rounded-lg
+              text-xs text-red-700 whitespace-nowrap
+              focus:outline-none
+              focus:ring-2 focus:ring-red-700
+              transition
+            "
+          >
+            {{ 'dev.user.button.purge'|trans }}
+          </button>
+        </form>
+      {% endif %}
+    </td>
+  </tr>
+{% else %}
+  <tr>
+    <td
+      colspan="5"
+      class="px-4 py-12 text-center"
+    >
+      {{ 'dev.user.empty'|trans }}
+    </td>
+  </tr>
+{% endfor %}

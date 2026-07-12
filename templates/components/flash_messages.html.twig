@@ -4,23 +4,24 @@
   Expected flash labels: success, error, warning.
   Unknown labels fall back to info styling.
 #}
+
 {% set flashStyles = {
   success: {
-    box: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+    box: 'bg-emerald-50 border-emerald-200 text-emerald-700',
     icon: 'lucide:circle-check',
   },
   error: {
-    box: 'bg-red-50 border-red-200 text-red-800',
+    box: 'bg-red-50 border-red-200 text-red-700',
     icon: 'lucide:circle-alert',
   },
   warning: {
-    box: 'bg-amber-50 border-amber-200 text-amber-800',
+    box: 'bg-amber-50 border-amber-200 text-amber-700',
     icon: 'lucide:triangle-alert',
   },
 } %}
 
 {% set flashStyleFallback = {
-  box: 'bg-slate-50 border-slate-200 text-slate-800',
+  box: 'bg-slate-50 border-slate-200 text-slate-700',
   icon: 'lucide:circle-alert',
 } %}
 
@@ -36,7 +37,7 @@
   <div
     data-controller="flash-messages"
     data-action="flash-message:dismissed->flash-messages#onDismissed"
-    class="shrink-0 space-y-2 px-4 pb-2 sm:px-6"
+    class="shrink-0 space-y-2 px-2 pb-2"
     aria-live="polite"
   >
     {% for label, messages in flashes %}
@@ -53,22 +54,39 @@
             focusin->flash-message#pauseTimer
             focusout->flash-message#resumeTimer
           "
-          class="flex items-center gap-2 px-4 py-3 border rounded-lg text-sm {{ flashStyle.box }}"
+          class="
+            flex items-center gap-1
+            px-4 py-2
+            border rounded-lg
+            text-sm
+            {{ flashStyle.box }}
+          "
         >
-          {{ ux_icon(flashStyle.icon, { class: 'size-4 shrink-0' }) }}
+          {{ ux_icon(
+            flashStyle.icon,
+            { class: 'size-4 shrink-0' },
+          ) }}
           <span class="flex-1 min-w-0">{{ message }}</span>
+
           <button
             type="button"
             data-action="click->flash-message#dismiss"
             class="
-              inline-flex items-center justify-center w-7 h-7 shrink-0 rounded-md opacity-70
+              inline-flex items-center justify-center shrink-0
+              w-7 h-7
+              hover:bg-black/5
+              rounded-md
+              opacity-70 hover:opacity-100
+              focus:outline-none
+              focus:ring-2 focus:ring-current
               transition
-              hover:bg-black/5 hover:opacity-100
-              focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-1
             "
             aria-label="{{ 'flash.close'|trans }}"
           >
-            {{ ux_icon('lucide:x', { class: 'size-4 shrink-0' }) }}
+            {{ ux_icon(
+              'lucide:x',
+              { class: 'size-4 shrink-0' },
+            ) }}
           </button>
         </div>
       {% endfor %}

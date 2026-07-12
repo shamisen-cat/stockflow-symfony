@@ -169,8 +169,8 @@ final class LoginFormAuthenticatorTest extends TestCase
         ?UserProviderInterface $userProvider = null,
     ): LoginFormAuthenticator {
         return new LoginFormAuthenticator(
-            $urlGenerator ?? self::createStub(UrlGeneratorInterface::class),
             $userProvider ?? self::createStub(UserProviderInterface::class),
+            $urlGenerator ?? self::createStub(UrlGeneratorInterface::class),
         );
     }
 

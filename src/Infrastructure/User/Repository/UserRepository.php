@@ -67,6 +67,17 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
         return $this->createQueryBuilder('u');
     }
 
+    public function applyEmailFilter(
+        QueryBuilder $queryBuilder,
+        string $email,
+    ): void {
+        $escapedEmail = addcslashes($email, '%_\\');
+
+        $queryBuilder
+            ->andWhere('u.email.value LIKE :email')
+            ->setParameter('email', '%'.$escapedEmail.'%');
+    }
+
     public function applyListSort(
         QueryBuilder $queryBuilder,
         SortCriteria $sort,

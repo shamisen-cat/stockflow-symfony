@@ -17,7 +17,7 @@ final class InvalidPlainPasswordExceptionTest extends TestCase
     public function fromValidationResultThrowsWhenResultIsValid(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot create InvalidPlainPasswordException from VALID result.');
+        $this->expectExceptionMessageIs('Cannot create InvalidPlainPasswordException from VALID result.');
 
         InvalidPlainPasswordException::fromValidationResult(PlainPasswordValidationResult::VALID);
     }

@@ -1,0 +1,101 @@
+{#
+  Dev user list email search form.
+
+  Required variables (include from parent):
+  - searchEmail: current email query value
+#}
+
+<form
+  method="get"
+  action="{{ path('app_dev_users') }}"
+  class="px-4 pb-4"
+>
+  <div class="flex flex-row items-end gap-4">
+    <div class="w-full min-w-0 max-w-md">
+      <label
+        for="search-email"
+        class="
+          block mb-1
+          text-sm text-slate-700
+        "
+      >
+        {{ 'dev.user.search.email_label'|trans }}
+      </label>
+      <input
+        id="search-email"
+        type="search"
+        name="email"
+        value="{{ searchEmail }}"
+        placeholder="{{ 'dev.user.search.email_placeholder'|trans }}"
+        autocomplete="off"
+        class="
+          block w-full
+          px-4 py-2
+          bg-white
+          border
+          border-slate-200 focus:border-slate-900
+          rounded-lg shadow-sm
+          text-sm
+          placeholder:text-slate-400
+          focus:outline-none
+          focus:ring-2 focus:ring-slate-700
+        "
+      >
+    </div>
+
+    <div class="flex gap-3 shrink-0">
+      <button
+        type="submit"
+        class="
+          inline-flex items-center justify-center
+          px-4 py-2
+          bg-blue-600 hover:bg-blue-700
+          rounded-lg shadow-sm
+          text-sm text-white
+          focus:outline-none
+          focus:ring-2 focus:ring-slate-700
+          transition
+        "
+      >
+        {{ 'dev.user.search.submit'|trans }}
+      </button>
+
+      {% if searchEmail %}
+        <a
+          href="{{ path('app_dev_users') }}"
+          class="
+            inline-flex items-center justify-center
+            px-4 py-2
+            bg-white hover:bg-slate-100
+            border border-slate-200
+            rounded-lg shadow-sm
+            text-sm text-slate-700
+            focus:outline-none
+            focus:ring-2 focus:ring-slate-700
+            transition
+          "
+        >
+          {{ 'dev.user.search.clear'|trans }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <details class="group mt-3">
+    <summary
+      class="
+        inline-flex items-center gap-1
+        rounded
+        text-sm
+        text-slate-700 hover:text-slate-900
+        cursor-pointer select-none
+        focus:outline-none
+        focus:ring-2 focus:ring-offset-2 focus:ring-slate-700
+        transition
+      "
+    >
+      {{ 'dev.user.search.details'|trans }}
+    </summary>
+    <div class="pt-3"></div>
+  </details>
+</form>

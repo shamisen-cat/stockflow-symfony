@@ -4,23 +4,45 @@
 
 {% block content %}
   <section
-    class="w-full max-w-md overflow-hidden bg-white border border-slate-200 rounded-xl shadow-sm"
+    class="
+      overflow-hidden
+      w-full max-w-md
+      border border-slate-200
+      rounded-xl shadow-sm
+    "
   >
-    <header class="flex items-center h-12 pl-4 border-b border-slate-200">
-      <div class="inline-flex items-center gap-1 text-lg font-semibold text-slate-900">
-        {{ ux_icon('lucide:package', { class: 'size-5 shrink-0' }) }}
-        <span>Stockflow</span>
+    <header
+      class="
+        flex items-center
+        h-10 pl-4
+        border-b border-slate-200
+      "
+    >
+      <div
+        class="
+          inline-flex items-center gap-1
+          text-lg
+        "
+      >
+        {{ ux_icon(
+          'lucide:package',
+          { class: 'size-5 shrink-0' },
+        ) }}
+        <span>stockflow</span>
       </div>
     </header>
 
-    <div class="px-6 pt-3 pb-6 sm:px-8 sm:pb-8">
+    <div class="px-6 pt-2 pb-8">
       <h1
         class="
           flex items-center justify-center gap-2 mb-6
-          text-2xl font-bold tracking-tight text-slate-900
+          text-2xl
         "
       >
-        {{ ux_icon('lucide:log-in', { class: 'size-6 shrink-0' }) }}
+        {{ ux_icon(
+          'lucide:log-in',
+          { class: 'size-6 shrink-0' },
+        ) }}
         <span>{{ 'login.heading'|trans }}</span>
       </h1>
 
@@ -28,29 +50,41 @@
         <div
           role="alert"
           class="
-            flex items-center gap-2 mb-6 px-4 py-3
-            bg-red-50 border border-red-200 rounded-lg text-sm text-red-800
+            flex items-center gap-1 mb-4
+            px-4 py-2
+            bg-red-50
+            border border-red-200
+            rounded-lg
+            text-sm text-red-700
           "
         >
-          {{ ux_icon('lucide:circle-alert', { class: 'size-4 shrink-0' }) }}
+          {{ ux_icon(
+            'lucide:circle-alert',
+            { class: 'size-4 shrink-0' },
+          ) }}
           <span class="min-w-0">
             {{ error.messageKey|trans(error.messageData, 'security') }}
           </span>
         </div>
       {% endif %}
 
-      <form method="post" action="{{ path('app_login') }}">
-        <p class="text-sm text-slate-600">
+      <form
+        method="post"
+        action="{{ path('app_login') }}"
+      >
+        <p class="mb-4 text-sm text-slate-700">
           {{ 'login.instructions'|trans }}
         </p>
 
-        <div class="mt-5">
+        <div class="mb-4">
           <label
             for="username"
-            class="flex items-center gap-1.5 pl-1 text-sm font-medium text-slate-700"
+            class="
+              block mb-1
+              text-sm text-slate-700
+            "
           >
-            {{ ux_icon('lucide:mail', { class: 'size-4 shrink-0' }) }}
-            <span>{{ 'login.label.email'|trans }}</span>
+            {{ 'login.label.email'|trans }}
           </label>
           <input
             type="email"
@@ -62,21 +96,29 @@
             required
             autofocus
             class="
-              block w-full mt-1.5 px-3 py-2.5
-              border border-slate-300 rounded-lg shadow-sm text-sm text-slate-900 transition
+              block w-full
+              px-2 py-2
+              border
+              border-slate-200 focus:border-slate-900
+              rounded-lg shadow-sm
+              text-sm
               placeholder:text-slate-400
-              focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900
+              focus:outline-none
+              focus:ring-2 focus:ring-slate-700
+              transition
             "
           >
         </div>
 
-        <div class="mt-5">
+        <div class="mb-8">
           <label
             for="password"
-            class="flex items-center gap-1.5 pl-1 text-sm font-medium text-slate-700"
+            class="
+              block mb-1
+              text-sm text-slate-700
+            "
           >
-            {{ ux_icon('lucide:lock', { class: 'size-4 shrink-0' }) }}
-            <span>{{ 'login.label.password'|trans }}</span>
+            {{ 'login.label.password'|trans }}
           </label>
           <input
             type="password"
@@ -85,22 +127,36 @@
             autocomplete="current-password"
             required
             class="
-              block w-full mt-1.5 px-3 py-2.5
-              border border-slate-300 rounded-lg shadow-sm text-sm text-slate-900 transition
+              block w-full
+              px-2 py-2
+              border
+              border-slate-200 focus:border-slate-900
+              rounded-lg shadow-sm
+              text-sm
               placeholder:text-slate-400
-              focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900
+              focus:outline-none
+              focus:ring-2 focus:ring-slate-700
+              transition
             "
           >
         </div>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <input
+          type="hidden"
+          name="_csrf_token"
+          value="{{ csrf_token('authenticate') }}"
+        >
         <button
           type="submit"
           class="
-            inline-flex items-center justify-center w-full mt-8 px-4 py-2.5
-            bg-slate-900 rounded-lg shadow-sm text-sm font-semibold text-white transition
-            hover:bg-slate-800
-            focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2
+            inline-flex items-center justify-center w-full
+            px-4 py-2
+            bg-blue-600 hover:bg-blue-700
+            rounded-lg shadow-sm
+            text-sm text-white
+            focus:outline-none
+            focus:ring-2 focus:ring-slate-700
+            transition
           "
         >
           {{ 'login.button.submit'|trans }}

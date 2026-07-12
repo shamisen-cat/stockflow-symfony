@@ -1,0 +1,86 @@
+{#
+  Dev user list page header (heading and actions).
+
+  No variables required from parent.
+  CSV export preserves the current request query string via app.request.
+#}
+
+<div class="flex flex-row items-center justify-between">
+  <h1
+    class="
+      inline-flex items-center shrink-0 gap-2
+      text-2xl
+    "
+  >
+    {{ ux_icon(
+      'lucide:users',
+      { class: 'size-6 shrink-0' },
+    ) }}
+    <span>{{ 'dev.user.heading'|trans }}</span>
+  </h1>
+
+  <div
+    class="
+      flex justify-end gap-3
+      w-full w-auto
+    "
+  >
+    <a
+      href="{{ path(
+        'app_dev_users_export',
+        app.request.query.all,
+      ) }}"
+      title="{{ 'dev.user.button.csv_download'|trans }}"
+      class="
+        inline-flex items-center justify-center
+        w-11 h-11
+        bg-white hover:bg-slate-100
+        border border-slate-200
+        rounded-lg shadow-sm
+        text-slate-700 hover:text-slate-900
+        focus:outline-none
+        focus:ring-2 focus:ring-slate-700
+        transition
+      "
+      aria-label="{{ 'dev.user.button.csv_download'|trans }}"
+    >
+      {{ ux_icon(
+        'lucide:download',
+        { class: 'size-5 shrink-0' },
+      ) }}
+    </a>
+
+    <form
+      method="post"
+      action="{{ path('app_dev_users_create') }}"
+      class="inline-flex"
+    >
+      <input
+        type="hidden"
+        name="_token"
+        value="{{ csrf_token('dev_user_create') }}"
+      >
+      <button
+        type="submit"
+        title="{{ 'dev.user.button.create'|trans }}"
+        class="
+          inline-flex items-center justify-center
+          w-11 h-11
+          bg-white hover:bg-slate-100
+          border border-slate-200
+          rounded-lg shadow-sm
+          text-slate-700 hover:text-slate-900
+          focus:outline-none
+          focus:ring-2 focus:ring-slate-700
+          transition
+        "
+        aria-label="{{ 'dev.user.button.create'|trans }}"
+      >
+        {{ ux_icon(
+          'lucide:plus',
+          { class: 'size-5 shrink-0' },
+        ) }}
+      </button>
+    </form>
+  </div>
+</div>

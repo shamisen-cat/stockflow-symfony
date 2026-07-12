@@ -1,0 +1,39 @@
+{#
+  Dev user list table header cells.
+
+  Required variables (include from parent):
+  - currentKey: active sort key (must match sortMap in UserDevController)
+  - currentDirection: 'asc' or 'desc'
+#}
+
+{% set sortColumns = [
+  {
+    label: 'dev.user.column.id'|trans,
+    sortKey: 'id',
+  },
+  {
+    label: 'dev.user.column.email'|trans,
+    sortKey: 'email',
+  },
+  {
+    label: 'dev.user.column.created_at'|trans,
+    sortKey: 'created_at',
+  },
+  {
+    label: 'dev.user.column.updated_at'|trans,
+    sortKey: 'updated_at',
+  },
+] %}
+
+{% for column in sortColumns %}
+  {% include 'components/sortable_th.html.twig' with {
+    label: column.label,
+    sortKey: column.sortKey,
+    currentKey: currentKey,
+    currentDirection: currentDirection,
+  } only %}
+{% endfor %}
+
+{% include 'components/static_th.html.twig' with {
+  label: 'dev.user.column.actions'|trans,
+} only %}

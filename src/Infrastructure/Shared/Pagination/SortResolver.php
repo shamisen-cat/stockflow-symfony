@@ -4,36 +4,33 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Shared\Pagination;
 
-use Symfony\Component\HttpFoundation\Request;
-
 final class SortResolver
 {
     /**
-     * @param array<string, string> $map URL key => DQL field
+     * @param array<string, string> $sortMap URL key => DQL field
      */
     public function resolve(
-        Request $request,
-        array $map,
+        array $sortMap,
+        string $sortKey,
+        string $direction,
         string $defaultKey,
         SortDirection $defaultDirection = SortDirection::Asc,
     ): SortCriteria {
-        if (!isset($map[$defaultKey])) {
+        if (!isset($sortMap[$defaultKey])) {
             throw new \InvalidArgumentException(
                 sprintf('Default sort key "%s" is not defined in sort map.', $defaultKey),
             );
         }
 
-        $key = $request->query->getString('sort', $defaultKey);
+        $key = $sortKey !== '' ? $sortKey : $defaultKey;
 
-        if (!isset($map[$key])) {
+        if (!isset($sortMap[$key])) {
             $key = $defaultKey;
         }
 
-        $field = $map[$key];
+        $field = $sortMap[$key];
+        $resolvedDirection = SortDirection::tryFrom(strtolower($direction)) ?? $defaultDirection;
 
-        $directionParam = strtolower($request->query->getString('direction'));
-        $direction = SortDirection::tryFrom($directionParam) ?? $defaultDirection;
-
-        return new SortCriteria($key, $field, $direction->value);
+        return new SortCriteria($key, $field, $resolvedDirection->value);
     }
 }
