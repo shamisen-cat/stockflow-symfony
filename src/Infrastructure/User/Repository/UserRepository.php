@@ -6,10 +6,10 @@ namespace App\Infrastructure\User\Repository;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Infrastructure\Shared\Pagination\PaginationFactory;
 use App\Infrastructure\Shared\Pagination\SortCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Uid\Uuid;
 
@@ -18,10 +18,8 @@ use Symfony\Component\Uid\Uuid;
  */
 final class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    public function __construct(
-        ManagerRegistry $registry,
-        private PaginationFactory $paginationFactory,
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, User::class);
     }
 
@@ -87,10 +85,10 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
         $queryBuilder->orderBy($sort->field, $sort->direction);
 
         /** @var Pagerfanta<User> $pager */
-        $pager = $this->paginationFactory->create(
-            queryBuilder: $queryBuilder,
-            page: $page,
-            maxPerPage: $maxPerPage,
+        $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            adapter: new QueryAdapter($queryBuilder),
+            currentPage: max(1, $page),
+            maxPerPage: max(1, $maxPerPage),
         );
 
         return $pager;
