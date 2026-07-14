@@ -8,8 +8,9 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Infrastructure\Shared\Pagination\SortCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -62,26 +63,34 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
         return $user;
     }
 
-    public function createListQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('u');
-    }
-
-    public function applyEmailFilter(
-        QueryBuilder $queryBuilder,
+    /**
+     * @return Pagerfanta<User>
+     */
+    public function paginate(
         string $email,
-    ): void {
-        $escapedEmail = addcslashes($email, '%_\\');
-
-        $queryBuilder
-            ->andWhere('u.email.value LIKE :email')
-            ->setParameter('email', '%'.$escapedEmail.'%');
-    }
-
-    public function applyListSort(
-        QueryBuilder $queryBuilder,
         SortCriteria $sort,
-    ): void {
+        int $page,
+        int $maxPerPage,
+    ): Pagerfanta {
+        $queryBuilder = $this->createQueryBuilder('u');
+
+        if ($email !== '') {
+            $escapedEmail = addcslashes($email, '%_\\');
+
+            $queryBuilder
+                ->andWhere('u.email.value LIKE :email')
+                ->setParameter('email', '%'.$escapedEmail.'%');
+        }
+
         $queryBuilder->orderBy($sort->field, $sort->direction);
+
+        /** @var Pagerfanta<User> $pager */
+        $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
+            adapter: new QueryAdapter($queryBuilder),
+            currentPage: max(1, $page),
+            maxPerPage: max(1, $maxPerPage),
+        );
+
+        return $pager;
     }
 }

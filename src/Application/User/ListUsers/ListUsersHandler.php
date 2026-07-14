@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\User\ListUsers;
 
-use App\Domain\User\Entity\User;
-use App\Infrastructure\Shared\Pagination\PaginationFactory;
 use App\Infrastructure\Shared\Pagination\SortDirection;
 use App\Infrastructure\Shared\Pagination\SortResolver;
 use App\Infrastructure\User\Repository\UserRepository;
-use Pagerfanta\Pagerfanta;
 
 final readonly class ListUsersHandler
 {
     public function __construct(
         private UserRepository $userRepository,
         private SortResolver $sortResolver,
-        private PaginationFactory $paginationFactory,
     ) {
     }
 
@@ -32,12 +28,6 @@ final readonly class ListUsersHandler
             $defaultKey => 'u.updatedAt',
         ];
 
-        $queryBuilder = $this->userRepository->createListQueryBuilder();
-
-        if ($input->email !== '') {
-            $this->userRepository->applyEmailFilter($queryBuilder, $input->email);
-        }
-
         $sort = $this->sortResolver->resolve(
             sortMap: $sortMap,
             sortKey: $input->sortKey,
@@ -46,11 +36,9 @@ final readonly class ListUsersHandler
             defaultDirection: $defaultDirection,
         );
 
-        $this->userRepository->applyListSort($queryBuilder, $sort);
-
-        /** @var Pagerfanta<User> $pager */
-        $pager = $this->paginationFactory->create(
-            queryBuilder: $queryBuilder,
+        $pager = $this->userRepository->paginate(
+            email: $input->email,
+            sort: $sort,
             page: $input->page,
             maxPerPage: $input->perPage,
         );
