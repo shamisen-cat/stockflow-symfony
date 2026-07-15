@@ -84,6 +84,10 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
 
         $queryBuilder->orderBy($sort->field, $sort->direction);
 
+        if ($sort->field !== 'u.id') {
+            $queryBuilder->addOrderBy('u.id', 'ASC');
+        }
+
         /** @var Pagerfanta<User> $pager */
         $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: new QueryAdapter($queryBuilder),
