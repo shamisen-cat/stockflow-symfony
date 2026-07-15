@@ -30,7 +30,6 @@
         'app_dev_users_export',
         app.request.query.all,
       ) }}"
-      title="{{ 'dev.user.button.csv_download'|trans }}"
       class="
         inline-flex items-center justify-center
         w-11 h-11
@@ -42,6 +41,7 @@
         focus:ring-2 focus:ring-slate-700
         transition
       "
+      title="{{ 'dev.user.button.csv_download'|trans }}"
       aria-label="{{ 'dev.user.button.csv_download'|trans }}"
     >
       {{ ux_icon(
@@ -62,7 +62,6 @@
       >
       <button
         type="submit"
-        title="{{ 'dev.user.button.create'|trans }}"
         class="
           inline-flex items-center justify-center
           w-11 h-11
@@ -74,6 +73,7 @@
           focus:ring-2 focus:ring-slate-700
           transition
         "
+        title="{{ 'dev.user.button.create'|trans }}"
         aria-label="{{ 'dev.user.button.create'|trans }}"
       >
         {{ ux_icon(
