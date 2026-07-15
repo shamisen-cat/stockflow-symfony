@@ -8,27 +8,41 @@
 {% for user in users %}
   <tr class="hover:bg-slate-100">
     <td class="px-4 py-2.5">
-      <code
-        title="{{ user.id.toRfc4122() }}"
-        class="block font-mono text-xs"
-      >
-        {{ user.id.toRfc4122()|slice(0, 8) }}…
-      </code>
+      <div class="flex items-center gap-1">
+        <code
+          class="font-mono text-xs"
+          title="{{ user.id.toRfc4122() }}"
+        >
+          {{ user.id.toRfc4122()|slice(0, 8) }}…
+        </code>
+        {% include 'components/clipboard_button.html.twig' with {
+          text: user.id.toRfc4122(),
+          copyLabel: 'dev.user.button.copy_id'|trans,
+          copiedLabel: 'dev.user.button.copied_id'|trans,
+        } only %}
+      </div>
     </td>
 
     <td class="px-4 py-2.5">
-      <span
-        title="{{ user.email }}"
-        class="
-          block truncate font-mono text-xs
+      <div class="flex items-center gap-1 min-w-0">
+        <span
+          class="
+            truncate font-mono text-xs
 
-          {% if user.isDeleted %}
-            line-through
-          {% endif %}
-        "
-      >
-        {{ user.email }}
-      </span>
+            {% if user.isDeleted %}
+              line-through
+            {% endif %}
+          "
+          title="{{ user.email }}"
+        >
+          {{ user.email }}
+        </span>
+        {% include 'components/clipboard_button.html.twig' with {
+          text: user.email,
+          copyLabel: 'dev.user.button.copy_email'|trans,
+          copiedLabel: 'dev.user.button.copied_email'|trans,
+        } only %}
+      </div>
     </td>
 
     <td
