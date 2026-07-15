@@ -1,65 +1,54 @@
 # Using AI Coding Agents with Dev Containers
 
-This project ships with a [Dev Container](https://containers.dev/) configuration that enables
-AI coding agents to run autonomously inside a sandboxed environment with network-level restrictions.
+This project ships with a [Dev Container](https://containers.dev/) that includes a
+**network sandbox by default**. Outbound traffic is restricted to an allowlist so AI
+coding agents (and other tools) cannot reach arbitrary internet hosts.
 
-[Claude Code](https://claude.ai/claude-code) is pre-installed and configured out of the box,
-but the setup also works with other agents such as [OpenAI Codex CLI](https://github.com/openai/codex)
-and [opencode](https://opencode.ai).
+No AI coding agent is pre-installed. Install the agent you want (for example
+[OpenCode](https://opencode.ai), [Claude Code](https://claude.ai/claude-code), or
+[OpenAI Codex CLI](https://github.com/openai/codex)) inside the container, and add any
+extra API domains to the firewall allowlist if needed.
 
-This setup is ideal for letting AI agents work on your Symfony project autonomously
-while ensuring they cannot reach arbitrary internet hosts.
+Project context for agents that understand `AGENTS.md` is provided via
+`.devcontainer/AGENTS.md` (symlinked to `/app/AGENTS.md` on container create).
 
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or any Docker-compatible runtime)
-- [Visual Studio Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+- A [Dev Container–compatible editor](https://containers.dev/supporting#editors)
+  (Visual Studio Code, Cursor, PhpStorm, …)
 - A valid subscription or API key for the agent you want to use
 
 ## Quick Start
 
-1. Open the project in Visual Studio Code.
+1. Open the project in your editor.
 2. When prompted "Reopen in Container", click **Reopen in Container**.
    Alternatively, open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and run
    **Dev Containers: Reopen in Container**.
 3. Wait for the container to build and start. On each container start, the
-   `postStartCommand` configures the firewall automatically.
-4. Claude Code is pre-installed and configured in YOLO mode — open the Claude Code
-   panel in Visual Studio Code or run `claude` in the integrated terminal to start using it.
+   `postStartCommand` runs `.devcontainer/init-firewall.sh` automatically.
+4. Install and run your preferred agent inside the container
+   (see [Installing an agent](#installing-an-agent)).
 
-That's it. Claude Code will run without permission prompts, and the firewall ensures
-network access is restricted to only the necessary services.
-
-## What Is YOLO Mode?
-
-YOLO mode (also known as "bypass permissions" mode) allows Claude Code to execute
-commands, edit files, and perform actions without asking for confirmation at each step.
-This dramatically speeds up autonomous coding workflows.
-
-The Dev Container configuration enables this via two Visual Studio Code settings:
-
-```json
-{
-  "claudeCode.allowDangerouslySkipPermissions": true,
-  "claudeCode.initialPermissionMode": "bypassPermissions"
-}
-```
+The firewall is active regardless of which agent you use.
 
 ## Network Sandboxing
 
-Running an AI agent with full autonomy requires guardrails. The Dev Container includes
-a firewall script (`.devcontainer/init-firewall.sh`) that locks down outbound network
-access using `iptables` and `ipset`. Only the following destinations are allowed:
+The Dev Container includes a firewall script (`.devcontainer/init-firewall.sh`) that
+locks down outbound network access using `iptables` and `ipset`. Only the following
+destinations are allowed by default:
 
-| Destination                                       | Reason                          |
-| ------------------------------------------------- | ------------------------------- |
-| GitHub (`github.com`, `api.github.com`)           | Git operations, API access      |
-| Anthropic (`anthropic.com`)                       | Claude Code backend             |
-| npm registry (`registry.npmjs.org`)               | Node.js dependencies            |
-| Packagist (`packagist.org`, `repo.packagist.org`) | PHP/Composer dependencies       |
-| Visual Studio Code Marketplace                    | Extension downloads             |
-| Sentry, Statsig                                   | Telemetry (used by Claude Code) |
-| Host gateway IP                                   | Communication with Docker host  |
+| Destination                                                   | Reason                                    |
+| ------------------------------------------------------------- | ----------------------------------------- |
+| Packagist (`packagist.org`)                                   | PHP/Composer dependencies                 |
+| npm registry (`registry.npmjs.org`)                           | Node.js dependencies                      |
+| jsDelivr (`cdn.jsdelivr.net`, `data.jsdelivr.com`)            | AssetMapper / web assets                  |
+| Iconify (`iconify.design`)                                    | Symfony UX Icons                          |
+| GitHub (`github.com`, `release-assets.githubusercontent.com`) | Git operations, release assets            |
+| Visual Studio / Cursor Marketplace and update endpoints       | Extension downloads and updates           |
+| Anthropic (`anthropic.com`)                                   | Claude Code backend (when you install it) |
+| Sentry, Statsig                                               | Telemetry used by some agents             |
+| Host gateway IP                                               | Communication with Docker host            |
 
 All other outbound connections are **rejected**. The firewall uses
 [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) to dynamically resolve
@@ -71,30 +60,51 @@ so you can access your Symfony app from the host browser.
 
 ## Customizing the Allowed Domains
 
-To allow additional domains (e.g., a private registry or API), edit
-`.devcontainer/init-firewall.sh` and add them to the `ipset` line in the
-dnsmasq configuration section:
+To allow additional domains (e.g., a private registry or an agent API), edit
+`.devcontainer/init-firewall.sh` and add an `ipset=` line in the dnsmasq
+configuration block:
 
 ```bash
-# Domains are '/'-separated, ending with the ipset name
-ipset=/github.com/anthropic.com/your-domain.com/allowed-domains
+ipset=/your-domain.com/allowed-domains
 ```
 
 Then rebuild the Dev Container for the changes to take effect.
 
-## Using Other Agents
+## Installing an Agent
 
-The Dev Container's network sandbox and project context (`.devcontainer/AGENTS.md`) work
-with any AI coding agent. You just need to install the agent and whitelist the domains it
-needs to reach.
+The network sandbox and `.devcontainer/AGENTS.md` work with any AI coding agent.
+Install the agent, whitelist any domains it needs, and run it inside the container.
+
+### OpenCode
+
+1. Add your model provider’s API domain to the firewall allowlist if it is not
+   already covered (see [Customizing the Allowed Domains](#customizing-the-allowed-domains)).
+2. Install and run OpenCode inside the container:
+
+   ```console
+   curl -fsSL https://opencode.ai/install | bash
+   opencode
+   ```
+
+### Claude Code
+
+1. `anthropic.com` is already on the allowlist. Install Claude Code via a
+   [Dev Container feature](https://github.com/anthropics/devcontainer-features)
+   and/or VS Code / Cursor extension in `.devcontainer/devcontainer.json`, then
+   rebuild the container.
+2. Or install and run from the terminal after the container is up (follow
+   Anthropic’s current install instructions).
+
+If you want Claude Code to skip permission prompts (sometimes called YOLO /
+bypass-permissions mode), configure that in the editor or pass the appropriate
+CLI flag yourself. This project does **not** enable that mode by default.
 
 ### OpenAI Codex CLI
 
-1. Add the OpenAI API domain to the firewall allowlist in `.devcontainer/init-firewall.sh`
-   (see [Customizing the Allowed Domains](#customizing-the-allowed-domains)):
+1. Add the OpenAI API domain to the firewall allowlist:
 
    ```bash
-   ipset=/.../api.openai.com/allowed-domains
+   ipset=/api.openai.com/allowed-domains
    ```
 
 2. Install and run Codex inside the container:
@@ -102,29 +112,15 @@ needs to reach.
    ```console
    npm install -g @openai/codex
    export OPENAI_API_KEY=your-key
-   codex --full-auto
-   ```
-
-### opencode
-
-1. Add the required API domain to the firewall allowlist (e.g., `api.anthropic.com`,
-   `api.openai.com`, or your provider's domain).
-
-2. Install and run opencode inside the container:
-
-   ```console
-   curl -fsSL https://opencode.ai/install | bash
-   opencode
+   codex
    ```
 
 ### Other Agents
 
-For any other agent, follow the same pattern:
-
-1. Add the agent's API domain(s) to the firewall allowlist.
+1. Add the agent’s API domain(s) to the firewall allowlist.
 2. Install the agent inside the container.
-3. Run it — the `.devcontainer/AGENTS.md` file provides project context
-   to agents that support the convention.
+3. Run it — `.devcontainer/AGENTS.md` provides project context for agents that
+   support the convention.
 
 ## Using Without Visual Studio Code
 
@@ -134,18 +130,7 @@ The Dev Container configuration works with any tool that supports the
 - [Dev Container CLI](https://github.com/devcontainers/cli) (`devcontainer up`)
 - [GitHub Codespaces](https://github.com/features/codespaces)
 - JetBrains IDEs (with the Dev Containers plugin)
-
-To use Claude Code from the terminal inside the container:
-
-```console
-claude
-```
-
-To start directly in YOLO mode from the CLI:
-
-```console
-claude --dangerously-skip-permissions
-```
+- [Cursor](https://cursor.com/)
 
 ## Troubleshooting
 
