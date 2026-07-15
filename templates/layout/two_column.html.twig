@@ -10,10 +10,6 @@
 
 {% block body %}
   <body
-    data-controller="sidebar"
-    data-sidebar-open-value="false"
-    data-sidebar-open-label-value="{{ 'layout.sidebar.open'|trans }}"
-    data-sidebar-close-label-value="{{ 'layout.sidebar.close'|trans }}"
     class="
       group/sidebar
       flex flex-col
@@ -21,6 +17,10 @@
       bg-slate-50
       text-slate-900 antialiased
     "
+    data-controller="sidebar"
+    data-sidebar-open-value="false"
+    data-sidebar-open-label-value="{{ 'layout.sidebar.open'|trans }}"
+    data-sidebar-close-label-value="{{ 'layout.sidebar.close'|trans }}"
   >
     <header
       class="
@@ -57,7 +57,7 @@
             'lucide:package',
             { class: 'size-5 shrink-0' },
           ) }}
-          <span>stockflow</span>
+          <span>Stockflow</span>
         </a>
 
         <div class="flex items-center shrink-0">
@@ -87,8 +87,6 @@
 
     <button
       type="button"
-      data-sidebar-target="toggle"
-      data-action="click->sidebar#toggle"
       class="
         group/toggle
         fixed top-1.5 right-4 z-50
@@ -101,9 +99,11 @@
         transition
         xl:hidden
       "
+      data-sidebar-target="toggle"
+      data-action="click->sidebar#toggle"
       aria-controls="app-sidebar"
-      aria-expanded="false"
       aria-label="{{ 'layout.sidebar.open'|trans }}"
+      aria-expanded="false"
     >
       <span class="relative block w-6 h-6">
         <span
@@ -148,7 +148,6 @@
     <div class="flex flex-1 min-w-0 min-h-0">
       <aside
         id="app-sidebar"
-        data-sidebar-target="sidebar"
         class="
           fixed inset-y-0 right-0
           z-40 xl:z-auto
@@ -166,6 +165,7 @@
           transition-transform duration-300
           xl:static
         "
+        data-sidebar-target="sidebar"
         aria-hidden="true"
       >
         <div
@@ -232,8 +232,6 @@
     </div>
 
     <div
-      data-sidebar-target="overlay"
-      data-action="click->sidebar#close"
       class="
         fixed inset-0 z-30
         bg-slate-900/50
@@ -244,6 +242,8 @@
         transition-opacity duration-300
         xl:hidden
       "
+      data-sidebar-target="overlay"
+      data-action="click->sidebar#close"
     ></div>
   </body>
 {% endblock %}

@@ -37,6 +37,10 @@ dev.user.button.csv_download: Download CSV
 dev.user.button.create: Create user
 dev.user.button.delete: Delete
 dev.user.button.purge: Delete permanently
+dev.user.button.copy_id: Copy ID
+dev.user.button.copied_id: Copied ID
+dev.user.button.copy_email: Copy email address
+dev.user.button.copied_email: Copied email address
 dev.user.empty: 'No users yet. Use Create user to add one.'
 dev.user.flash.created: 'User created (%email%).'
 dev.user.flash.deleted: 'User deleted (%email%).'
