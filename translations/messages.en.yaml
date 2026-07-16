@@ -17,27 +17,32 @@ login.label.email: Email address
 login.label.password: Password
 login.button.submit: Log in
 
-dev.user.title: 'Stockflow | User management - DevTools'
 dev.user.sidebar: User management
 dev.organization.sidebar: Organization management
 dev.membership.sidebar: Membership management
 dev.sidebar.create: Create
+
+dev.user.title: 'Stockflow | User management - DevTools'
 dev.user.heading: User management
+
 dev.user.search.email_label: Email address
 dev.user.search.email_placeholder: Search by part of an email address
 dev.user.search.submit: Search
 dev.user.search.clear: Clear
 dev.user.search.details: Advanced search
+
+dev.user.column.status: Status
 dev.user.column.id: ID
 dev.user.column.email: Email address
 dev.user.column.created_at: Created at
 dev.user.column.updated_at: Updated at
-dev.user.column.status: Status
 dev.user.column.actions: Actions
-dev.user.status.active: Active
-dev.user.status.disabled: Disabled
-dev.user.status.suspended: Suspended
+
 dev.user.status.deleted: Deleted
+dev.user.status.suspended: Suspended
+dev.user.status.disabled: Disabled
+dev.user.status.active: Active
+
 dev.user.button.csv_download: Download CSV
 dev.user.button.create: Create user
 dev.user.button.delete: Delete
@@ -46,7 +51,9 @@ dev.user.button.copy_id: Copy ID
 dev.user.button.copied_id: Copied ID
 dev.user.button.copy_email: Copy email address
 dev.user.button.copied_email: Copied email address
+
 dev.user.empty: 'No users yet. Use Create user to add one.'
+
 dev.user.flash.created: 'User created (%email%).'
 dev.user.flash.deleted: 'User deleted (%email%).'
 dev.user.flash.purged: 'User permanently deleted (%email%).'

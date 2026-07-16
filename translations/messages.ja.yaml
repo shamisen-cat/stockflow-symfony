@@ -17,27 +17,32 @@ login.label.email: メールアドレス
 login.label.password: パスワード
 login.button.submit: ログイン
 
-dev.user.title: 'Stockflow | ユーザー管理 - DevTools'
 dev.user.sidebar: ユーザー管理
 dev.organization.sidebar: 組織管理
 dev.membership.sidebar: 所属管理
 dev.sidebar.create: 新規作成
+
+dev.user.title: 'Stockflow | ユーザー管理 - DevTools'
 dev.user.heading: ユーザー管理
+
 dev.user.search.email_label: メールアドレス
 dev.user.search.email_placeholder: example@example.com の一部で検索
 dev.user.search.submit: 検索
 dev.user.search.clear: クリア
 dev.user.search.details: 詳細検索
+
+dev.user.column.status: 状態
 dev.user.column.id: ID
 dev.user.column.email: メールアドレス
 dev.user.column.created_at: 作成日時
 dev.user.column.updated_at: 更新日時
-dev.user.column.status: 状態
 dev.user.column.actions: 操作
-dev.user.status.active: 有効
-dev.user.status.disabled: 無効
-dev.user.status.suspended: 停止
+
 dev.user.status.deleted: 削除
+dev.user.status.suspended: 停止
+dev.user.status.disabled: 無効
+dev.user.status.active: 有効
+
 dev.user.button.csv_download: CSVダウンロード
 dev.user.button.create: 新規作成
 dev.user.button.delete: 論理削除
@@ -46,7 +51,9 @@ dev.user.button.copy_id: IDをコピー
 dev.user.button.copied_id: IDをコピーしました
 dev.user.button.copy_email: メールアドレスをコピー
 dev.user.button.copied_email: メールアドレスをコピーしました
+
 dev.user.empty: 登録されているユーザーがありません。「新規作成」からユーザーを追加できます。
+
 dev.user.flash.created: 'ユーザーを作成しました（%email%）。'
 dev.user.flash.deleted: 'ユーザーを論理削除しました（%email%）。'
 dev.user.flash.purged: 'ユーザーを物理削除しました（%email%）。'
