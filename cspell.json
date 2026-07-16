@@ -3,6 +3,7 @@
     "language": "en",
     "words": [
         "autofocus",
+        "disablable",
         "frankenphp",
         "focusin",
         "focusout",
@@ -15,9 +16,11 @@
         "phpstan",
         "phpunit",
         "stockflow",
+        "suspendable",
         "symfony",
         "tabindex",
-        "timestampable"
+        "timestampable",
+        "unsuspended"
     ],
     "overrides": [
         {

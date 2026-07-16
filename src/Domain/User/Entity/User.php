@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\Shared\Entity\DisablableTrait;
 use App\Domain\Shared\Entity\SoftDeletableTrait;
+use App\Domain\Shared\Entity\SuspendableTrait;
 use App\Domain\Shared\Entity\TimestampableTrait;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
+use App\Domain\User\Exception\UserAlreadyDisabledException;
+use App\Domain\User\Exception\UserAlreadySuspendedException;
+use App\Domain\User\Exception\UserNotDisabledException;
+use App\Domain\User\Exception\UserNotSuspendedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
 use App\Infrastructure\User\Repository\UserRepository;
@@ -26,6 +32,8 @@ use Symfony\Component\Uid\Uuid;
 )]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use DisablableTrait;
+    use SuspendableTrait;
     use SoftDeletableTrait;
     use TimestampableTrait;
 
@@ -73,6 +81,62 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         $this->markCreatedAt($createdAt);
+    }
+
+    public function disable(\DateTimeImmutable $disabledAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        if ($this->isDisabled()) {
+            throw UserAlreadyDisabledException::forUser($this->id);
+        }
+
+        $this->markDisabledAt($disabledAt);
+        $this->markUpdatedAt($disabledAt);
+    }
+
+    public function enable(\DateTimeImmutable $enabledAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        if (!$this->isDisabled()) {
+            throw UserNotDisabledException::forUser($this->id);
+        }
+
+        $this->clearDisabledAt();
+        $this->markUpdatedAt($enabledAt);
+    }
+
+    public function suspend(\DateTimeImmutable $suspendedAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        if ($this->isSuspended()) {
+            throw UserAlreadySuspendedException::forUser($this->id);
+        }
+
+        $this->markSuspendedAt($suspendedAt);
+        $this->markUpdatedAt($suspendedAt);
+    }
+
+    public function unsuspend(\DateTimeImmutable $unsuspendedAt): void
+    {
+        if ($this->isDeleted()) {
+            throw UserAlreadyDeletedException::forUser($this->id);
+        }
+
+        if (!$this->isSuspended()) {
+            throw UserNotSuspendedException::forUser($this->id);
+        }
+
+        $this->clearSuspendedAt();
+        $this->markUpdatedAt($unsuspendedAt);
     }
 
     public function softDelete(\DateTimeImmutable $deletedAt): void
