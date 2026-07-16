@@ -32,7 +32,12 @@ dev.user.column.id: ID
 dev.user.column.email: Email address
 dev.user.column.created_at: Created at
 dev.user.column.updated_at: Updated at
+dev.user.column.status: Status
 dev.user.column.actions: Actions
+dev.user.status.active: Active
+dev.user.status.disabled: Disabled
+dev.user.status.suspended: Suspended
+dev.user.status.deleted: Deleted
 dev.user.button.csv_download: Download CSV
 dev.user.button.create: Create user
 dev.user.button.delete: Delete

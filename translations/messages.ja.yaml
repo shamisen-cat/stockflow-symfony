@@ -32,7 +32,12 @@ dev.user.column.id: ID
 dev.user.column.email: メールアドレス
 dev.user.column.created_at: 作成日時
 dev.user.column.updated_at: 更新日時
+dev.user.column.status: 状態
 dev.user.column.actions: 操作
+dev.user.status.active: 有効
+dev.user.status.disabled: 無効
+dev.user.status.suspended: 停止
+dev.user.status.deleted: 削除
 dev.user.button.csv_download: CSVダウンロード
 dev.user.button.create: 新規作成
 dev.user.button.delete: 論理削除
