@@ -6,6 +6,10 @@ namespace App\Tests\Domain\User\Entity;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
+use App\Domain\User\Exception\UserAlreadyDisabledException;
+use App\Domain\User\Exception\UserAlreadySuspendedException;
+use App\Domain\User\Exception\UserNotDisabledException;
+use App\Domain\User\Exception\UserNotSuspendedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
 use App\Tests\Support\MockClockTestTrait;
@@ -43,11 +47,221 @@ final class UserTest extends TestCase
         self::assertSame($id, $user->id);
         self::assertTrue($email->equals($user->email));
         self::assertTrue($password->equals($user->password));
+
         self::assertSame($createdAt, $user->createdAt);
         self::assertSame($createdAt, $user->updatedAt);
 
+        self::assertNull($user->disabledAt);
+        self::assertNull($user->suspendedAt);
         self::assertNull($user->deletedAt);
+
+        self::assertFalse($user->isDisabled());
+        self::assertFalse($user->isSuspended());
         self::assertFalse($user->isDeleted());
+    }
+
+    #[Test]
+    public function disableSetsDisabledAt(): void
+    {
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $disabledAt = $this->nowAfter();
+
+        $user->disable($disabledAt);
+
+        self::assertSame($disabledAt, $user->disabledAt);
+        self::assertSame($disabledAt, $user->updatedAt);
+        self::assertTrue($user->isDisabled());
+    }
+
+    #[Test]
+    public function disableThrowsWhenUserIsDeleted(): void
+    {
+        $message = 'User is already deleted.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
+        $user->softDelete($deletedAt);
+
+        try {
+            $user->disable($this->nowAfter());
+            self::fail('Expected UserAlreadyDeletedException was not thrown.');
+        } catch (UserAlreadyDeletedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+        }
+    }
+
+    #[Test]
+    public function disableThrowsWhenUserIsAlreadyDisabled(): void
+    {
+        $message = 'User is already disabled.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $disabledAt = $this->nowAfter();
+        $user->disable($disabledAt);
+
+        try {
+            $user->disable($this->nowAfter());
+            self::fail('Expected UserAlreadyDisabledException was not thrown.');
+        } catch (UserAlreadyDisabledException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+            self::assertSame($disabledAt, $user->disabledAt);
+            self::assertSame($disabledAt, $user->updatedAt);
+        }
+    }
+
+    #[Test]
+    public function enableClearsDisabledAt(): void
+    {
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $user->disable($this->nowAfter());
+        $enabledAt = $this->nowAfter();
+
+        $user->enable($enabledAt);
+
+        self::assertNull($user->disabledAt);
+        self::assertFalse($user->isDisabled());
+        self::assertSame($enabledAt, $user->updatedAt);
+    }
+
+    #[Test]
+    public function enableThrowsWhenUserIsDeleted(): void
+    {
+        $message = 'User is already deleted.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
+        $user->softDelete($deletedAt);
+
+        try {
+            $user->enable($this->nowAfter());
+            self::fail('Expected UserAlreadyDeletedException was not thrown.');
+        } catch (UserAlreadyDeletedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+        }
+    }
+
+    #[Test]
+    public function enableThrowsWhenUserIsNotDisabled(): void
+    {
+        $message = 'User is not disabled.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $createdAt = $user->updatedAt;
+
+        try {
+            $user->enable($this->nowAfter());
+            self::fail('Expected UserNotDisabledException was not thrown.');
+        } catch (UserNotDisabledException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+            self::assertNull($user->disabledAt);
+            self::assertSame($createdAt, $user->updatedAt);
+        }
+    }
+
+    #[Test]
+    public function suspendSetsSuspendedAt(): void
+    {
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $suspendedAt = $this->nowAfter();
+
+        $user->suspend($suspendedAt);
+
+        self::assertSame($suspendedAt, $user->suspendedAt);
+        self::assertSame($suspendedAt, $user->updatedAt);
+        self::assertTrue($user->isSuspended());
+    }
+
+    #[Test]
+    public function suspendThrowsWhenUserIsDeleted(): void
+    {
+        $message = 'User is already deleted.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
+        $user->softDelete($deletedAt);
+
+        try {
+            $user->suspend($this->nowAfter());
+            self::fail('Expected UserAlreadyDeletedException was not thrown.');
+        } catch (UserAlreadyDeletedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+        }
+    }
+
+    #[Test]
+    public function suspendThrowsWhenUserIsAlreadySuspended(): void
+    {
+        $message = 'User is already suspended.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $suspendedAt = $this->nowAfter();
+        $user->suspend($suspendedAt);
+
+        try {
+            $user->suspend($this->nowAfter());
+            self::fail('Expected UserAlreadySuspendedException was not thrown.');
+        } catch (UserAlreadySuspendedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+            self::assertSame($suspendedAt, $user->suspendedAt);
+            self::assertSame($suspendedAt, $user->updatedAt);
+        }
+    }
+
+    #[Test]
+    public function unsuspendClearsSuspendedAt(): void
+    {
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $user->suspend($this->nowAfter());
+        $unsuspendedAt = $this->nowAfter();
+
+        $user->unsuspend($unsuspendedAt);
+
+        self::assertNull($user->suspendedAt);
+        self::assertFalse($user->isSuspended());
+        self::assertSame($unsuspendedAt, $user->updatedAt);
+    }
+
+    #[Test]
+    public function unsuspendThrowsWhenUserIsDeleted(): void
+    {
+        $message = 'User is already deleted.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $deletedAt = $this->nowAfter();
+        $user->softDelete($deletedAt);
+
+        try {
+            $user->unsuspend($this->nowAfter());
+            self::fail('Expected UserAlreadyDeletedException was not thrown.');
+        } catch (UserAlreadyDeletedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+        }
+    }
+
+    #[Test]
+    public function unsuspendThrowsWhenUserIsNotSuspended(): void
+    {
+        $message = 'User is not suspended.';
+
+        $user = UserTestFactory::create(createdAt: $this->now());
+        $createdAt = $user->updatedAt;
+
+        try {
+            $user->unsuspend($this->nowAfter());
+            self::fail('Expected UserNotSuspendedException was not thrown.');
+        } catch (UserNotSuspendedException $e) {
+            self::assertSame($message, $e->getMessage());
+            self::assertSame($user->id, $e->userId);
+            self::assertNull($user->suspendedAt);
+            self::assertSame($createdAt, $user->updatedAt);
+        }
     }
 
     #[Test]
@@ -72,10 +286,8 @@ final class UserTest extends TestCase
         $deletedAt = $this->nowAfter();
         $user->softDelete($deletedAt);
 
-        $secondDeletedAt = $this->nowAfter();
-
         try {
-            $user->softDelete($secondDeletedAt);
+            $user->softDelete($this->nowAfter());
             self::fail('Expected UserAlreadyDeletedException was not thrown.');
         } catch (UserAlreadyDeletedException $e) {
             self::assertSame($message, $e->getMessage());

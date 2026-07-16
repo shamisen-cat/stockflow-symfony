@@ -35,7 +35,7 @@
 
 {% if flashes is not empty %}
   <div
-    class="shrink-0 space-y-2 px-2 pb-2"
+    class="shrink-0 space-y-2 px-4 pb-2"
     data-controller="flash-messages"
     data-action="flash-message:dismissed->flash-messages#onDismissed"
     aria-live="polite"
@@ -48,7 +48,7 @@
           role="alert"
           class="
             flex items-center gap-1
-            px-4 py-2
+            pl-4 pr-2 py-2
             border rounded-lg
             text-sm
             {{ flashStyle.box }}
