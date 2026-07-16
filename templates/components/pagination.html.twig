@@ -8,7 +8,7 @@
 {% if pagination.nbResults > 0 %}
   {% set buttonEnabled = '
     inline-flex items-center justify-center
-    w-9 h-7
+    w-10 h-8
     bg-white hover:bg-slate-100
     border border-slate-200
     rounded-lg shadow-sm
@@ -20,7 +20,7 @@
 
   {% set buttonDisabled = '
     inline-flex items-center justify-center
-    w-9 h-7
+    w-10 h-8
     bg-white
     border border-slate-200
     rounded-lg
@@ -43,7 +43,7 @@
       }) }}
     </p>
 
-    <div class="flex gap-3 ml-auto">
+    <div class="flex gap-4 ml-auto">
       {% if pagination.hasPreviousPage %}
         <a
           href="{{ path(
