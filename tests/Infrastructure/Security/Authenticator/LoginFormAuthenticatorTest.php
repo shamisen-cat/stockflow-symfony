@@ -158,7 +158,10 @@ final class LoginFormAuthenticatorTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame($loginUrl, $response->getTargetUrl());
         self::assertSame($username, $session->get(SecurityRequestAttributes::LAST_USERNAME));
-        self::assertSame($exception, $session->get(SecurityRequestAttributes::AUTHENTICATION_ERROR));
+        self::assertSame(
+            $exception,
+            $session->get(SecurityRequestAttributes::AUTHENTICATION_ERROR),
+        );
     }
 
     /**

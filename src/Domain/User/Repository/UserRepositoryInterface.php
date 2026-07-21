@@ -12,4 +12,6 @@ interface UserRepositoryInterface
     public function findActiveById(Uuid $id): ?User;
 
     public function findActiveByEmail(string $email): ?User;
+
+    public function add(User $user): void;
 }

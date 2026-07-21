@@ -11,8 +11,8 @@ use App\Infrastructure\User\Repository\UserRepository;
 final readonly class ListUsersHandler
 {
     public function __construct(
-        private UserRepository $userRepository,
         private SortResolver $sortResolver,
+        private UserRepository $userRepository,
     ) {
     }
 

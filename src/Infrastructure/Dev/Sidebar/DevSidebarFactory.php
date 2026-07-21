@@ -41,7 +41,7 @@ final class DevSidebarFactory
                 new DevSidebarLink(
                     id: DevSidebarLinkId::UserCreate,
                     label: 'dev.sidebar.create',
-                    href: '#',
+                    href: $this->urlGenerator->generate('app_dev_users_new'),
                     icon: 'lucide:plus',
                 ),
             ],

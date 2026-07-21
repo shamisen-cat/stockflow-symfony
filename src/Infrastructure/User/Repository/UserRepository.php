@@ -64,6 +64,15 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
     }
 
     /**
+     * @see UserRepositoryInterface
+     */
+    #[\Override]
+    public function add(User $user): void
+    {
+        $this->getEntityManager()->persist($user);
+    }
+
+    /**
      * @return Pagerfanta<User>
      */
     public function paginate(

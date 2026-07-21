@@ -27,7 +27,10 @@ final class InvalidHashedPasswordException extends InvalidValueObjectException
     public static function tooLong(): self
     {
         return new self(
-            message: sprintf('Hashed password must not exceed %d characters.', HashedPassword::MAX_LENGTH),
+            message: sprintf(
+                'Hashed password must not exceed %d characters.',
+                HashedPassword::MAX_LENGTH,
+            ),
             algorithm: null,
         );
     }

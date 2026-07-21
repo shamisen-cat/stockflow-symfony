@@ -1,0 +1,42 @@
+{#
+  Dev user new page header (heading and back link).
+
+  No variables required from parent.
+  Action control height matches list header (h-11) so the heading aligns.
+#}
+
+<div class="flex flex-row items-center justify-between">
+  <h1
+    class="
+      inline-flex items-center shrink-0 gap-2
+      text-2xl
+    "
+  >
+    {{ ux_icon(
+      'lucide:users',
+      { class: 'size-6 shrink-0' },
+    ) }}
+    <span>{{ 'dev.user.create.heading'|trans }}</span>
+  </h1>
+
+  <a
+    href="{{ path('app_dev_users') }}"
+    class="
+      inline-flex items-center justify-center gap-2
+      h-11 px-4
+      bg-white hover:bg-slate-100
+      border border-slate-200
+      rounded-lg shadow-sm
+      text-sm text-slate-700 hover:text-slate-900
+      focus:outline-none
+      focus:ring-2 focus:ring-slate-700
+      transition
+    "
+  >
+    {{ ux_icon(
+      'lucide:arrow-left',
+      { class: 'size-4 shrink-0' },
+    ) }}
+    <span>{{ 'dev.user.create.cancel'|trans }}</span>
+  </a>
+</div>

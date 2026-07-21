@@ -15,6 +15,7 @@ login.heading: Log in
 login.instructions: Enter your email address and password.
 login.label.email: Email address
 login.label.password: Password
+login.placeholder.email: mail@example.com
 login.button.submit: Log in
 
 dev.user.sidebar: User management
@@ -25,8 +26,17 @@ dev.sidebar.create: Create
 dev.user.title: 'Stockflow | User management - DevTools'
 dev.user.heading: User management
 
+dev.user.create.title: 'Stockflow | User management / Create - DevTools'
+dev.user.create.heading: 'User management / Create'
+dev.user.create.email_label: Email address
+dev.user.create.email_placeholder: mail@example.com
+dev.user.create.password_label: Password
+dev.user.create.password_placeholder: At least 12 characters
+dev.user.create.submit: Create
+dev.user.create.cancel: Back to list
+
 dev.user.search.email_label: Email address
-dev.user.search.email_placeholder: Search by part of an email address
+dev.user.search.email_placeholder: Search by part of mail@example.com
 dev.user.search.submit: Search
 dev.user.search.clear: Clear
 dev.user.search.details: Advanced search
@@ -52,8 +62,16 @@ dev.user.button.copied_id: Copied ID
 dev.user.button.copy_email: Copy email address
 dev.user.button.copied_email: Copied email address
 
-dev.user.empty: 'No users yet. Use Create user to add one.'
+dev.user.empty: No users match your filters.
 
 dev.user.flash.created: 'User created (%email%).'
 dev.user.flash.deleted: 'User deleted (%email%).'
 dev.user.flash.purged: 'User permanently deleted (%email%).'
+
+dev.user.error.email.empty: Please enter an email address.
+dev.user.error.email.too_long: Email address is too long.
+dev.user.error.email.invalid_format: Email address format is invalid.
+dev.user.error.password.empty: Please enter a password.
+dev.user.error.password.too_short: Password is too short.
+dev.user.error.password.too_long: Password is too long.
+dev.user.error.user.already_exists: This email address is already registered.
