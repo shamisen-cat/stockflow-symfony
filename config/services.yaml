@@ -33,6 +33,9 @@ services:
     App\Domain\User\Repository\UserRepositoryInterface:
         alias: App\Infrastructure\User\Repository\UserRepository
 
+    App\Application\Shared\Transaction\TransactionManagerInterface:
+        alias: App\Infrastructure\Shared\Transaction\DoctrineTransactionManager
+
     Symfony\Component\Clock\ClockInterface:
         class: Symfony\Component\Clock\NativeClock
         arguments: ['%app.timezone%']

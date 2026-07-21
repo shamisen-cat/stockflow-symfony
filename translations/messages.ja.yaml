@@ -15,6 +15,7 @@ login.heading: ログイン
 login.instructions: メールアドレスとパスワードを入力してください。
 login.label.email: メールアドレス
 login.label.password: パスワード
+login.placeholder.email: mail@example.com
 login.button.submit: ログイン
 
 dev.user.sidebar: ユーザー管理
@@ -25,8 +26,17 @@ dev.sidebar.create: 新規作成
 dev.user.title: 'Stockflow | ユーザー管理 - DevTools'
 dev.user.heading: ユーザー管理
 
+dev.user.create.title: 'Stockflow | ユーザー管理 / 新規作成 - DevTools'
+dev.user.create.heading: ユーザー管理 / 新規作成
+dev.user.create.email_label: メールアドレス
+dev.user.create.email_placeholder: mail@example.com
+dev.user.create.password_label: パスワード
+dev.user.create.password_placeholder: 12文字以上
+dev.user.create.submit: 作成
+dev.user.create.cancel: 一覧に戻る
+
 dev.user.search.email_label: メールアドレス
-dev.user.search.email_placeholder: example@example.com の一部で検索
+dev.user.search.email_placeholder: mail@example.com の一部で検索
 dev.user.search.submit: 検索
 dev.user.search.clear: クリア
 dev.user.search.details: 詳細検索
@@ -52,8 +62,16 @@ dev.user.button.copied_id: IDをコピーしました
 dev.user.button.copy_email: メールアドレスをコピー
 dev.user.button.copied_email: メールアドレスをコピーしました
 
-dev.user.empty: 登録されているユーザーがありません。「新規作成」からユーザーを追加できます。
+dev.user.empty: 検索条件に一致するユーザーがありません。
 
 dev.user.flash.created: 'ユーザーを作成しました（%email%）。'
 dev.user.flash.deleted: 'ユーザーを論理削除しました（%email%）。'
 dev.user.flash.purged: 'ユーザーを物理削除しました（%email%）。'
+
+dev.user.error.email.empty: メールアドレスを入力してください。
+dev.user.error.email.too_long: メールアドレスが長すぎます。
+dev.user.error.email.invalid_format: メールアドレスの形式が正しくありません。
+dev.user.error.password.empty: パスワードを入力してください。
+dev.user.error.password.too_short: パスワードが短すぎます。
+dev.user.error.password.too_long: パスワードが長すぎます。
+dev.user.error.user.already_exists: このメールアドレスは既に登録されています。

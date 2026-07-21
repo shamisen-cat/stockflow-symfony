@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Dev\Controller;
 
+use App\Application\Shared\Transaction\TransactionManagerInterface;
+use App\Application\User\CreateUser\CreateUserHandler;
+use App\Application\User\CreateUser\CreateUserInput;
 use App\Application\User\ListUsers\ListUsersHandler;
 use App\Application\User\ListUsers\ListUsersInput;
 use App\Domain\User\Entity\User;
-use App\Domain\User\Password\PlainPasswordHasherInterface;
-use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Password\PlainPassword;
+use App\Domain\User\Exception\InvalidEmailException;
+use App\Domain\User\Exception\InvalidPlainPasswordException;
+use App\Domain\User\Exception\UserAlreadyExistsException;
+use App\Domain\User\ValueObject\Email\EmailValidationResult;
+use App\Domain\User\ValueObject\Password\PlainPasswordValidationResult;
 use App\Infrastructure\Dev\Sidebar\DevSidebarFactory;
 use App\Infrastructure\Dev\Sidebar\DevSidebarLinkId;
 use App\Infrastructure\Security\Voter\DevToolsVoter;
@@ -150,46 +155,85 @@ final class UserDevController extends AbstractController
     }
 
     #[Route(
-        path: '/dev/users/create',
-        name: 'app_dev_users_create',
-        methods: ['POST'],
+        path: '/dev/users/new',
+        name: 'app_dev_users_new',
+        methods: ['GET', 'POST'],
     )]
-    public function create(
+    public function new(
         Request $request,
-        PlainPasswordHasherInterface $plainPasswordHasher,
+        CreateUserHandler $createUserHandler,
+        DevSidebarFactory $devSidebarFactory,
+        TransactionManagerInterface $transactionManager,
         ClockInterface $clock,
-        EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
     ): Response {
-        $token = $request->request->getString('_token');
+        $email = '';
+        $error = null;
 
-        if (!$this->isCsrfTokenValid('dev_user_create', $token)) {
-            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        if ($request->isMethod('POST')) {
+            $token = $request->request->getString('_token');
+
+            if (!$this->isCsrfTokenValid('dev_user_create', $token)) {
+                throw $this->createAccessDeniedException('Invalid CSRF token.');
+            }
+
+            $email = $request->request->getString('email');
+            $password = $request->request->getString('password');
+
+            try {
+                $createUserInput = CreateUserInput::create(
+                    email: $email,
+                    password: $password,
+                    createdAt: $clock->now(),
+                );
+
+                $transactionManager->transactional(
+                    static fn (): Uuid => $createUserHandler->handle($createUserInput),
+                );
+
+                $flashMessage = $translator->trans('dev.user.flash.created', [
+                    '%email%' => $createUserInput->email->value(),
+                ]);
+
+                $this->addFlash('success', $flashMessage);
+
+                return $this->redirectToRoute('app_dev_users');
+            } catch (InvalidEmailException $exception) {
+                $error = match ($exception->result) {
+                    EmailValidationResult::EMPTY => 'email.empty',
+                    EmailValidationResult::TOO_LONG => 'email.too_long',
+                    EmailValidationResult::INVALID_FORMAT => 'email.invalid_format',
+                    EmailValidationResult::VALID => throw new \LogicException(
+                        'InvalidEmailException must not have VALID result.',
+                    ),
+                };
+            } catch (InvalidPlainPasswordException $exception) {
+                $error = match ($exception->result) {
+                    PlainPasswordValidationResult::EMPTY => 'password.empty',
+                    PlainPasswordValidationResult::TOO_SHORT => 'password.too_short',
+                    PlainPasswordValidationResult::TOO_LONG => 'password.too_long',
+                    PlainPasswordValidationResult::VALID => throw new \LogicException(
+                        'InvalidPlainPasswordException must not have VALID result.',
+                    ),
+                };
+            } catch (UserAlreadyExistsException) {
+                $error = 'user.already_exists';
+            }
+
+            $flashMessage = $translator->trans('dev.user.error.'.$error);
+
+            $this->addFlash('error', $flashMessage);
         }
 
-        $email = sprintf('%s@example.com', bin2hex(random_bytes(16)));
-        $password = 'stockflow-dev';
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
-        $plainPassword = PlainPassword::of($password);
-        $hashedPassword = $plainPasswordHasher->hash($plainPassword);
-
-        $user = User::create(
-            id: Uuid::v7(),
-            email: Email::of($email),
-            password: $hashedPassword,
-            createdAt: $clock->now(),
-        );
-
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        $flashMessage = $translator->trans('dev.user.flash.created', [
-            '%email%' => $email,
+        return $this->render('dev/user/new.html.twig', [
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentLink' => $sidebar->currentLink,
+            'email' => $email,
+            'error' => $error,
         ]);
-
-        $this->addFlash('success', $flashMessage);
-
-        return $this->redirectToRoute('app_dev_users');
     }
 
     #[Route(
@@ -198,11 +242,11 @@ final class UserDevController extends AbstractController
         methods: ['POST'],
     )]
     public function delete(
-        Request $request,
         string $id,
+        Request $request,
         UserRepository $userRepository,
-        ClockInterface $clock,
         EntityManagerInterface $entityManager,
+        ClockInterface $clock,
         TranslatorInterface $translator,
     ): Response {
         $token = $request->request->getString('_token');
@@ -237,8 +281,8 @@ final class UserDevController extends AbstractController
         methods: ['POST'],
     )]
     public function purge(
-        Request $request,
         string $id,
+        Request $request,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,

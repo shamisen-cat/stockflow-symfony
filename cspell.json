@@ -12,6 +12,7 @@
         "mouseenter",
         "mouseleave",
         "nowrap",
+        "novalidate",
         "pagerfanta",
         "phpstan",
         "phpunit",

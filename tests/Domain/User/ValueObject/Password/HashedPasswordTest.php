@@ -38,7 +38,10 @@ final class HashedPasswordTest extends TestCase
     #[Test]
     public function ofThrowsWhenHashIsTooLong(): void
     {
-        $message = sprintf('Hashed password must not exceed %d characters.', HashedPassword::MAX_LENGTH);
+        $message = sprintf(
+            'Hashed password must not exceed %d characters.',
+            HashedPassword::MAX_LENGTH,
+        );
 
         try {
             HashedPassword::of(str_repeat('a', HashedPassword::MAX_LENGTH + 1));
