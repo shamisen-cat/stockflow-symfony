@@ -21,11 +21,11 @@
         "symfony/framework-bundle": "7.4.*",
         "symfony/runtime": "7.4.*",
         "symfony/security-bundle": "7.4.*",
-        "symfony/stimulus-bundle": "^3.1",
+        "symfony/stimulus-bundle": "^3.3",
         "symfony/translation": "7.4.*",
         "symfony/twig-bundle": "7.4.*",
         "symfony/uid": "7.4.*",
-        "symfony/ux-icons": "^3.1",
+        "symfony/ux-icons": "^3.3",
         "symfony/yaml": "7.4.*",
         "symfonycasts/tailwind-bundle": "^0.12.0"
     },
@@ -84,14 +84,14 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.95.5",
+        "friendsofphp/php-cs-fixer": "^3.95.15",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.2.2",
-        "phpstan/phpstan-doctrine": "^2.0.27",
-        "phpstan/phpstan-phpunit": "^2.0.16",
-        "phpstan/phpstan-strict-rules": "^2.0.11",
-        "phpstan/phpstan-symfony": "^2.0.19",
-        "phpunit/phpunit": "^13.2.0",
+        "phpstan/phpstan": "^2.2.5",
+        "phpstan/phpstan-doctrine": "^2.0.28",
+        "phpstan/phpstan-phpunit": "^2.0.18",
+        "phpstan/phpstan-strict-rules": "^2.0.12",
+        "phpstan/phpstan-symfony": "^2.0.20",
+        "phpunit/phpunit": "^13.2.4",
         "symfony/browser-kit": "7.4.*",
         "symfony/css-selector": "7.4.*"
     }
