@@ -122,26 +122,75 @@
           >
             {{ 'login.label.password'|trans }}
           </label>
-          <input
-            type="password"
-            id="password"
-            name="_password"
-            autocomplete="current-password"
-            required
-            class="
-              block w-full
-              px-4 py-2
-              bg-white
-              border
-              border-slate-200 focus:border-slate-700
-              rounded-lg shadow-sm
-              text-sm
-              placeholder:text-slate-400
-              focus:outline-none
-              focus:ring-2 focus:ring-slate-700
-              transition
-            "
+          <div
+            class="flex items-stretch"
+            data-controller="password-visibility"
+            data-password-visibility-show-label-value="{{ 'login.password.show'|trans }}"
+            data-password-visibility-hide-label-value="{{ 'login.password.hide'|trans }}"
           >
+            <input
+              type="password"
+              id="password"
+              name="_password"
+              autocomplete="current-password"
+              required
+              class="
+                relative
+                z-0 focus:z-10
+                flex-1
+                px-4 min-w-0
+                py-2
+                bg-white
+                border
+                border-slate-200 focus:border-slate-700
+                rounded-l-lg shadow-sm
+                text-sm
+                placeholder:text-slate-400
+                focus:outline-none
+                focus:ring-2 focus:ring-slate-700
+                transition
+              "
+              data-password-visibility-target="input"
+            >
+            <button
+              type="button"
+              class="
+                group/toggle
+                relative
+                z-0 focus:z-10
+                inline-flex items-center justify-center -ml-px
+                w-10
+                bg-slate-100 hover:bg-slate-200
+                border
+                border-slate-200 focus:border-slate-700
+                rounded-r-lg shadow-sm
+                text-slate-500 hover:text-slate-700
+                select-none
+                focus:outline-none
+                focus:ring-2 focus:ring-slate-700
+                transition
+              "
+              title="{{ 'login.password.show'|trans }}"
+              data-password-visibility-target="toggle"
+              data-action="click->password-visibility#toggle"
+              aria-label="{{ 'login.password.show'|trans }}"
+              aria-controls="password"
+              aria-pressed="false"
+            >
+              <span class="group-aria-pressed/toggle:hidden">
+                {{ ux_icon(
+                  'lucide:eye',
+                  { class: 'size-4 shrink-0' },
+                ) }}
+              </span>
+              <span class="hidden group-aria-pressed/toggle:block">
+                {{ ux_icon(
+                  'lucide:eye-off',
+                  { class: 'size-4 shrink-0' },
+                ) }}
+              </span>
+            </button>
+          </div>
         </div>
 
         <input

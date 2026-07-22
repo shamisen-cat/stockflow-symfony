@@ -16,6 +16,8 @@ login.instructions: Enter your email address and password.
 login.label.email: Email address
 login.label.password: Password
 login.placeholder.email: mail@example.com
+login.password.show: Show password
+login.password.hide: Hide password
 login.button.submit: Log in
 
 dev.user.sidebar: User management
