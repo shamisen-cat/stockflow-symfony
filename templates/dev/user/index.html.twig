@@ -37,7 +37,7 @@
     {% endblock %}
 
     {% block list_body %}
-      {% embed 'components/list_table.html.twig' %}
+      {% embed 'components/list/list_table.html.twig' %}
         {% block table_head %}
           {% include 'dev/user/_table_head.html.twig' with {
             currentKey: currentKey,
@@ -54,7 +54,7 @@
     {% endblock %}
 
     {% block list_footer %}
-      {% include 'components/pagination.html.twig' with {
+      {% include 'components/list/pagination.html.twig' with {
         pagination: pagination,
       } only %}
     {% endblock %}

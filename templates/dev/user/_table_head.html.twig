@@ -6,7 +6,7 @@
   - currentDirection: 'asc' or 'desc'
 #}
 
-{% include 'components/static_th.html.twig' with {
+{% include 'components/list/static_th.html.twig' with {
   label: 'dev.user.column.status'|trans,
 } only %}
 
@@ -30,7 +30,7 @@
 ] %}
 
 {% for column in sortColumns %}
-  {% include 'components/sortable_th.html.twig' with {
+  {% include 'components/list/sortable_th.html.twig' with {
     label: column.label,
     sortKey: column.sortKey,
     currentKey: currentKey,
@@ -38,6 +38,6 @@
   } only %}
 {% endfor %}
 
-{% include 'components/static_th.html.twig' with {
+{% include 'components/list/static_th.html.twig' with {
   label: 'dev.user.column.actions'|trans,
 } only %}
