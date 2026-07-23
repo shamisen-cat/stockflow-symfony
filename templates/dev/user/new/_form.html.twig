@@ -1,0 +1,61 @@
+{#
+  Dev user new form.
+
+  Required variables (include from parent):
+  - email: string value for the email input
+  - error: string|null error code for field highlighting (e.g. email.invalid_format)
+#}
+
+{% set emailHasError = false %}
+{% set passwordHasError = false %}
+
+{% if error is not null %}
+  {% set emailHasError = error starts with 'email.' or error == 'user.already_exists' %}
+  {% set passwordHasError = error starts with 'password.' %}
+{% endif %}
+
+<form
+  method="post"
+  action="{{ path('app_dev_users_new') }}"
+  novalidate
+  class="w-full max-w-lg"
+>
+  <div class="mb-4">
+    {% include 'components/form/text_input.html.twig' with {
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      label: 'dev.user.create.email_label'|trans,
+      value: email,
+      placeholder: 'dev.user.create.email_placeholder'|trans,
+      autocomplete: 'off',
+      autofocus: true,
+      invalid: emailHasError,
+    } only %}
+  </div>
+
+  <div class="mb-8">
+    {% include 'components/form/password_input.html.twig' with {
+      id: 'password',
+      name: 'password',
+      label: 'dev.user.create.password_label'|trans,
+      showLabel: 'login.password.show'|trans,
+      hideLabel: 'login.password.hide'|trans,
+      placeholder: 'dev.user.create.password_placeholder'|trans,
+      autocomplete: 'new-password',
+      required: false,
+      invalid: passwordHasError,
+    } only %}
+  </div>
+
+  <input
+    type="hidden"
+    name="_token"
+    value="{{ csrf_token('dev_user_create') }}"
+  >
+
+  {% include 'components/button/primary_button.html.twig' with {
+    label: 'dev.user.create.submit'|trans,
+    fullWidth: true,
+  } only %}
+</form>

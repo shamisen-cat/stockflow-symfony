@@ -27,26 +27,26 @@
 {% block main %}
   {% embed 'layout/list_page.html.twig' %}
     {% block list_header %}
-      {% include 'dev/user/_header.html.twig' only %}
+      {% include 'dev/user/list/_header.html.twig' only %}
     {% endblock %}
 
     {% block list_filters %}
-      {% include 'dev/user/_search_form.html.twig' with {
+      {% include 'dev/user/list/_search_form.html.twig' with {
         searchEmail: searchEmail,
       } only %}
     {% endblock %}
 
     {% block list_body %}
-      {% embed 'components/list_table.html.twig' %}
+      {% embed 'components/list/list_table.html.twig' %}
         {% block table_head %}
-          {% include 'dev/user/_table_head.html.twig' with {
+          {% include 'dev/user/list/_table_head.html.twig' with {
             currentKey: currentKey,
             currentDirection: currentDirection,
           } only %}
         {% endblock %}
 
         {% block table_body %}
-          {% include 'dev/user/_table_body.html.twig' with {
+          {% include 'dev/user/list/_table_body.html.twig' with {
             users: users,
           } only %}
         {% endblock %}
@@ -54,7 +54,7 @@
     {% endblock %}
 
     {% block list_footer %}
-      {% include 'components/pagination.html.twig' with {
+      {% include 'components/list/pagination.html.twig' with {
         pagination: pagination,
       } only %}
     {% endblock %}

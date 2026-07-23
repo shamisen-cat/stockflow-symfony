@@ -16,6 +16,8 @@ login.instructions: メールアドレスとパスワードを入力してくだ
 login.label.email: メールアドレス
 login.label.password: パスワード
 login.placeholder.email: mail@example.com
+login.password.show: パスワードを表示
+login.password.hide: パスワードを隠す
 login.button.submit: ログイン
 
 dev.user.sidebar: ユーザー管理

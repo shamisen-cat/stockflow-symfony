@@ -1,0 +1,43 @@
+{#
+  Dev user list page header (heading and actions).
+
+  No variables required from parent.
+  CSV export preserves the current request query string via app.request.
+#}
+
+<div class="flex flex-row items-center justify-between">
+  <h1
+    class="
+      inline-flex items-center shrink-0 gap-2
+      text-2xl
+    "
+  >
+    {{ ux_icon(
+      'lucide:users',
+      { class: 'size-6 shrink-0' },
+    ) }}
+    <span>{{ 'dev.user.heading'|trans }}</span>
+  </h1>
+
+  <div
+    class="
+      flex justify-end gap-4
+      w-full w-auto
+    "
+  >
+    {% include 'components/button/icon_button.html.twig' with {
+      href: path(
+        'app_dev_users_export',
+        app.request.query.all,
+      ),
+      label: 'dev.user.button.csv_download'|trans,
+      icon: 'lucide:download',
+    } only %}
+
+    {% include 'components/button/icon_button.html.twig' with {
+      href: path('app_dev_users_new'),
+      label: 'dev.user.button.create'|trans,
+      icon: 'lucide:plus',
+    } only %}
+  </div>
+</div>

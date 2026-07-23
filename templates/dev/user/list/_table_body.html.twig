@@ -43,7 +43,8 @@
         >
           {{ user.id.toRfc4122()|slice(0, 8) }}…
         </code>
-        {% include 'components/clipboard_button.html.twig' with {
+
+        {% include 'components/button/clipboard_button.html.twig' with {
           text: user.id.toRfc4122(),
           copyLabel: 'dev.user.button.copy_id'|trans,
           copiedLabel: 'dev.user.button.copied_id'|trans,
@@ -59,7 +60,8 @@
         >
           {{ user.email }}
         </span>
-        {% include 'components/clipboard_button.html.twig' with {
+
+        {% include 'components/button/clipboard_button.html.twig' with {
           text: user.email,
           copyLabel: 'dev.user.button.copy_email'|trans,
           copiedLabel: 'dev.user.button.copied_email'|trans,
@@ -103,6 +105,7 @@
             name="_token"
             value="{{ csrf_token('dev_user_delete') }}"
           >
+
           <button
             type="submit"
             class="
@@ -133,6 +136,7 @@
             name="_token"
             value="{{ csrf_token('dev_user_purge') }}"
           >
+
           <button
             type="submit"
             class="
