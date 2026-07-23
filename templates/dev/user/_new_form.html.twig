@@ -59,39 +59,17 @@
   </div>
 
   <div class="mb-8">
-    <label
-      for="password"
-      class="
-        block mb-1 pl-1
-        text-sm text-slate-700
-      "
-    >
-      {{ 'dev.user.create.password_label'|trans }}
-    </label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      placeholder="{{ 'dev.user.create.password_placeholder'|trans }}"
-      autocomplete="new-password"
-      class="
-        block w-full
-        px-4 py-2
-        bg-white
-        border
-        {{ passwordHasError
-          ? 'border-red-400 focus:border-red-700'
-          : 'border-slate-200 focus:border-slate-700'
-        }}
-        rounded-lg shadow-sm
-        text-sm
-        placeholder:text-slate-400
-        focus:outline-none
-        focus:ring-2 focus:ring-slate-700
-        transition
-      "
-      aria-invalid="{{ passwordHasError ? 'true' : 'false' }}"
-    >
+    {% include 'components/password_input.html.twig' with {
+      id: 'password',
+      name: 'password',
+      label: 'dev.user.create.password_label'|trans,
+      showLabel: 'login.password.show'|trans,
+      hideLabel: 'login.password.hide'|trans,
+      placeholder: 'dev.user.create.password_placeholder'|trans,
+      autocomplete: 'new-password',
+      required: false,
+      invalid: passwordHasError,
+    } only %}
   </div>
 
   <input
