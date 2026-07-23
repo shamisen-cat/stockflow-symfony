@@ -107,7 +107,7 @@
           value="{{ csrf_token('authenticate') }}"
         >
 
-        {% include 'components/primary_button.html.twig' with {
+        {% include 'components/button/primary_button.html.twig' with {
           label: 'login.button.submit'|trans,
           fullWidth: true,
         } only %}

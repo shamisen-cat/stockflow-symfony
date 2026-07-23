@@ -54,7 +54,7 @@
     value="{{ csrf_token('dev_user_create') }}"
   >
 
-  {% include 'components/primary_button.html.twig' with {
+  {% include 'components/button/primary_button.html.twig' with {
     label: 'dev.user.create.submit'|trans,
     fullWidth: true,
   } only %}
