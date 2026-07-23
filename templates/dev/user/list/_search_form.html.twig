@@ -24,21 +24,9 @@
     </div>
 
     <div class="flex gap-4 shrink-0">
-      <button
-        type="submit"
-        class="
-          inline-flex items-center justify-center
-          px-4 py-2
-          bg-blue-600 hover:bg-blue-700
-          rounded-lg shadow-sm
-          text-sm text-white
-          focus:outline-none
-          focus:ring-2 focus:ring-slate-700
-          transition
-        "
-      >
-        {{ 'dev.user.search.submit'|trans }}
-      </button>
+      {% include 'components/primary_button.html.twig' with {
+        label: 'dev.user.search.submit'|trans,
+      } only %}
 
       {% if searchEmail %}
         <a

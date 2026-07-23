@@ -54,19 +54,8 @@
     value="{{ csrf_token('dev_user_create') }}"
   >
 
-  <button
-    type="submit"
-    class="
-      inline-flex items-center justify-center w-full
-      px-4 py-2
-      bg-blue-600 hover:bg-blue-700
-      rounded-lg shadow-sm
-      text-sm text-white
-      focus:outline-none
-      focus:ring-2 focus:ring-slate-700
-      transition
-    "
-  >
-    {{ 'dev.user.create.submit'|trans }}
-  </button>
+  {% include 'components/primary_button.html.twig' with {
+    label: 'dev.user.create.submit'|trans,
+    fullWidth: true,
+  } only %}
 </form>
