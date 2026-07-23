@@ -78,7 +78,7 @@
         </p>
 
         <div class="mb-4">
-          {% include 'components/text_input.html.twig' with {
+          {% include 'components/form/text_input.html.twig' with {
             type: 'email',
             id: 'username',
             name: '_username',
@@ -92,7 +92,7 @@
         </div>
 
         <div class="mb-8">
-          {% include 'components/password_input.html.twig' with {
+          {% include 'components/form/password_input.html.twig' with {
             id: 'password',
             name: '_password',
             label: 'login.label.password'|trans,
