@@ -1,0 +1,78 @@
+{#
+  Labeled text-style input (email, search, text, etc.).
+
+  Required variables (include ... with):
+  - id: input id (also used for label for=)
+  - name: input name
+  - label: visible label text
+
+  Optional:
+  - type: defaults to text
+  - value: defaults to empty
+  - placeholder: omitted when empty
+  - autocomplete: omitted when empty
+  - required: defaults to false
+  - autofocus: defaults to false
+  - invalid: defaults to false (red border + aria-invalid)
+#}
+
+{% set type = type|default('text') %}
+{% set value = value|default('') %}
+{% set placeholder = placeholder|default('') %}
+{% set autocomplete = autocomplete|default('') %}
+{% set required = required|default(false) %}
+{% set autofocus = autofocus|default(false) %}
+{% set invalid = invalid|default(false) %}
+
+<div>
+  <label
+    for="{{ id }}"
+    class="
+      block mb-1 pl-1
+      text-sm text-slate-700
+    "
+  >
+    {{ label }}
+  </label>
+
+  <input
+    type="{{ type }}"
+    id="{{ id }}"
+    name="{{ name }}"
+    value="{{ value }}"
+
+    {% if placeholder != '' %}
+      placeholder="{{ placeholder }}"
+    {% endif %}
+
+    {% if autocomplete != '' %}
+      autocomplete="{{ autocomplete }}"
+    {% endif %}
+
+    {% if required %}
+      required
+    {% endif %}
+
+    {% if autofocus %}
+      autofocus
+    {% endif %}
+
+    class="
+      block w-full
+      px-4 py-2
+      bg-white
+      border
+      {{ invalid
+        ? 'border-red-400 focus:border-red-700'
+        : 'border-slate-200 focus:border-slate-700'
+      }}
+      rounded-lg shadow-sm
+      text-sm
+      placeholder:text-slate-400
+      focus:outline-none
+      focus:ring-2 focus:ring-slate-700
+      transition
+    "
+    aria-invalid="{{ invalid ? 'true' : 'false' }}"
+  >
+</div>
