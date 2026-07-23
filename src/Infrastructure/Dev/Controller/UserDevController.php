@@ -65,7 +65,7 @@ final class UserDevController extends AbstractController
 
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
-        return $this->render('dev/user/index.html.twig', [
+        return $this->render('dev/user/list/index.html.twig', [
             'users' => $users,
             'pagination' => $result->pagination,
             'currentKey' => $result->currentSortKey,
@@ -227,7 +227,7 @@ final class UserDevController extends AbstractController
 
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
-        return $this->render('dev/user/new.html.twig', [
+        return $this->render('dev/user/new/new.html.twig', [
             'sidebarLinks' => $sidebar->links,
             'sidebarSubLinks' => $sidebar->subLinks,
             'currentLink' => $sidebar->currentLink,
