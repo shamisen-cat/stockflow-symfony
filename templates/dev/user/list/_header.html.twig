@@ -25,51 +25,19 @@
       w-full w-auto
     "
   >
-    <a
-      href="{{ path(
+    {% include 'components/button/icon_button.html.twig' with {
+      href: path(
         'app_dev_users_export',
         app.request.query.all,
-      ) }}"
-      class="
-        inline-flex items-center justify-center
-        w-11 h-11
-        bg-white hover:bg-slate-100
-        border border-slate-200
-        rounded-lg shadow-sm
-        text-slate-700 hover:text-slate-900
-        focus:outline-none
-        focus:ring-2 focus:ring-slate-700
-        transition
-      "
-      title="{{ 'dev.user.button.csv_download'|trans }}"
-      aria-label="{{ 'dev.user.button.csv_download'|trans }}"
-    >
-      {{ ux_icon(
-        'lucide:download',
-        { class: 'size-5 shrink-0' },
-      ) }}
-    </a>
+      ),
+      label: 'dev.user.button.csv_download'|trans,
+      icon: 'lucide:download',
+    } only %}
 
-    <a
-      href="{{ path('app_dev_users_new') }}"
-      class="
-        inline-flex items-center justify-center
-        w-11 h-11
-        bg-white hover:bg-slate-100
-        border border-slate-200
-        rounded-lg shadow-sm
-        text-slate-700 hover:text-slate-900
-        focus:outline-none
-        focus:ring-2 focus:ring-slate-700
-        transition
-      "
-      title="{{ 'dev.user.button.create'|trans }}"
-      aria-label="{{ 'dev.user.button.create'|trans }}"
-    >
-      {{ ux_icon(
-        'lucide:plus',
-        { class: 'size-5 shrink-0' },
-      ) }}
-    </a>
+    {% include 'components/button/icon_button.html.twig' with {
+      href: path('app_dev_users_new'),
+      label: 'dev.user.button.create'|trans,
+      icon: 'lucide:plus',
+    } only %}
   </div>
 </div>
