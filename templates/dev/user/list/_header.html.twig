@@ -25,7 +25,7 @@
   </h1>
 
   <div class="flex justify-end gap-4">
-    {% include 'components/button/icon_button.html.twig' with {
+    {% include 'components/button/icon_link.html.twig' with {
       href: path(
         'app_dev_users_export',
         app.request.query.all,
@@ -34,7 +34,7 @@
       icon: 'lucide:download',
     } only %}
 
-    {% include 'components/button/icon_button.html.twig' with {
+    {% include 'components/button/icon_link.html.twig' with {
       href: path('app_dev_users_new'),
       label: 'dev.user.button.create'|trans,
       icon: 'lucide:plus',

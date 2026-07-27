@@ -29,7 +29,7 @@
       } only %}
 
       {% if searchEmail %}
-        {% include 'components/button/outline_button.html.twig' with {
+        {% include 'components/button/outline_link.html.twig' with {
           href: path('app_dev_users'),
           label: 'dev.user.search.clear'|trans,
         } only %}
