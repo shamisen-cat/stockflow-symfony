@@ -58,4 +58,12 @@
     label: 'dev.user.create.submit'|trans,
     fullWidth: true,
   } only %}
+
+  <div class="mt-10">
+    {% include 'components/button/outline_button.html.twig' with {
+      href: path('app_dev_users'),
+      label: 'dev.user.create.cancel'|trans,
+      icon: 'lucide:arrow-left',
+    } only %}
+  </div>
 </form>

@@ -29,22 +29,10 @@
       } only %}
 
       {% if searchEmail %}
-        <a
-          href="{{ path('app_dev_users') }}"
-          class="
-            inline-flex items-center justify-center
-            px-4 py-2
-            bg-white hover:bg-slate-100
-            border border-slate-200
-            rounded-lg shadow-sm
-            text-sm text-slate-700
-            focus:outline-none
-            focus:ring-2 focus:ring-slate-700
-            transition
-          "
-        >
-          {{ 'dev.user.search.clear'|trans }}
-        </a>
+        {% include 'components/button/outline_button.html.twig' with {
+          href: path('app_dev_users'),
+          label: 'dev.user.search.clear'|trans,
+        } only %}
       {% endif %}
     </div>
   </div>
