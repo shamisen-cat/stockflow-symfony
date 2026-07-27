@@ -5,11 +5,16 @@
   CSV export preserves the current request query string via app.request.
 #}
 
-<div class="flex flex-row items-center justify-between">
+<div
+  class="
+    flex flex-row items-center justify-between
+    min-h-11
+  "
+>
   <h1
     class="
       inline-flex items-center shrink-0 gap-2
-      text-2xl
+      text-2xl font-semibold
     "
   >
     {{ ux_icon(
@@ -19,12 +24,7 @@
     <span>{{ 'dev.user.heading'|trans }}</span>
   </h1>
 
-  <div
-    class="
-      flex justify-end gap-4
-      w-full w-auto
-    "
-  >
+  <div class="flex justify-end gap-4">
     {% include 'components/button/icon_button.html.twig' with {
       href: path(
         'app_dev_users_export',
