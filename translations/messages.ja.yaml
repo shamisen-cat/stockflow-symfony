@@ -32,6 +32,8 @@ dev.user.create.title: 'Stockflow | ユーザー管理 / 新規作成 - DevTools
 dev.user.create.heading: ユーザー管理 / 新規作成
 dev.user.create.email_label: メールアドレス
 dev.user.create.email_placeholder: mail@example.com
+dev.user.create.email_local_part_length: ローカル部の桁数
+dev.user.create.email_generate_random: ランダム生成
 dev.user.create.password_label: パスワード
 dev.user.create.password_placeholder: 12文字以上
 dev.user.create.submit: 作成

@@ -32,6 +32,8 @@ dev.user.create.title: 'Stockflow | User management / Create - DevTools'
 dev.user.create.heading: 'User management / Create'
 dev.user.create.email_label: Email address
 dev.user.create.email_placeholder: mail@example.com
+dev.user.create.email_local_part_length: Local-part length
+dev.user.create.email_generate_random: Generate random
 dev.user.create.password_label: Password
 dev.user.create.password_placeholder: At least 12 characters
 dev.user.create.submit: Create
