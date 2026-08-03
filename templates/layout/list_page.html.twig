@@ -8,7 +8,12 @@
   - list_footer: list navigation (usually pagination include)
 #}
 
-<div class="flex flex-col flex-1 min-h-0 pt-3">
+<div
+  class="
+    flex flex-col flex-1
+    min-h-0 pt-3
+  "
+>
   {% include 'components/flash_messages.html.twig' %}
 
   <header class="shrink-0 px-4 pb-3">
@@ -19,20 +24,26 @@
 
   <section
     class="
-      flex flex-col flex-1 min-h-0
+      flex flex-col flex-1
+      min-h-0
       border-y border-slate-200
     "
   >
     <div
       class="
-        flex flex-col flex-1 min-h-0
-        bg-white
+        flex flex-col flex-1
+        min-h-0 bg-white
       "
     >
       {% block list_body %}{% endblock %}
     </div>
 
-    <footer class="shrink-0 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+    <footer
+      class="
+        shrink-0
+        pb-[max(0.75rem,env(safe-area-inset-bottom))]
+      "
+    >
       {% block list_footer %}{% endblock %}
     </footer>
   </section>
