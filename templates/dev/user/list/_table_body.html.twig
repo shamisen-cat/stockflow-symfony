@@ -80,17 +80,6 @@
         font-mono text-xs whitespace-nowrap
       "
     >
-      <time datetime="{{ user.createdAt|date('c') }}">
-        {{ user.createdAt|date('Y-m-d H:i:s') }}
-      </time>
-    </td>
-
-    <td
-      class="
-        px-4 py-2.5
-        font-mono text-xs whitespace-nowrap
-      "
-    >
       <time datetime="{{ user.updatedAt|date('c') }}">
         {{ user.updatedAt|date('Y-m-d H:i:s') }}
       </time>
@@ -163,7 +152,7 @@
 {% else %}
   <tr>
     <td
-      colspan="6"
+      colspan="5"
       class="px-4 py-12 text-center"
     >
       {{ 'dev.user.empty'|trans }}

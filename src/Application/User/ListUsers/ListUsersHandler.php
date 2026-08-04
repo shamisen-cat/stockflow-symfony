@@ -24,7 +24,6 @@ final readonly class ListUsersHandler
         $sortMap = [
             'id' => 'u.id',
             'email' => 'u.email.value',
-            'created_at' => 'u.createdAt',
             $defaultKey => 'u.updatedAt',
         ];
 
