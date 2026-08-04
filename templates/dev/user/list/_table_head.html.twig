@@ -6,10 +6,6 @@
   - currentDirection: 'asc' or 'desc'
 #}
 
-{% include 'components/list/static_th.html.twig' with {
-  label: 'dev.user.column.status'|trans,
-} only %}
-
 {% set sortColumns = [
   {
     label: 'dev.user.column.id'|trans,
@@ -28,6 +24,10 @@
     sortKey: 'updated_at',
   },
 ] %}
+
+{% include 'components/list/static_th.html.twig' with {
+  label: 'dev.user.column.status'|trans,
+} only %}
 
 {% for column in sortColumns %}
   {% include 'components/list/sortable_th.html.twig' with {

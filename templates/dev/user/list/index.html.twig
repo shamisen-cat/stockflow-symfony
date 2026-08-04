@@ -25,38 +25,65 @@
 {% endblock %}
 
 {% block main %}
-  {% embed 'layout/list_page.html.twig' %}
-    {% block list_header %}
-      {% include 'dev/user/list/_header.html.twig' only %}
-    {% endblock %}
+  <div
+    class="
+      flex flex-col flex-1
+      min-h-0 pt-3
+    "
+  >
+    {% include 'components/flash_messages.html.twig' %}
 
-    {% block list_filters %}
+    <header class="shrink-0 px-4 pb-3">
+      {% include 'dev/user/list/_header.html.twig' only %}
+    </header>
+
+    <div class="px-4 pb-2">
       {% include 'dev/user/list/_search_form.html.twig' with {
         searchEmail: searchEmail,
       } only %}
-    {% endblock %}
+    </div>
 
-    {% block list_body %}
-      {% embed 'components/list/list_table.html.twig' %}
-        {% block table_head %}
-          {% include 'dev/user/list/_table_head.html.twig' with {
-            currentKey: currentKey,
-            currentDirection: currentDirection,
-          } only %}
-        {% endblock %}
+    <section
+      class="
+        flex flex-col flex-1
+        min-h-0
+        border-y border-slate-200
+      "
+    >
+      <div
+        class="
+          flex-1 overflow-auto
+          min-h-0 bg-white
+        "
+      >
+        <table class="min-w-full text-left text-xs">
+          <thead class="bg-slate-50">
+            <tr>
+              {% include 'dev/user/list/_table_head.html.twig' with {
+                currentKey: currentKey,
+                currentDirection: currentDirection,
+              } only %}
+            </tr>
+          </thead>
 
-        {% block table_body %}
-          {% include 'dev/user/list/_table_body.html.twig' with {
-            users: users,
-          } only %}
-        {% endblock %}
-      {% endembed %}
-    {% endblock %}
+          <tbody class="divide-y divide-slate-100">
+            {% include 'dev/user/list/_table_body.html.twig' with {
+              users: users,
+            } only %}
+          </tbody>
+        </table>
+      </div>
 
-    {% block list_footer %}
-      {% include 'components/list/pagination.html.twig' with {
-        pagination: pagination,
-      } only %}
-    {% endblock %}
-  {% endembed %}
+      <footer
+        class="
+          shrink-0
+          pb-[max(0.75rem,env(safe-area-inset-bottom))]
+        "
+      >
+        {% include 'components/list/pagination.html.twig' with {
+          pagination: pagination,
+        } only %}
+      </footer>
+    </section>
+  </div>
 {% endblock %}

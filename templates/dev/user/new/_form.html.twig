@@ -21,23 +21,21 @@
   class="w-full max-w-lg"
 >
   <div
-    class="mb-4"
+    class="flex flex-col gap-2 mb-4"
     data-controller="email-generator"
     data-email-generator-input-id-value="email"
   >
-    <div class="mb-2">
-      {% include 'components/form/text_input.html.twig' with {
-        type: 'email',
-        id: 'email',
-        name: 'email',
-        label: 'dev.user.create.email_label'|trans,
-        value: email,
-        placeholder: 'dev.user.create.email_placeholder'|trans,
-        autocomplete: 'off',
-        autofocus: true,
-        invalid: emailHasError,
-      } only %}
-    </div>
+    {% include 'components/form/text_input.html.twig' with {
+      type: 'email',
+      id: 'email',
+      name: 'email',
+      label: 'dev.user.create.email_label'|trans,
+      value: email,
+      placeholder: 'dev.user.create.email_placeholder'|trans,
+      autocomplete: 'off',
+      autofocus: true,
+      invalid: emailHasError,
+    } only %}
 
     <div class="flex flex-col items-start gap-3">
       {% include 'components/form/radio_group.html.twig' with {
@@ -86,13 +84,13 @@
     } only %}
   </div>
 
-  <div class="mb-8">
-    <input
-      type="hidden"
-      name="_token"
-      value="{{ csrf_token('dev_user_create') }}"
-    >
+  <input
+    type="hidden"
+    name="_token"
+    value="{{ csrf_token('dev_user_create') }}"
+  >
 
+  <div class="mb-8">
     {% include 'components/button/primary_button.html.twig' with {
       label: 'dev.user.create.submit'|trans,
       fullWidth: true,
