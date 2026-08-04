@@ -10,13 +10,13 @@
     box: 'bg-emerald-50 border-emerald-200 text-emerald-700',
     icon: 'lucide:circle-check',
   },
-  error: {
-    box: 'bg-red-50 border-red-200 text-red-700',
-    icon: 'lucide:circle-alert',
-  },
   warning: {
     box: 'bg-amber-50 border-amber-200 text-amber-700',
     icon: 'lucide:triangle-alert',
+  },
+  error: {
+    box: 'bg-red-50 border-red-200 text-red-700',
+    icon: 'lucide:circle-alert',
   },
 } %}
 
@@ -35,7 +35,10 @@
 
 {% if flashes is not empty %}
   <div
-    class="shrink-0 space-y-2 px-4 pb-3"
+    class="
+      shrink-0 space-y-2
+      px-4 pb-3
+    "
     data-controller="flash-messages"
     data-action="flash-message:dismissed->flash-messages#onDismissed"
     aria-live="polite"
@@ -64,28 +67,32 @@
         >
           {{ ux_icon(
             flashStyle.icon,
-            { class: 'size-4 shrink-0' },
+            { class: 'shrink-0 size-4' },
           ) }}
-          <span class="flex-1 min-w-0">{{ message }}</span>
+
+          <span class="flex-1 min-w-0">
+            {{ message }}
+          </span>
 
           <button
             type="button"
             class="
               inline-flex items-center justify-center shrink-0
               w-7 h-7
-              hover:bg-black/5
               rounded-md
-              opacity-70 hover:opacity-100
+              opacity-70
+              transition
+              hover:bg-black/5
+              hover:opacity-100
               focus:outline-none
               focus:ring-2 focus:ring-current
-              transition
             "
             data-action="click->flash-message#dismiss"
             aria-label="{{ 'flash.close'|trans }}"
           >
             {{ ux_icon(
               'lucide:x',
-              { class: 'size-4 shrink-0' },
+              { class: 'shrink-0 size-4' },
             ) }}
           </button>
         </div>

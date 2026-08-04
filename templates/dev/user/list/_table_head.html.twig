@@ -2,13 +2,9 @@
   Dev user list table header cells.
 
   Required variables (include from parent):
-  - currentKey: active sort key (must match sortMap in UserDevController)
+  - currentKey: active sort key (must match sortMap in ListUsersHandler)
   - currentDirection: 'asc' or 'desc'
 #}
-
-{% include 'components/list/static_th.html.twig' with {
-  label: 'dev.user.column.status'|trans,
-} only %}
 
 {% set sortColumns = [
   {
@@ -20,14 +16,14 @@
     sortKey: 'email',
   },
   {
-    label: 'dev.user.column.created_at'|trans,
-    sortKey: 'created_at',
-  },
-  {
     label: 'dev.user.column.updated_at'|trans,
     sortKey: 'updated_at',
   },
 ] %}
+
+{% include 'components/list/static_th.html.twig' with {
+  label: 'dev.user.column.status'|trans,
+} only %}
 
 {% for column in sortColumns %}
   {% include 'components/list/sortable_th.html.twig' with {

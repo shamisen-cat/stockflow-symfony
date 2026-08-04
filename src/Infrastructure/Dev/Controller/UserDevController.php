@@ -119,6 +119,8 @@ final class UserDevController extends AbstractController
                 'email',
                 'created_at',
                 'updated_at',
+                'disabled_at',
+                'suspended_at',
                 'deleted_at',
             ]);
 
@@ -128,6 +130,8 @@ final class UserDevController extends AbstractController
                     $user->email->value(),
                     $user->createdAt->format('Y-m-d H:i:s'),
                     $user->updatedAt->format('Y-m-d H:i:s'),
+                    $user->disabledAt?->format('Y-m-d H:i:s') ?? '',
+                    $user->suspendedAt?->format('Y-m-d H:i:s') ?? '',
                     $user->deletedAt?->format('Y-m-d H:i:s') ?? '',
                 ]);
             }

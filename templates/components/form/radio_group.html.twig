@@ -1,0 +1,55 @@
+{#
+  Labeled radio group.
+
+  Required variables (include ... with):
+  - legend: visible group label
+  - name: radio input name
+  - options: list of { value: string, label: string }
+
+  Optional:
+  - checkedValue: selected value (defaults to empty)
+  - targetController: Stimulus controller name for target attr
+  - targetName: Stimulus target name for target attr
+#}
+
+{% set checkedValue = checkedValue|default('') %}
+
+<fieldset class="flex flex-col">
+  <legend class="text-xs text-slate-700">
+    {{ legend }}
+  </legend>
+
+  <div class="flex items-center gap-3 mt-1">
+    {% for option in options %}
+      <label
+        class="
+          inline-flex items-center gap-1
+          text-xs text-slate-700
+        "
+      >
+        <input
+          type="radio"
+          name="{{ name }}"
+          value="{{ option.value }}"
+
+          {% if option.value == checkedValue %}
+            checked
+          {% endif %}
+
+          class="
+            h-4 w-4
+            border-slate-300
+            text-slate-700
+            focus:ring-slate-700
+          "
+
+          {% if targetController is defined and targetName is defined %}
+            data-{{ targetController }}-target="{{ targetName }}"
+          {% endif %}
+        >
+
+        <span>{{ option.label }}</span>
+      </label>
+    {% endfor %}
+  </div>
+</fieldset>

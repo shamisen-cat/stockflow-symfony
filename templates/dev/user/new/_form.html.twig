@@ -20,7 +20,11 @@
   novalidate
   class="w-full max-w-lg"
 >
-  <div class="mb-4">
+  <div
+    class="flex flex-col gap-2 mb-4"
+    data-controller="email-generator"
+    data-email-generator-input-id-value="email"
+  >
     {% include 'components/form/text_input.html.twig' with {
       type: 'email',
       id: 'email',
@@ -32,9 +36,42 @@
       autofocus: true,
       invalid: emailHasError,
     } only %}
+
+    <div class="flex flex-col items-start gap-3">
+      {% include 'components/form/radio_group.html.twig' with {
+        legend: 'dev.user.create.email_local_part_length'|trans,
+        name: 'email-local-part-length',
+        options: [
+          { value: '8', label: '8' },
+          { value: '16', label: '16' },
+          { value: '32', label: '32' },
+        ],
+        checkedValue: '16',
+        targetController: 'email-generator',
+        targetName: 'length',
+      } only %}
+
+      <button
+        type="button"
+        class="
+          inline-flex items-center justify-center
+          px-3 py-1.5 bg-blue-50
+          border border-blue-200 rounded-lg shadow-sm
+          text-xs font-medium text-blue-700
+          transition
+          hover:bg-blue-100
+          hover:text-blue-900
+          focus:outline-none
+          focus:ring-2 focus:ring-slate-700
+        "
+        data-action="click->email-generator#generate"
+      >
+        {{ 'dev.user.create.email_generate_random'|trans }}
+      </button>
+    </div>
   </div>
 
-  <div class="mb-8">
+  <div class="mb-6">
     {% include 'components/form/password_input.html.twig' with {
       id: 'password',
       name: 'password',
@@ -43,7 +80,6 @@
       hideLabel: 'login.password.hide'|trans,
       placeholder: 'dev.user.create.password_placeholder'|trans,
       autocomplete: 'new-password',
-      required: false,
       invalid: passwordHasError,
     } only %}
   </div>
@@ -54,8 +90,16 @@
     value="{{ csrf_token('dev_user_create') }}"
   >
 
-  {% include 'components/button/primary_button.html.twig' with {
-    label: 'dev.user.create.submit'|trans,
-    fullWidth: true,
+  <div class="mb-8">
+    {% include 'components/button/primary_button.html.twig' with {
+      label: 'dev.user.create.submit'|trans,
+      fullWidth: true,
+    } only %}
+  </div>
+
+  {% include 'components/button/outline_link.html.twig' with {
+    href: path('app_dev_users'),
+    label: 'dev.user.create.cancel'|trans,
+    icon: 'lucide:arrow-left',
   } only %}
 </form>

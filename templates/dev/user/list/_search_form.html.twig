@@ -8,7 +8,7 @@
 <form
   method="get"
   action="{{ path('app_dev_users') }}"
-  class="px-4 pb-4"
+  class="flex flex-col gap-4"
 >
   <div class="flex flex-row items-end gap-4">
     <div class="w-full min-w-0 max-w-lg">
@@ -23,48 +23,37 @@
       } only %}
     </div>
 
-    <div class="flex gap-4 shrink-0">
+    <div class="flex shrink-0 gap-3">
       {% include 'components/button/primary_button.html.twig' with {
         label: 'dev.user.search.submit'|trans,
       } only %}
 
       {% if searchEmail %}
-        <a
-          href="{{ path('app_dev_users') }}"
-          class="
-            inline-flex items-center justify-center
-            px-4 py-2
-            bg-white hover:bg-slate-100
-            border border-slate-200
-            rounded-lg shadow-sm
-            text-sm text-slate-700
-            focus:outline-none
-            focus:ring-2 focus:ring-slate-700
-            transition
-          "
-        >
-          {{ 'dev.user.search.clear'|trans }}
-        </a>
+        {% include 'components/button/outline_link.html.twig' with {
+          href: path('app_dev_users'),
+          label: 'dev.user.search.clear'|trans,
+        } only %}
       {% endif %}
     </div>
   </div>
 
-  <details class="group mt-3">
+  <details class="group flex flex-col gap-2">
     <summary
       class="
-        inline-flex items-center gap-1
+        inline-flex self-start items-center gap-1
         rounded
-        text-sm
-        text-slate-700 hover:text-slate-900
-        cursor-pointer select-none
+        text-sm text-slate-700
+        cursor-pointer
+        select-none
+        transition
+        hover:text-slate-900
         focus:outline-none
         focus:ring-2 focus:ring-offset-2 focus:ring-slate-700
-        transition
       "
     >
       {{ 'dev.user.search.details'|trans }}
     </summary>
 
-    <div class="pt-3"></div>
+    <div>hoge</div>
   </details>
 </form>

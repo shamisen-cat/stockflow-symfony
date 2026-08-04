@@ -1,0 +1,39 @@
+{#
+  Outline action link (white bordered).
+
+  Required variables (include ... with):
+  - href: link destination
+  - label: visible link text
+
+  Optional:
+  - icon: UX Iconify name (e.g. lucide:arrow-left)
+  - fullWidth: defaults to false (adds w-full when true)
+#}
+
+{% set fullWidth = fullWidth|default(false) %}
+
+<a
+  href="{{ href }}"
+  class="
+    inline-flex items-center justify-center
+    {{ icon is defined and icon ? 'gap-2' : '' }}
+    {{ fullWidth ? 'w-full' : '' }}
+    px-4 py-2 bg-white
+    border border-slate-200 rounded-lg shadow-sm
+    text-sm font-medium text-slate-700
+    transition
+    hover:bg-slate-100
+    hover:text-slate-900
+    focus:outline-none
+    focus:ring-2 focus:ring-slate-700
+  "
+>
+  {% if icon is defined and icon %}
+    {{ ux_icon(
+      icon,
+      { class: 'shrink-0 size-4' },
+    ) }}
+  {% endif %}
+
+  <span>{{ label }}</span>
+</a>

@@ -53,7 +53,12 @@
     </td>
 
     <td class="px-4 py-2.5">
-      <div class="flex items-center gap-1 min-w-0">
+      <div
+        class="
+          flex items-center gap-1
+          min-w-0
+        "
+      >
         <span
           class="truncate font-mono text-xs"
           title="{{ user.email }}"
@@ -75,19 +80,8 @@
         font-mono text-xs whitespace-nowrap
       "
     >
-      <time datetime="{{ user.createdAt|date('c') }}">
-        {{ user.createdAt|date('Y-m-d H:i:s') }}
-      </time>
-    </td>
-
-    <td
-      class="
-        px-4 py-2.5
-        font-mono text-xs whitespace-nowrap
-      "
-    >
       <time datetime="{{ user.updatedAt|date('c') }}">
-        {{ user.updatedAt|date('Y-m-d H:i:s') }}
+        {{ user.updatedAt|date('Y-m-d H:i') }}
       </time>
     </td>
 
@@ -110,14 +104,13 @@
             type="submit"
             class="
               inline-flex items-center
-              px-2 py-1
-              bg-white hover:bg-red-100
-              border border-red-200
-              rounded-lg
+              px-2 py-1 bg-white
+              border border-red-200 rounded-lg
               text-xs text-red-700 whitespace-nowrap
+              transition
+              hover:bg-red-100
               focus:outline-none
               focus:ring-2 focus:ring-red-700
-              transition
             "
           >
             {{ 'dev.user.button.delete'|trans }}
@@ -141,14 +134,13 @@
             type="submit"
             class="
               inline-flex items-center
-              px-2 py-1
-              bg-red-100 hover:bg-red-200
-              border border-red-300
-              rounded-lg
+              px-2 py-1 bg-red-100
+              border border-red-300 rounded-lg
               text-xs text-red-700 whitespace-nowrap
+              transition
+              hover:bg-red-200
               focus:outline-none
               focus:ring-2 focus:ring-red-700
-              transition
             "
           >
             {{ 'dev.user.button.purge'|trans }}
@@ -160,7 +152,7 @@
 {% else %}
   <tr>
     <td
-      colspan="6"
+      colspan="5"
       class="px-4 py-12 text-center"
     >
       {{ 'dev.user.empty'|trans }}
