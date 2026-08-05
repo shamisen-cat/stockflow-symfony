@@ -8,6 +8,7 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Infrastructure\Security\UserProvider\EmailUserProvider;
+use App\Tests\Support\UnsupportedUser;
 use App\Tests\Support\UserTestFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -20,8 +21,9 @@ final class EmailUserProviderTest extends TestCase
     #[Test]
     public function loadUserByIdentifierReturnsActiveUser(): void
     {
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $user = UserTestFactory::create();
+
+        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository
             ->expects(self::once())
             ->method('findActiveByEmail')
@@ -29,6 +31,7 @@ final class EmailUserProviderTest extends TestCase
             ->willReturn($user);
 
         $provider = new EmailUserProvider($userRepository);
+
         $loadedUser = $provider->loadUserByIdentifier($user->email->value());
 
         self::assertSame($user, $loadedUser);
@@ -37,8 +40,9 @@ final class EmailUserProviderTest extends TestCase
     #[Test]
     public function loadUserByIdentifierThrowsWhenActiveUserNotFound(): void
     {
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $email = 'unknown@example.com';
+
+        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository
             ->expects(self::once())
             ->method('findActiveByEmail')
@@ -58,12 +62,14 @@ final class EmailUserProviderTest extends TestCase
     #[Test]
     public function refreshUserReturnsRefreshedUser(): void
     {
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $user = UserTestFactory::create();
+
         $refreshedUser = UserTestFactory::create(
             id: $user->id,
             email: Email::of('refreshed@example.com'),
         );
+
+        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository
             ->expects(self::once())
             ->method('findActiveById')
@@ -71,6 +77,7 @@ final class EmailUserProviderTest extends TestCase
             ->willReturn($refreshedUser);
 
         $provider = new EmailUserProvider($userRepository);
+
         $result = $provider->refreshUser($user);
 
         self::assertSame($refreshedUser, $result);
@@ -79,8 +86,9 @@ final class EmailUserProviderTest extends TestCase
     #[Test]
     public function refreshUserThrowsWhenActiveUserNotFound(): void
     {
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $user = UserTestFactory::create();
+
+        $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository
             ->expects(self::once())
             ->method('findActiveById')
@@ -100,33 +108,19 @@ final class EmailUserProviderTest extends TestCase
     #[Test]
     public function refreshUserThrowsForUnsupportedUser(): void
     {
+        $unsupportedUser = new UnsupportedUser();
+
+        $message = sprintf(
+            'User class "%s" is not supported.',
+            get_debug_type($unsupportedUser),
+        );
+
         $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository
             ->expects(self::never())
             ->method('findActiveById');
 
         $provider = new EmailUserProvider($userRepository);
-
-        $unsupportedUser = new class implements UserInterface {
-            #[\Override]
-            public function getUserIdentifier(): string
-            {
-                return 'unsupported-user';
-            }
-
-            #[\Override]
-            public function getRoles(): array
-            {
-                return [];
-            }
-
-            #[\Override]
-            public function eraseCredentials(): void
-            {
-            }
-        };
-
-        $message = sprintf('User class "%s" is not supported.', get_debug_type($unsupportedUser));
 
         try {
             $provider->refreshUser($unsupportedUser);
