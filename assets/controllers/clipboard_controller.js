@@ -15,7 +15,6 @@ import { Controller } from '@hotwired/stimulus';
  *
  * @property {ReturnType<typeof setTimeout> | null} resetTimerId
  *
- * @property {function(): void} connect
  * @property {function(): void} disconnect
  * @property {function(): Promise<void>} copy
  * @property {function(): void} showCopied

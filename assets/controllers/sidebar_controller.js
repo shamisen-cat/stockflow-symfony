@@ -13,8 +13,6 @@ import { Controller } from '@hotwired/stimulus';
  * @property {string} openLabelValue
  * @property {string} closeLabelValue
  *
- * @property {function(): void} connect
- * @property {function(): void} disconnect
  * @property {function(): void} openValueChanged
  * @property {function(): void} toggle
  * @property {function(): void} open

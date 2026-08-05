@@ -17,6 +17,7 @@ security:
         main:
             lazy: true
             provider: email_user_provider
+            user_checker: App\Infrastructure\Security\UserChecker\AccountStatusUserChecker
             custom_authenticators:
                 - App\Infrastructure\Security\Authenticator\LoginFormAuthenticator
             logout:
