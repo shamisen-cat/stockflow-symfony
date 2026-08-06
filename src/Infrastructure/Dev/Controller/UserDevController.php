@@ -161,9 +161,28 @@ final class UserDevController extends AbstractController
     #[Route(
         path: '/dev/users/new',
         name: 'app_dev_users_new',
-        methods: ['GET', 'POST'],
+        methods: ['GET'],
     )]
     public function new(
+        DevSidebarFactory $devSidebarFactory,
+    ): Response {
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
+
+        return $this->render('dev/user/new/new.html.twig', [
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentLink' => $sidebar->currentLink,
+            'email' => '',
+            'error' => null,
+        ]);
+    }
+
+    #[Route(
+        path: '/dev/users',
+        name: 'app_dev_users_create',
+        methods: ['POST'],
+    )]
+    public function create(
         Request $request,
         CreateUserHandler $createUserHandler,
         DevSidebarFactory $devSidebarFactory,
@@ -171,63 +190,61 @@ final class UserDevController extends AbstractController
         ClockInterface $clock,
         TranslatorInterface $translator,
     ): Response {
-        $email = '';
+        $token = $request->request->getString('_token');
+
+        if (!$this->isCsrfTokenValid('dev_user_create', $token)) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        $email = $request->request->getString('email');
+        $password = $request->request->getString('password');
+
         $error = null;
 
-        if ($request->isMethod('POST')) {
-            $token = $request->request->getString('_token');
+        try {
+            $createUserInput = CreateUserInput::create(
+                email: $email,
+                password: $password,
+                createdAt: $clock->now(),
+            );
 
-            if (!$this->isCsrfTokenValid('dev_user_create', $token)) {
-                throw $this->createAccessDeniedException('Invalid CSRF token.');
-            }
+            $transactionManager->transactional(
+                static fn (): Uuid => $createUserHandler->handle($createUserInput),
+            );
 
-            $email = $request->request->getString('email');
-            $password = $request->request->getString('password');
+            $flashMessage = $translator->trans('dev.user.flash.created', [
+                '%email%' => $createUserInput->email->value(),
+            ]);
+            $this->addFlash('success', $flashMessage);
 
-            try {
-                $createUserInput = CreateUserInput::create(
-                    email: $email,
-                    password: $password,
-                    createdAt: $clock->now(),
-                );
-
-                $transactionManager->transactional(
-                    static fn (): Uuid => $createUserHandler->handle($createUserInput),
-                );
-
-                $flashMessage = $translator->trans('dev.user.flash.created', [
-                    '%email%' => $createUserInput->email->value(),
-                ]);
-
-                $this->addFlash('success', $flashMessage);
-
-                return $this->redirectToRoute('app_dev_users');
-            } catch (InvalidEmailException $exception) {
-                $error = match ($exception->result) {
-                    EmailValidationResult::EMPTY => 'email.empty',
-                    EmailValidationResult::TOO_LONG => 'email.too_long',
-                    EmailValidationResult::INVALID_FORMAT => 'email.invalid_format',
-                    EmailValidationResult::VALID => throw new \LogicException(
-                        'InvalidEmailException must not have VALID result.',
-                    ),
-                };
-            } catch (InvalidPlainPasswordException $exception) {
-                $error = match ($exception->result) {
-                    PlainPasswordValidationResult::EMPTY => 'password.empty',
-                    PlainPasswordValidationResult::TOO_SHORT => 'password.too_short',
-                    PlainPasswordValidationResult::TOO_LONG => 'password.too_long',
-                    PlainPasswordValidationResult::VALID => throw new \LogicException(
-                        'InvalidPlainPasswordException must not have VALID result.',
-                    ),
-                };
-            } catch (UserAlreadyExistsException) {
-                $error = 'user.already_exists';
-            }
-
-            $flashMessage = $translator->trans('dev.user.error.'.$error);
-
-            $this->addFlash('error', $flashMessage);
+            return $this->redirectToRoute(
+                route: 'app_dev_users',
+                status: Response::HTTP_SEE_OTHER,
+            );
+        } catch (InvalidEmailException $exception) {
+            $error = match ($exception->result) {
+                EmailValidationResult::EMPTY => 'email.empty',
+                EmailValidationResult::TOO_LONG => 'email.too_long',
+                EmailValidationResult::INVALID_FORMAT => 'email.invalid_format',
+                EmailValidationResult::VALID => throw new \LogicException(
+                    'InvalidEmailException must not have VALID result.',
+                ),
+            };
+        } catch (InvalidPlainPasswordException $exception) {
+            $error = match ($exception->result) {
+                PlainPasswordValidationResult::EMPTY => 'password.empty',
+                PlainPasswordValidationResult::TOO_SHORT => 'password.too_short',
+                PlainPasswordValidationResult::TOO_LONG => 'password.too_long',
+                PlainPasswordValidationResult::VALID => throw new \LogicException(
+                    'InvalidPlainPasswordException must not have VALID result.',
+                ),
+            };
+        } catch (UserAlreadyExistsException) {
+            $error = 'user.already_exists';
         }
+
+        $flashMessage = $translator->trans('dev.user.error.'.$error);
+        $this->addFlash('error', $flashMessage);
 
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
@@ -273,10 +290,12 @@ final class UserDevController extends AbstractController
         $flashMessage = $translator->trans('dev.user.flash.deleted', [
             '%email%' => $user->email->value(),
         ]);
-
         $this->addFlash('success', $flashMessage);
 
-        return $this->redirectToRoute('app_dev_users');
+        return $this->redirectToRoute(
+            route: 'app_dev_users',
+            status: Response::HTTP_SEE_OTHER,
+        );
     }
 
     #[Route(
@@ -311,9 +330,11 @@ final class UserDevController extends AbstractController
         $flashMessage = $translator->trans('dev.user.flash.purged', [
             '%email%' => $email,
         ]);
-
         $this->addFlash('warning', $flashMessage);
 
-        return $this->redirectToRoute('app_dev_users');
+        return $this->redirectToRoute(
+            route: 'app_dev_users',
+            status: Response::HTTP_SEE_OTHER,
+        );
     }
 }
