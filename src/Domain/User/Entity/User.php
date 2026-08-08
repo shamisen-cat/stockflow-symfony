@@ -8,11 +8,14 @@ use App\Domain\Shared\Entity\DisablableTrait;
 use App\Domain\Shared\Entity\SoftDeletableTrait;
 use App\Domain\Shared\Entity\SuspendableTrait;
 use App\Domain\Shared\Entity\TimestampableTrait;
+use App\Domain\User\Enum\UserStatus;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\Exception\UserAlreadyDisabledException;
 use App\Domain\User\Exception\UserAlreadySuspendedException;
+use App\Domain\User\Exception\UserDeletedException;
 use App\Domain\User\Exception\UserNotDisabledException;
 use App\Domain\User\Exception\UserNotSuspendedException;
+use App\Domain\User\Exception\UserSuspendedException;
 use App\Domain\User\ValueObject\Email\Email;
 use App\Domain\User\ValueObject\Password\HashedPassword;
 use App\Infrastructure\User\Repository\UserRepository;
@@ -56,6 +59,12 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     public private(set) HashedPassword $password;
 
+    #[ORM\Column(
+        name: 'status',
+        enumType: UserStatus::class,
+    )]
+    public private(set) UserStatus $status;
+
     public static function create(
         Uuid $id,
         Email $email,
@@ -67,6 +76,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
             email: $email,
             password: $password,
             createdAt: $createdAt,
+            status: UserStatus::Active,
         );
     }
 
@@ -75,10 +85,12 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         Email $email,
         HashedPassword $password,
         \DateTimeImmutable $createdAt,
+        UserStatus $status,
     ) {
         $this->id = $id;
         $this->email = $email;
         $this->password = $password;
+        $this->status = $status;
 
         $this->markCreatedAt($createdAt);
     }
@@ -86,7 +98,11 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function disable(\DateTimeImmutable $disabledAt): void
     {
         if ($this->isDeleted()) {
-            throw UserAlreadyDeletedException::forUser($this->id);
+            throw UserDeletedException::forUser($this->id);
+        }
+
+        if ($this->isSuspended()) {
+            throw UserSuspendedException::forUser($this->id);
         }
 
         if ($this->isDisabled()) {
@@ -94,13 +110,19 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->markDisabledAt($disabledAt);
+        $this->refreshStatus();
+
         $this->markUpdatedAt($disabledAt);
     }
 
     public function enable(\DateTimeImmutable $enabledAt): void
     {
         if ($this->isDeleted()) {
-            throw UserAlreadyDeletedException::forUser($this->id);
+            throw UserDeletedException::forUser($this->id);
+        }
+
+        if ($this->isSuspended()) {
+            throw UserSuspendedException::forUser($this->id);
         }
 
         if (!$this->isDisabled()) {
@@ -108,13 +130,15 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->clearDisabledAt();
+        $this->refreshStatus();
+
         $this->markUpdatedAt($enabledAt);
     }
 
     public function suspend(\DateTimeImmutable $suspendedAt): void
     {
         if ($this->isDeleted()) {
-            throw UserAlreadyDeletedException::forUser($this->id);
+            throw UserDeletedException::forUser($this->id);
         }
 
         if ($this->isSuspended()) {
@@ -122,13 +146,15 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->markSuspendedAt($suspendedAt);
+        $this->refreshStatus();
+
         $this->markUpdatedAt($suspendedAt);
     }
 
     public function unsuspend(\DateTimeImmutable $unsuspendedAt): void
     {
         if ($this->isDeleted()) {
-            throw UserAlreadyDeletedException::forUser($this->id);
+            throw UserDeletedException::forUser($this->id);
         }
 
         if (!$this->isSuspended()) {
@@ -136,6 +162,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->clearSuspendedAt();
+        $this->refreshStatus();
+
         $this->markUpdatedAt($unsuspendedAt);
     }
 
@@ -146,6 +174,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->markDeletedAt($deletedAt);
+        $this->refreshStatus();
+
         $this->markUpdatedAt($deletedAt);
     }
 
@@ -183,5 +213,15 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[\Deprecated('since Symfony 7.3, erase credentials using the "__serialize()" method instead')]
     public function eraseCredentials(): void
     {
+    }
+
+    private function refreshStatus(): void
+    {
+        $this->status = match (true) {
+            $this->isDeleted() => UserStatus::Deleted,
+            $this->isSuspended() => UserStatus::Suspended,
+            $this->isDisabled() => UserStatus::Disabled,
+            default => UserStatus::Active,
+        };
     }
 }
