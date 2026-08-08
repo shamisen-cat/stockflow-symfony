@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
-use App\Domain\Shared\Entity\DisablableTrait;
-use App\Domain\Shared\Entity\SoftDeletableTrait;
-use App\Domain\Shared\Entity\SuspendableTrait;
-use App\Domain\Shared\Entity\TimestampableTrait;
+use App\Domain\Shared\Trait\DisablableTrait;
+use App\Domain\Shared\Trait\SoftDeletableTrait;
+use App\Domain\Shared\Trait\SuspendableTrait;
+use App\Domain\Shared\Trait\TimestampableTrait;
 use App\Domain\User\Enum\UserStatus;
 use App\Domain\User\Exception\UserAlreadyDeletedException;
 use App\Domain\User\Exception\UserAlreadyDisabledException;
