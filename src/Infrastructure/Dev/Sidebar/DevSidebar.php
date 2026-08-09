@@ -13,6 +13,7 @@ final readonly class DevSidebar
     public function __construct(
         public array $links,
         public array $subLinks,
+        public DevSidebarLinkId $currentSection,
         public DevSidebarLinkId $currentLink,
     ) {
     }

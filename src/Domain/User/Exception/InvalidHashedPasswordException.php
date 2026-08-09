@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\User\Exception;
 
 use App\Domain\Shared\Exception\InvalidValueObjectException;
-use App\Domain\User\ValueObject\Password\HashedPassword;
+use App\Domain\User\Password\HashedPassword;
 
 final class InvalidHashedPasswordException extends InvalidValueObjectException
 {

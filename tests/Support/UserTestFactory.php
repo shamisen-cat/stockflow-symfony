@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Support;
 
-use App\Domain\User\Entity\User;
-use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Password\HashedPassword;
+use App\Domain\User\Email\Email;
+use App\Domain\User\Password\HashedPassword;
+use App\Domain\User\User;
 use Symfony\Component\Uid\Uuid;
 
 final class UserTestFactory

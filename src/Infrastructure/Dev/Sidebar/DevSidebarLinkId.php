@@ -13,4 +13,13 @@ enum DevSidebarLinkId: string
     case OrganizationCreate = 'organization_create';
 
     case Membership = 'membership';
+
+    public function section(): self
+    {
+        return match ($this) {
+            self::UserCreate => self::User,
+            self::OrganizationCreate => self::Organization,
+            default => $this,
+        };
+    }
 }

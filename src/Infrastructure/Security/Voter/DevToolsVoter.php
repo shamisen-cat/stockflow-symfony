@@ -32,7 +32,6 @@ final class DevToolsVoter extends Voter
         return $attribute === self::ACCESS_DEV_TOOLS;
     }
 
-    // TODO: 認可実装時に dev 環境チェックを差し替え
     /**
      * @see Voter
      */

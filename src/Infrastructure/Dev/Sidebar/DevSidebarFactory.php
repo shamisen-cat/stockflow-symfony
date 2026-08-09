@@ -15,6 +15,8 @@ final class DevSidebarFactory
 
     public function create(DevSidebarLinkId $currentLink): DevSidebar
     {
+        $currentSection = $currentLink->section();
+
         $links = [
             new DevSidebarLink(
                 id: DevSidebarLinkId::User,
@@ -36,7 +38,7 @@ final class DevSidebarFactory
             ),
         ];
 
-        $subLinks = match ($currentLink) {
+        $subLinks = match ($currentSection) {
             DevSidebarLinkId::User => [
                 new DevSidebarLink(
                     id: DevSidebarLinkId::UserCreate,
@@ -56,6 +58,6 @@ final class DevSidebarFactory
             default => [],
         };
 
-        return new DevSidebar($links, $subLinks, $currentLink);
+        return new DevSidebar($links, $subLinks, $currentSection, $currentLink);
     }
 }

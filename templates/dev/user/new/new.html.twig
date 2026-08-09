@@ -2,11 +2,12 @@
   Dev user new page (UserDevController::new).
 
   Variables from the controller:
-  - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
-  - sidebarSubLinks: DevSidebarLink[] sub links for the current section
-  - currentLink: DevSidebarLinkId active parent sidebar link id
   - email: string submitted email for redisplay (empty on GET)
   - error: string|null error code for field highlighting (message via flash)
+  - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
+  - sidebarSubLinks: DevSidebarLink[] sub links for the current section
+  - currentSection: DevSidebarLinkId parent section id
+  - currentLink: DevSidebarLinkId active page link id
 #}
 
 {% extends 'layout/two_column.html.twig' %}
@@ -17,6 +18,7 @@
   {% include 'components/sidebar.html.twig' with {
     sidebarLinks: sidebarLinks,
     sidebarSubLinks: sidebarSubLinks,
+    currentSection: currentSection,
     currentLink: currentLink,
   } only %}
 {% endblock %}

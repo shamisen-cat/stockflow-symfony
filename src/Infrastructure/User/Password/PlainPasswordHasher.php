@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\User\Password;
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Password\HashedPassword;
+use App\Domain\User\Password\PlainPassword;
 use App\Domain\User\Password\PlainPasswordHasherInterface;
-use App\Domain\User\ValueObject\Password\HashedPassword;
-use App\Domain\User\ValueObject\Password\PlainPassword;
+use App\Domain\User\User;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 final readonly class PlainPasswordHasher implements PlainPasswordHasherInterface

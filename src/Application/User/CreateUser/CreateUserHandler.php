@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\User\CreateUser;
 
-use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\Password\PlainPasswordHasherInterface;
-use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\User;
+use App\Domain\User\UserRepositoryInterface;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class CreateUserHandler

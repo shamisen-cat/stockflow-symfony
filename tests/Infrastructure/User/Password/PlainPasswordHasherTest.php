@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\User\Password;
 
+use App\Domain\User\Password\PlainPassword;
 use App\Domain\User\Password\PlainPasswordHasherInterface;
-use App\Domain\User\ValueObject\Password\PlainPassword;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
