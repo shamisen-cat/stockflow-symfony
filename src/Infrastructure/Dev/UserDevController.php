@@ -74,6 +74,7 @@ final class UserDevController extends AbstractController
             'searchEmail' => $result->searchEmail,
             'sidebarLinks' => $sidebar->links,
             'sidebarSubLinks' => $sidebar->subLinks,
+            'currentSection' => $sidebar->currentSection,
             'currentLink' => $sidebar->currentLink,
         ]);
     }
@@ -171,14 +172,15 @@ final class UserDevController extends AbstractController
     public function new(
         DevSidebarFactory $devSidebarFactory,
     ): Response {
-        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::UserCreate);
 
         return $this->render('dev/user/new/new.html.twig', [
-            'sidebarLinks' => $sidebar->links,
-            'sidebarSubLinks' => $sidebar->subLinks,
-            'currentLink' => $sidebar->currentLink,
             'email' => '',
             'error' => null,
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentSection' => $sidebar->currentSection,
+            'currentLink' => $sidebar->currentLink,
         ]);
     }
 
@@ -251,14 +253,15 @@ final class UserDevController extends AbstractController
         $flashMessage = $translator->trans('dev.user.error.'.$error);
         $this->addFlash('error', $flashMessage);
 
-        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::UserCreate);
 
         return $this->render('dev/user/new/new.html.twig', [
-            'sidebarLinks' => $sidebar->links,
-            'sidebarSubLinks' => $sidebar->subLinks,
-            'currentLink' => $sidebar->currentLink,
             'email' => $email,
             'error' => $error,
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentSection' => $sidebar->currentSection,
+            'currentLink' => $sidebar->currentLink,
         ]);
     }
 

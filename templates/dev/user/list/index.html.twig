@@ -9,7 +9,8 @@
   - searchEmail: current email search query (empty string when unset)
   - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
   - sidebarSubLinks: DevSidebarLink[] sub links for the current section
-  - currentLink: DevSidebarLinkId active parent sidebar link id
+  - currentSection: DevSidebarLinkId parent section id
+  - currentLink: DevSidebarLinkId active page link id
 #}
 
 {% extends 'layout/two_column.html.twig' %}
@@ -20,6 +21,7 @@
   {% include 'components/sidebar.html.twig' with {
     sidebarLinks: sidebarLinks,
     sidebarSubLinks: sidebarSubLinks,
+    currentSection: currentSection,
     currentLink: currentLink,
   } only %}
 {% endblock %}

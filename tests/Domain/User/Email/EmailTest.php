@@ -90,7 +90,6 @@ final class EmailTest extends TestCase
             EmailValidationResult::TOO_LONG,
         ];
 
-        // TODO: provideEmailValidationCases に INVALID_FORMAT の yield を追加
         yield 'invalid_format' => [
             'invalid-format',
             EmailValidationResult::INVALID_FORMAT,

@@ -4,7 +4,8 @@
   Required variables (include ... with):
   - sidebarLinks: list<DevSidebarLink> parent navigation links
   - sidebarSubLinks: list<DevSidebarLink> sub links for the current section
-  - currentLink: DevSidebarLinkId active parent link id
+  - currentSection: DevSidebarLinkId parent section id
+  - currentLink: DevSidebarLinkId active page link id
 #}
 
 {% set linkBase = '
@@ -28,7 +29,12 @@
   hover:text-slate-900
 ' %}
 
-{% set linkSub = linkBase ~ '
+{% set linkSubActive = linkBase ~ '
+  pl-6 bg-slate-100
+  text-slate-900
+' %}
+
+{% set linkSubInactive = linkBase ~ '
   pl-6
   text-slate-700
   transition
@@ -38,12 +44,15 @@
 
 <ul class="divide-y divide-slate-100">
   {% for link in sidebarLinks %}
+    {% set isCurrentPage = link.id == currentLink %}
+    {% set isCurrentSection = link.id == currentSection %}
+
     <li>
       <a
         href="{{ link.href }}"
-        class="{{ link.id == currentLink ? linkActive : linkInactive }}"
+        class="{{ isCurrentPage ? linkActive : linkInactive }}"
 
-        {% if link.id == currentLink %}
+        {% if isCurrentPage %}
           aria-current="page"
         {% endif %}
       >
@@ -55,13 +64,19 @@
         <span>{{ link.label|trans }}</span>
       </a>
 
-      {% if link.id == currentLink and sidebarSubLinks is not empty %}
+      {% if isCurrentSection and sidebarSubLinks is not empty %}
         <ul>
           {% for subLink in sidebarSubLinks %}
+            {% set isSubCurrentPage = subLink.id == currentLink %}
+
             <li>
               <a
                 href="{{ subLink.href }}"
-                class="{{ linkSub }}"
+                class="{{ isSubCurrentPage ? linkSubActive : linkSubInactive }}"
+
+                {% if isSubCurrentPage %}
+                  aria-current="page"
+                {% endif %}
               >
                 {{ ux_icon(
                   subLink.icon,
