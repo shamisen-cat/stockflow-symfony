@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\User\Exception;
 
 use App\Domain\Shared\Exception\InvalidValueObjectException;
-use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Email\EmailValidationResult;
+use App\Domain\User\Email\Email;
+use App\Domain\User\Email\EmailValidationResult;
 
 final class InvalidEmailException extends InvalidValueObjectException
 {

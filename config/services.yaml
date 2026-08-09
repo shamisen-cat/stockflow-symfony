@@ -20,9 +20,7 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/Domain/*/Entity/'
-            - '../src/Domain/*/Exception/'
-            - '../src/Domain/*/ValueObject/'
+            - '../src/Domain/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
@@ -30,14 +28,14 @@ services:
     App\Domain\User\Password\PlainPasswordHasherInterface:
         alias: App\Infrastructure\User\Password\PlainPasswordHasher
 
-    App\Domain\User\Repository\UserRepositoryInterface:
-        alias: App\Infrastructure\User\Repository\UserRepository
+    App\Domain\User\UserRepositoryInterface:
+        alias: App\Infrastructure\User\UserRepository
 
     App\Application\User\UserReaderInterface:
         alias: App\Infrastructure\User\UserReader
 
     App\Application\Shared\Transaction\TransactionManagerInterface:
-        alias: App\Infrastructure\Shared\Transaction\DoctrineTransactionManager
+        alias: App\Infrastructure\Shared\Transaction\TransactionManager
 
     Symfony\Component\Clock\ClockInterface:
         class: Symfony\Component\Clock\NativeClock

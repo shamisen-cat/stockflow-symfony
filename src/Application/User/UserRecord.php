@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
-use App\Domain\User\Enum\UserStatus;
+use App\Domain\User\UserStatus;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class UserRecord

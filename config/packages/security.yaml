@@ -7,7 +7,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         email_user_provider:
-            id: App\Infrastructure\Security\UserProvider\EmailUserProvider
+            id: App\Infrastructure\Security\EmailUserProvider
 
     firewalls:
         dev:
@@ -17,9 +17,9 @@ security:
         main:
             lazy: true
             provider: email_user_provider
-            user_checker: App\Infrastructure\Security\UserChecker\AccountStatusUserChecker
+            user_checker: App\Infrastructure\Security\AccountStatusUserChecker
             custom_authenticators:
-                - App\Infrastructure\Security\Authenticator\LoginFormAuthenticator
+                - App\Infrastructure\Security\LoginFormAuthenticator
             logout:
                 path: /logout
                 target: /login

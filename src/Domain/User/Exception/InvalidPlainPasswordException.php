@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\User\Exception;
 
 use App\Domain\Shared\Exception\InvalidValueObjectException;
-use App\Domain\User\ValueObject\Password\PlainPassword;
-use App\Domain\User\ValueObject\Password\PlainPasswordValidationResult;
+use App\Domain\User\Password\PlainPassword;
+use App\Domain\User\Password\PlainPasswordValidationResult;
 
 final class InvalidPlainPasswordException extends InvalidValueObjectException
 {

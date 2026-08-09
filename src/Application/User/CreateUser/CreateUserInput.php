@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\User\CreateUser;
 
-use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Password\PlainPassword;
+use App\Domain\User\Email\Email;
+use App\Domain\User\Password\PlainPassword;
 
 final readonly class CreateUserInput
 {

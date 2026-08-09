@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\User\Exception;
 
+use App\Domain\User\Email\Email;
+use App\Domain\User\Email\EmailValidationResult;
 use App\Domain\User\Exception\InvalidEmailException;
-use App\Domain\User\ValueObject\Email\Email;
-use App\Domain\User\ValueObject\Email\EmailValidationResult;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
