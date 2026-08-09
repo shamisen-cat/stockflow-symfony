@@ -6,11 +6,8 @@ namespace App\Infrastructure\User\Repository;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Infrastructure\Shared\Pagination\SortCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -70,40 +67,5 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
     public function add(User $user): void
     {
         $this->getEntityManager()->persist($user);
-    }
-
-    /**
-     * @return Pagerfanta<User>
-     */
-    public function paginate(
-        string $email,
-        SortCriteria $sort,
-        int $page,
-        int $maxPerPage,
-    ): Pagerfanta {
-        $queryBuilder = $this->createQueryBuilder('u');
-
-        if ($email !== '') {
-            $escapedEmail = addcslashes($email, '%_\\');
-
-            $queryBuilder
-                ->andWhere('u.email.value LIKE :email')
-                ->setParameter('email', '%'.$escapedEmail.'%');
-        }
-
-        $queryBuilder->orderBy($sort->field, $sort->direction);
-
-        if ($sort->field !== 'u.id') {
-            $queryBuilder->addOrderBy('u.id', 'ASC');
-        }
-
-        /** @var Pagerfanta<User> $pager */
-        $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
-            adapter: new QueryAdapter($queryBuilder),
-            currentPage: max(1, $page),
-            maxPerPage: max(1, $maxPerPage),
-        );
-
-        return $pager;
     }
 }

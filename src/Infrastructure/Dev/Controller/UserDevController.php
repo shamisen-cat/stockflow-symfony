@@ -7,9 +7,8 @@ namespace App\Infrastructure\Dev\Controller;
 use App\Application\Shared\Transaction\TransactionManagerInterface;
 use App\Application\User\CreateUser\CreateUserHandler;
 use App\Application\User\CreateUser\CreateUserInput;
-use App\Application\User\ListUsers\ListUsersHandler;
-use App\Application\User\ListUsers\ListUsersInput;
-use App\Domain\User\Entity\User;
+use App\Application\User\UserReaderInterface;
+use App\Application\User\UserRecord;
 use App\Domain\User\Exception\InvalidEmailException;
 use App\Domain\User\Exception\InvalidPlainPasswordException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
@@ -34,6 +33,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
+    private const int LIST_USERS_MAX_PER_PAGE = 100;
+
     #[Route(
         path: '/dev/users',
         name: 'app_dev_users',
@@ -41,28 +42,28 @@ final class UserDevController extends AbstractController
     )]
     public function index(
         Request $request,
-        ListUsersHandler $listUsersHandler,
+        UserReaderInterface $userReader,
         DevSidebarFactory $devSidebarFactory,
     ): Response {
         $email = trim($request->query->getString('email'));
         $sortKey = $request->query->getString('sort');
         $direction = $request->query->getString('direction');
-        $page = $request->query->getInt('page', 1);
-        $perPage = $request->query->getInt('per_page', 20);
+        $page = max(1, $request->query->getInt('page', 1));
+        $perPage = min(
+            max(1, $request->query->getInt('per_page', 20)),
+            self::LIST_USERS_MAX_PER_PAGE,
+        );
 
-        $listUsersInput = ListUsersInput::create(
+        $result = $userReader->paginate(
             email: $email,
             sortKey: $sortKey,
             direction: $direction,
             page: $page,
-            perPage: $perPage,
+            maxPerPage: $perPage,
         );
 
-        $result = $listUsersHandler->handle($listUsersInput);
-
-        /** @var list<User> $users */
+        /** @var list<UserRecord> $users */
         $users = $result->pagination->getCurrentPageResults();
-
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
         return $this->render('dev/user/list/index.html.twig', [
@@ -84,27 +85,29 @@ final class UserDevController extends AbstractController
     )]
     public function export(
         Request $request,
-        ListUsersHandler $listUsersHandler,
+        UserReaderInterface $userReader,
         ClockInterface $clock,
     ): Response {
         $email = trim($request->query->getString('email'));
         $sortKey = $request->query->getString('sort');
         $direction = $request->query->getString('direction');
-        $page = $request->query->getInt('page', 1);
-        $perPage = $request->query->getInt('per_page', 20);
+        $page = max(1, $request->query->getInt('page', 1));
+        $perPage = min(
+            max(1, $request->query->getInt('per_page', 20)),
+            self::LIST_USERS_MAX_PER_PAGE,
+        );
 
-        $listUsersInput = ListUsersInput::create(
+        $result = $userReader->paginate(
             email: $email,
             sortKey: $sortKey,
             direction: $direction,
             page: $page,
-            perPage: $perPage,
+            maxPerPage: $perPage,
         );
 
-        $result = $listUsersHandler->handle($listUsersInput);
-        $now = $clock->now();
+        $at = $clock->now();
 
-        /** @var list<User> $users */
+        /** @var list<UserRecord> $users */
         $users = $result->pagination->getCurrentPageResults();
 
         $response = new StreamedResponse(function () use ($users): void {
@@ -117,6 +120,7 @@ final class UserDevController extends AbstractController
             fputcsv($handle, [
                 'id',
                 'email',
+                'status',
                 'created_at',
                 'updated_at',
                 'disabled_at',
@@ -126,8 +130,9 @@ final class UserDevController extends AbstractController
 
             foreach ($users as $user) {
                 fputcsv($handle, [
-                    $user->id->toRfc4122(),
-                    $user->email->value(),
+                    $user->id,
+                    $user->email,
+                    $user->status->name,
                     $user->createdAt->format('Y-m-d H:i:s'),
                     $user->updatedAt->format('Y-m-d H:i:s'),
                     $user->disabledAt?->format('Y-m-d H:i:s') ?? '',
@@ -146,7 +151,7 @@ final class UserDevController extends AbstractController
 
         $filename = sprintf(
             'users_%s_page-%d.csv',
-            $now->format('Ymd_His'),
+            $at->format('Ymd_His'),
             $result->pagination->getCurrentPage(),
         );
 

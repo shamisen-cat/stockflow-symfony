@@ -33,6 +33,9 @@ services:
     App\Domain\User\Repository\UserRepositoryInterface:
         alias: App\Infrastructure\User\Repository\UserRepository
 
+    App\Application\User\UserReaderInterface:
+        alias: App\Infrastructure\User\UserReader
+
     App\Application\Shared\Transaction\TransactionManagerInterface:
         alias: App\Infrastructure\Shared\Transaction\DoctrineTransactionManager
 

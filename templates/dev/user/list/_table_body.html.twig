@@ -6,13 +6,13 @@
 #}
 
 {% for user in users %}
-  {% if user.isDeleted %}
+  {% if user.status.name == 'Deleted' %}
     {% set statusLabel = 'dev.user.status.deleted'|trans %}
     {% set statusClass = 'bg-red-50 text-red-700' %}
-  {% elseif user.isSuspended %}
+  {% elseif user.status.name == 'Suspended' %}
     {% set statusLabel = 'dev.user.status.suspended'|trans %}
     {% set statusClass = 'bg-amber-50 text-amber-700' %}
-  {% elseif user.isDisabled %}
+  {% elseif user.status.name == 'Disabled' %}
     {% set statusLabel = 'dev.user.status.disabled'|trans %}
     {% set statusClass = 'bg-slate-50 text-slate-700' %}
   {% else %}
@@ -39,13 +39,13 @@
       <div class="flex items-center gap-1">
         <code
           class="font-mono text-xs"
-          title="{{ user.id.toRfc4122() }}"
+          title="{{ user.id }}"
         >
-          {{ user.id.toRfc4122()|slice(0, 8) }}…
+          {{ user.id|slice(0, 8) }}…
         </code>
 
         {% include 'components/button/clipboard_button.html.twig' with {
-          text: user.id.toRfc4122(),
+          text: user.id,
           copyLabel: 'dev.user.button.copy_id'|trans,
           copiedLabel: 'dev.user.button.copied_id'|trans,
         } only %}
@@ -86,12 +86,12 @@
     </td>
 
     <td class="px-4 py-1">
-      {% if not user.isDeleted %}
+      {% if user.status.name != 'Deleted' %}
         <form
           method="post"
           action="{{ path(
             'app_dev_users_delete',
-            { id: user.id.toRfc4122() },
+            { id: user.id },
           ) }}"
         >
           <input
@@ -121,7 +121,7 @@
           method="post"
           action="{{ path(
             'app_dev_users_purge',
-            { id: user.id.toRfc4122() },
+            { id: user.id },
           ) }}"
         >
           <input
