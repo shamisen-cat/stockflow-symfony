@@ -4,6 +4,7 @@
     "words": [
         "autofocus",
         "disablable",
+        "dnsmasq",
         "fieldset",
         "frankenphp",
         "focusin",
@@ -26,7 +27,8 @@
         "tabindex",
         "timestampable",
         "unsuspended",
-        "viewports"
+        "viewports",
+        "vulcain"
     ],
     "overrides": [
         {
