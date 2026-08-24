@@ -11,42 +11,55 @@
 {% block body %}
   <body class="
       group/sidebar
-      flex flex-col overflow-hidden
-      h-dvh bg-slate-50
-      text-slate-900 antialiased
+      flex flex-col
+      overflow-hidden
+      h-dvh
+      bg-slate-50
+      text-slate-700
+      antialiased
     "
     data-controller="sidebar"
     data-sidebar-open-value="false"
     data-sidebar-open-label-value="{{ 'layout.sidebar.open'|trans }}"
     data-sidebar-close-label-value="{{ 'layout.sidebar.close'|trans }}"
+    data-action="keydown.esc@window->sidebar#closeOnEscape"
   >
     <header
       class="
-        relative z-20
-        flex items-center shrink-0
-        h-14 pr-19 bg-white
+        relative
+        z-20
+        flex
+        items-center
+        shrink-0
+        h-14 xl:h-12
+        pr-19 xl:pr-4
+        bg-white
         border-b border-slate-200
-        xl:h-12 xl:pr-4
       "
+      data-sidebar-target="header"
     >
       <div
         class="
-          flex items-center justify-between
+          flex
+          items-center justify-between
           w-full min-w-0
         "
       >
         <a
           href="#"
           class="
-            inline-flex items-center justify-center shrink-0 gap-1
-            min-w-0 min-h-11 px-4
+            inline-flex
+            items-center justify-center
+            gap-1
+            shrink-0
+            min-h-11 xl:h-9
+            px-4
             rounded-lg
-            text-lg font-semibold text-slate-900
-            transition
-            xl:h-9
-            hover:text-slate-700
             focus:outline-none
             focus:ring-2 focus:ring-slate-700
+            text-lg font-semibold
+            text-slate-900 hover:text-slate-700
+            transition
           "
         >
           {{ ux_icon(
@@ -57,26 +70,32 @@
           <span>Stockflow</span>
         </a>
 
-        <div class="flex items-center shrink-0">
+        <div
+          class="
+            flex
+            items-center
+            shrink-0
+          "
+        >
           <a
             href="#"
             class="
-              inline-flex items-center justify-center
-              min-w-11 min-h-11
-              rounded-lg
-              text-slate-700
-              transition
-              xl:w-9 xl:h-9
+              inline-flex
+              items-center justify-center
+              min-w-11 xl:w-9
+              min-h-11 xl:h-9
               hover:bg-slate-100
-              hover:text-slate-900
+              rounded-lg
               focus:outline-none
               focus:ring-2 focus:ring-slate-700
+              text-slate-700 hover:text-slate-900
+              transition
             "
             aria-label="{{ 'layout.user_settings'|trans }}"
           >
             {{ ux_icon(
               'lucide:circle-user',
-              { class: 'shrink-0 size-6' },
+              { class: 'size-6' },
             ) }}
           </a>
         </div>
@@ -87,51 +106,71 @@
       type="button"
       class="
         group/toggle
-        fixed top-1.5 right-4 z-50
-        inline-flex items-center justify-center
-        w-11 h-11 bg-transparent
-        rounded-lg
-        transition
+        fixed
+        top-1.5 right-4 z-50
         xl:hidden
-        hover:bg-slate-100
+        inline-flex
+        items-center justify-center
+        w-11 h-11
+        bg-transparent hover:bg-slate-100
+        rounded-lg
         focus:outline-none
         focus:ring-2 focus:ring-slate-700
+        transition
       "
-      data-sidebar-target="toggle"
-      data-action="click->sidebar#toggle"
       aria-label="{{ 'layout.sidebar.open'|trans }}"
       aria-controls="app-sidebar"
       aria-expanded="false"
+      data-sidebar-target="toggle"
+      data-action="click->sidebar#toggle"
     >
-      <span class="relative block w-6 h-6">
+      <span
+        class="
+          relative
+          block
+          w-6 h-6
+        "
+      >
         <span
           class="
-            absolute top-0 left-0 origin-center
-            block w-6 h-0.5 bg-slate-900
-            transition-all duration-300
+            absolute
+            top-0 left-0
+            origin-center
             group-aria-expanded/toggle:top-1/2
             group-aria-expanded/toggle:-translate-y-1/2
             group-aria-expanded/toggle:rotate-45
+            block
+            w-6 h-0.5
+            bg-slate-900
+            transition-all duration-300
           "
         ></span>
         <span
           class="
-            absolute top-2.5 left-0 origin-center
-            block w-6 h-0.5 bg-slate-900
-            transition-all duration-300
+            absolute
+            top-2.5 left-0
+            origin-center
             group-aria-expanded/toggle:top-1/2
             group-aria-expanded/toggle:-translate-y-1/2
+            block
+            w-6 h-0.5
+            bg-slate-900
             group-aria-expanded/toggle:opacity-0
+            transition-all duration-300
           "
         ></span>
         <span
           class="
-            absolute top-5 left-0 origin-center
-            block w-6 h-0.5 bg-slate-900
-            transition-all duration-300
+            absolute
+            top-5 left-0
+            origin-center
             group-aria-expanded/toggle:top-1/2
             group-aria-expanded/toggle:-translate-y-1/2
             group-aria-expanded/toggle:-rotate-45
+            block
+            w-6 h-0.5
+            bg-slate-900
+            transition-all duration-300
           "
         ></span>
       </span>
@@ -145,35 +184,52 @@
     >
       <aside
         id="app-sidebar"
+        tabindex="-1"
         class="
-          fixed right-0 z-40 inset-y-0 translate-x-full
-          flex flex-col
-          w-64 min-h-0 bg-white
-          border-l border-slate-200 shadow-xl
-          transition-transform duration-300
-          xl:static xl:z-auto xl:translate-x-0
-          xl:shrink-0
-          xl:w-60
-          xl:border-l-0 xl:border-r xl:shadow-none
+          fixed xl:static
+          right-0
+          z-40 xl:z-auto
+          inset-y-0
+          translate-x-full xl:translate-x-0
           max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
+          flex flex-col
+          xl:shrink-0
+          w-64 xl:w-60
+          min-h-0
+          bg-white
+          xl:border-r
+          border-slate-200
+          shadow-xl xl:shadow-none
+          transition-transform duration-300
         "
         data-sidebar-target="sidebar"
-        aria-hidden="true"
       >
         <div
           class="
-            flex items-center shrink-0
-            h-14 pl-4 pr-16
-            border-b border-slate-200
             xl:hidden
+            flex
+            items-center
+            shrink-0
+            h-14
+            pl-4 pr-16
+            border-b border-slate-200
           "
         >
-          <span class="text-sm">
+          <span
+            id="app-sidebar-title"
+            class="text-sm text-slate-700"
+          >
             {{ 'layout.menu'|trans }}
           </span>
         </div>
 
-        <nav class="flex-1 overflow-y-auto min-h-0">
+        <nav
+          class="
+            flex-1
+            overflow-y-auto
+            min-h-0
+          "
+        >
           {% block sidebar %}{% endblock %}
         </nav>
 
@@ -196,14 +252,17 @@
             <button
               type="submit"
               class="
-                inline-flex items-center gap-2
-                w-full min-h-11 pl-4
-                text-sm text-slate-700
-                transition
+                inline-flex
+                items-center
+                gap-2
+                w-full min-h-11
+                pl-4
                 hover:bg-slate-100
-                hover:text-slate-900
                 focus:outline-none
                 focus:ring-2 focus:ring-inset focus:ring-slate-700
+                text-sm
+                text-slate-700 hover:text-slate-900
+                transition
               "
               aria-label="{{ 'layout.logout'|trans }}"
             >
@@ -220,9 +279,11 @@
 
       <main
         class="
-          flex flex-col flex-1 overflow-hidden
+          flex flex-col flex-1
+          overflow-hidden
           min-w-0 min-h-0
         "
+        data-sidebar-target="main"
       >
         {% block main %}{% endblock %}
       </main>
@@ -230,16 +291,18 @@
 
     <div
       class="
-        fixed z-30 inset-0
+        fixed
+        z-30
+        inset-0
+        xl:hidden
         bg-slate-900/50
         opacity-0
-        pointer-events-none
-        transition-opacity duration-300
-        xl:hidden
         max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
+        pointer-events-none
         max-xl:group-data-[sidebar-open-value=true]/sidebar:pointer-events-auto
+        transition-opacity duration-300
       "
-      data-sidebar-target="overlay"
+      aria-hidden="true"
       data-action="click->sidebar#close"
     ></div>
   </body>

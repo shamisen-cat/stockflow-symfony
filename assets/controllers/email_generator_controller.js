@@ -36,7 +36,9 @@ export default class extends Controller {
         inputId: String,
     };
 
-    /** @this {EmailGeneratorControllerContext} */
+    /**
+     * @this {EmailGeneratorControllerContext}
+     */
     generate() {
         const length = this.selectedLength();
         const localPart = this.randomHex(length);
@@ -48,7 +50,9 @@ export default class extends Controller {
         input.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
-    /** @this {EmailGeneratorControllerContext} */
+    /**
+     * @this {EmailGeneratorControllerContext}
+     */
     selectedLength() {
         // prettier-ignore
         const selected = this.lengthTargets.find(
@@ -72,7 +76,9 @@ export default class extends Controller {
 
     /**
      * @this {EmailGeneratorControllerContext}
+     *
      * @param {number} hexLength
+     *
      * @returns {string}
      */
     randomHex(hexLength) {
@@ -90,7 +96,9 @@ export default class extends Controller {
         return hex.slice(0, hexLength);
     }
 
-    /** @this {EmailGeneratorControllerContext} */
+    /**
+     * @this {EmailGeneratorControllerContext}
+     */
     inputElement() {
         if (this.inputIdValue === '') {
             throw new Error('email-generator requires inputId');

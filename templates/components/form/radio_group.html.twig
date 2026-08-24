@@ -19,11 +19,20 @@
     {{ legend }}
   </legend>
 
-  <div class="flex items-center gap-3 mt-1">
+  <div
+    class="
+      flex
+      items-center
+      gap-3
+      mt-1
+    "
+  >
     {% for option in options %}
       <label
         class="
-          inline-flex items-center gap-1
+          inline-flex
+          items-center
+          gap-1
           text-xs text-slate-700
         "
       >
@@ -36,12 +45,7 @@
             checked
           {% endif %}
 
-          class="
-            h-4 w-4
-            border-slate-300
-            text-slate-700
-            focus:ring-slate-700
-          "
+          class="h-4 w-4"
 
           {% if targetController is defined and targetName is defined %}
             data-{{ targetController }}-target="{{ targetName }}"

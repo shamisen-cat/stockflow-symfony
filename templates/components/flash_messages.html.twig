@@ -7,22 +7,38 @@
 
 {% set flashStyles = {
   success: {
-    box: 'bg-emerald-50 border-emerald-200 text-emerald-700',
     icon: 'lucide:circle-check',
+    box: '
+      bg-emerald-50
+      border-emerald-200
+      text-emerald-700
+    ',
   },
   warning: {
-    box: 'bg-amber-50 border-amber-200 text-amber-700',
     icon: 'lucide:triangle-alert',
+    box: '
+      bg-amber-50
+      border-amber-200
+      text-amber-700
+    ',
   },
   error: {
-    box: 'bg-red-50 border-red-200 text-red-700',
     icon: 'lucide:circle-alert',
+    box: '
+      bg-red-50
+      border-red-200
+      text-red-700
+    ',
   },
 } %}
 
 {% set flashStyleFallback = {
-  box: 'bg-slate-50 border-slate-200 text-slate-700',
   icon: 'lucide:circle-alert',
+  box: '
+    bg-slate-50
+    border-slate-200
+    text-slate-700
+  ',
 } %}
 
 {% set flashDismissAfter = {
@@ -36,28 +52,33 @@
 {% if flashes is not empty %}
   <div
     class="
-      shrink-0 space-y-2
-      px-4 pb-3
+      space-y-2
+      shrink-0
+      px-4 pb-4
     "
+    aria-live="polite"
     data-controller="flash-messages"
     data-action="flash-message:dismissed->flash-messages#onDismissed"
-    aria-live="polite"
   >
     {% for label, messages in flashes %}
-      {% for message in messages %}
-        {% set flashStyle = flashStyles[label] ?? flashStyleFallback %}
+      {% set flashStyle = flashStyles[label] ?? flashStyleFallback %}
+      {% set dismissAfter = flashDismissAfter[label] ?? 0 %}
 
+      {% for message in messages %}
         <div
           role="alert"
           class="
-            flex items-center gap-1
+            flex
+            items-center
+            gap-1
             pl-4 pr-2 py-2
-            border rounded-lg
+            border
+            rounded-lg
             text-sm
             {{ flashStyle.box }}
           "
           data-controller="flash-message"
-          data-flash-message-dismiss-after-value="{{ flashDismissAfter[label] ?? 0 }}"
+          data-flash-message-dismiss-after-value="{{ dismissAfter }}"
           data-action="
             mouseenter->flash-message#pauseTimer
             mouseleave->flash-message#resumeTimer
@@ -70,29 +91,35 @@
             { class: 'shrink-0 size-4' },
           ) }}
 
-          <span class="flex-1 min-w-0">
+          <span
+            class="
+              flex-1
+              min-w-0
+            "
+          >
             {{ message }}
           </span>
 
           <button
             type="button"
             class="
-              inline-flex items-center justify-center shrink-0
+              inline-flex
+              items-center justify-center
+              shrink-0
               w-7 h-7
-              rounded-md
-              opacity-70
-              transition
               hover:bg-black/5
-              hover:opacity-100
+              rounded
               focus:outline-none
               focus:ring-2 focus:ring-current
+              opacity-70 hover:opacity-100 focus:opacity-100
+              transition
             "
-            data-action="click->flash-message#dismiss"
             aria-label="{{ 'flash.close'|trans }}"
+            data-action="click->flash-message#dismiss"
           >
             {{ ux_icon(
               'lucide:x',
-              { class: 'shrink-0 size-4' },
+              { class: 'size-4' },
             ) }}
           </button>
         </div>
