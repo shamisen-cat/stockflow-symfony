@@ -9,24 +9,15 @@ use App\Domain\User\Password\PlainPassword;
 
 final readonly class CreateUserInput
 {
-    public function __construct(
-        public Email $email,
-        public PlainPassword $password,
-        public \DateTimeImmutable $createdAt,
-    ) {
-    }
+    public Email $email;
+    public PlainPassword $password;
 
-    public static function create(
+    public function __construct(
         string $email,
         string $password,
-        \DateTimeImmutable $createdAt,
-    ): self {
-        $trimmedEmail = trim($email);
-
-        return new self(
-            email: Email::of($trimmedEmail),
-            password: PlainPassword::of($password),
-            createdAt: $createdAt,
-        );
+        public \DateTimeImmutable $createdAt,
+    ) {
+        $this->email = Email::of(trim($email));
+        $this->password = PlainPassword::of($password);
     }
 }

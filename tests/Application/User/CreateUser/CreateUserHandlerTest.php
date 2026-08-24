@@ -50,8 +50,8 @@ final class CreateUserHandlerTest extends TestCase
         $createdAt = $this->now();
 
         $createUserInput = new CreateUserInput(
-            email: $email,
-            password: $password,
+            email: $email->value(),
+            password: $password->value(),
             createdAt: $createdAt,
         );
 
@@ -99,8 +99,8 @@ final class CreateUserHandlerTest extends TestCase
         $createdAt = $this->now();
 
         $createUserInput = new CreateUserInput(
-            email: $email,
-            password: $password,
+            email: $email->value(),
+            password: $password->value(),
             createdAt: $createdAt,
         );
 

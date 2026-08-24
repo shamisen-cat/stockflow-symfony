@@ -7,6 +7,7 @@ namespace App\Infrastructure\Dev;
 use App\Application\Shared\Transaction\TransactionManagerInterface;
 use App\Application\User\CreateUser\CreateUserHandler;
 use App\Application\User\CreateUser\CreateUserInput;
+use App\Application\User\ListUsers\ListUsersInput;
 use App\Application\User\UserReaderInterface;
 use App\Application\User\UserRecord;
 use App\Domain\User\Email\EmailValidationResult;
@@ -33,8 +34,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted(DevToolsVoter::ACCESS_DEV_TOOLS)]
 final class UserDevController extends AbstractController
 {
-    private const int LIST_USERS_MAX_PER_PAGE = 100;
-
     #[Route(
         path: '/dev/users',
         name: 'app_dev_users',
@@ -45,25 +44,23 @@ final class UserDevController extends AbstractController
         UserReaderInterface $userReader,
         DevSidebarFactory $devSidebarFactory,
     ): Response {
-        $email = trim($request->query->getString('email'));
+        $email = $request->query->getString('email');
         $sortKey = $request->query->getString('sort');
         $direction = $request->query->getString('direction');
-        $page = max(1, $request->query->getInt('page', 1));
-        $perPage = min(
-            max(1, $request->query->getInt('per_page', 20)),
-            self::LIST_USERS_MAX_PER_PAGE,
-        );
+        $page = $request->query->getInt('page', ListUsersInput::DEFAULT_PAGE);
+        $perPage = $request->query->getInt('per_page', ListUsersInput::DEFAULT_MAX_PER_PAGE);
 
-        $result = $userReader->paginate(
+        $result = $userReader->paginate(new ListUsersInput(
             email: $email,
             sortKey: $sortKey,
             direction: $direction,
             page: $page,
             maxPerPage: $perPage,
-        );
+        ));
 
         /** @var list<UserRecord> $users */
         $users = $result->pagination->getCurrentPageResults();
+
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
 
         return $this->render('dev/user/list/index.html.twig', [
@@ -89,22 +86,19 @@ final class UserDevController extends AbstractController
         UserReaderInterface $userReader,
         ClockInterface $clock,
     ): Response {
-        $email = trim($request->query->getString('email'));
+        $email = $request->query->getString('email');
         $sortKey = $request->query->getString('sort');
         $direction = $request->query->getString('direction');
-        $page = max(1, $request->query->getInt('page', 1));
-        $perPage = min(
-            max(1, $request->query->getInt('per_page', 20)),
-            self::LIST_USERS_MAX_PER_PAGE,
-        );
+        $page = $request->query->getInt('page', ListUsersInput::DEFAULT_PAGE);
+        $perPage = $request->query->getInt('per_page', ListUsersInput::DEFAULT_MAX_PER_PAGE);
 
-        $result = $userReader->paginate(
+        $result = $userReader->paginate(new ListUsersInput(
             email: $email,
             sortKey: $sortKey,
             direction: $direction,
             page: $page,
             maxPerPage: $perPage,
-        );
+        ));
 
         $at = $clock->now();
 
@@ -145,15 +139,15 @@ final class UserDevController extends AbstractController
             fclose($handle);
         });
 
-        $response->headers->set(
-            'Content-Type',
-            'text/csv; charset=UTF-8',
-        );
-
         $filename = sprintf(
             'users_%s_page-%d.csv',
             $at->format('Ymd_His'),
             $result->pagination->getCurrentPage(),
+        );
+
+        $response->headers->set(
+            'Content-Type',
+            'text/csv; charset=UTF-8',
         );
 
         $response->headers->set(
@@ -163,6 +157,7 @@ final class UserDevController extends AbstractController
 
         return $response;
     }
+
 
     #[Route(
         path: '/dev/users/new',
@@ -209,7 +204,7 @@ final class UserDevController extends AbstractController
         $error = null;
 
         try {
-            $createUserInput = CreateUserInput::create(
+            $createUserInput = new CreateUserInput(
                 email: $email,
                 password: $password,
                 createdAt: $clock->now(),
@@ -222,6 +217,7 @@ final class UserDevController extends AbstractController
             $flashMessage = $translator->trans('dev.user.flash.created', [
                 '%email%' => $createUserInput->email->value(),
             ]);
+
             $this->addFlash('success', $flashMessage);
 
             return $this->redirectToRoute(
@@ -233,6 +229,7 @@ final class UserDevController extends AbstractController
                 EmailValidationResult::EMPTY => 'email.empty',
                 EmailValidationResult::TOO_LONG => 'email.too_long',
                 EmailValidationResult::INVALID_FORMAT => 'email.invalid_format',
+
                 EmailValidationResult::VALID => throw new \LogicException(
                     'InvalidEmailException must not have VALID result.',
                 ),
@@ -242,6 +239,7 @@ final class UserDevController extends AbstractController
                 PlainPasswordValidationResult::EMPTY => 'password.empty',
                 PlainPasswordValidationResult::TOO_SHORT => 'password.too_short',
                 PlainPasswordValidationResult::TOO_LONG => 'password.too_long',
+
                 PlainPasswordValidationResult::VALID => throw new \LogicException(
                     'InvalidPlainPasswordException must not have VALID result.',
                 ),
@@ -251,6 +249,7 @@ final class UserDevController extends AbstractController
         }
 
         $flashMessage = $translator->trans('dev.user.error.'.$error);
+
         $this->addFlash('error', $flashMessage);
 
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::UserCreate);
@@ -298,6 +297,7 @@ final class UserDevController extends AbstractController
         $flashMessage = $translator->trans('dev.user.flash.deleted', [
             '%email%' => $user->email->value(),
         ]);
+
         $this->addFlash('success', $flashMessage);
 
         return $this->redirectToRoute(
@@ -338,6 +338,7 @@ final class UserDevController extends AbstractController
         $flashMessage = $translator->trans('dev.user.flash.purged', [
             '%email%' => $email,
         ]);
+
         $this->addFlash('warning', $flashMessage);
 
         return $this->redirectToRoute(
