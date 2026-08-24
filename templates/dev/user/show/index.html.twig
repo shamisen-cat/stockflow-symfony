@@ -1,0 +1,67 @@
+{#
+  Dev user show page (UserDevController::show).
+
+  Variables from the controller:
+  - user: UserRecord
+  - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
+  - sidebarSubLinks: DevSidebarLink[] sub links for the current section
+  - currentSection: DevSidebarLinkId parent section id
+  - currentLink: DevSidebarLinkId active page link id
+#}
+
+{% extends 'layout/two_column.html.twig' %}
+
+{% block title %}{{ 'dev.user.show.title'|trans }}{% endblock %}
+
+{% block sidebar %}
+  {% include 'components/sidebar.html.twig' with {
+    sidebarLinks: sidebarLinks,
+    sidebarSubLinks: sidebarSubLinks,
+    currentSection: currentSection,
+    currentLink: currentLink,
+  } only %}
+{% endblock %}
+
+{% block main %}
+  <div
+    class="
+      flex flex-col flex-1
+      min-h-0
+      pt-4
+    "
+  >
+    {% include 'components/flash_messages.html.twig' %}
+
+    <header
+      class="
+        shrink-0
+        px-4 pb-4
+      "
+    >
+      {% include 'dev/user/show/_header.html.twig' only %}
+    </header>
+
+    <section
+      class="
+        flex flex-col flex-1
+        gap-8
+        overflow-y-auto
+        min-h-0
+        px-4
+        pb-[max(0.75rem,env(safe-area-inset-bottom))]
+      "
+    >
+      {% include 'dev/user/show/_detail.html.twig' with {
+        user: user,
+      } only %}
+
+      <footer>
+        {% include 'components/button/outline_link.html.twig' with {
+          href: path('app_dev_users'),
+          label: 'dev.user.show.back'|trans,
+          icon: 'lucide:arrow-left',
+        } only %}
+      </footer>
+    </section>
+  </div>
+{% endblock %}

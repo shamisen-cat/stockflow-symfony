@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -158,6 +159,33 @@ final class UserDevController extends AbstractController
         return $response;
     }
 
+    #[Route(
+        path: '/dev/users/{id}',
+        name: 'app_dev_users_show',
+        requirements: ['id' => Requirement::UUID],
+        methods: ['GET'],
+    )]
+    public function show(
+        string $id,
+        UserReaderInterface $userReader,
+        DevSidebarFactory $devSidebarFactory,
+    ): Response {
+        $user = $userReader->findById($id);
+
+        if ($user === null) {
+            throw new NotFoundHttpException();
+        }
+
+        $sidebar = $devSidebarFactory->create(DevSidebarLinkId::User);
+
+        return $this->render('dev/user/show/index.html.twig', [
+            'user' => $user,
+            'sidebarLinks' => $sidebar->links,
+            'sidebarSubLinks' => $sidebar->subLinks,
+            'currentSection' => $sidebar->currentSection,
+            'currentLink' => $sidebar->currentLink,
+        ]);
+    }
 
     #[Route(
         path: '/dev/users/new',

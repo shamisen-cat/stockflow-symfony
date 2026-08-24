@@ -39,6 +39,10 @@ dev.user.create.password_placeholder: At least 12 characters
 dev.user.create.submit: Create
 dev.user.create.cancel: Back to list
 
+dev.user.show.title: 'Stockflow | User management / Detail - DevTools'
+dev.user.show.heading: 'User management / Detail'
+dev.user.show.back: Back to list
+
 dev.user.search.email_label: Email address
 dev.user.search.email_placeholder: Search by part of mail@example.com
 dev.user.search.submit: Search
@@ -50,21 +54,30 @@ dev.user.column.id: ID
 dev.user.column.email: Email address
 dev.user.column.created_at: Created at
 dev.user.column.updated_at: Updated at
+dev.user.column.disabled_at: Disabled at
+dev.user.column.suspended_at: Suspended at
+dev.user.column.deleted_at: Deleted at
 dev.user.column.actions: Actions
 
-dev.user.status.deleted: Deleted
-dev.user.status.suspended: Suspended
-dev.user.status.disabled: Disabled
-dev.user.status.active: Active
+user.status.active: Active
+user.status.unverified: Unverified
+user.status.disabled: Disabled
+user.status.suspended: Suspended
+user.status.deleted: Deleted
+user.status.unknown: Unknown
 
 dev.user.button.csv_download: Download CSV
 dev.user.button.create: Create user
+dev.user.button.show: View details
+dev.user.button.edit: Edit
 dev.user.button.delete: Delete
 dev.user.button.purge: Delete permanently
 dev.user.button.copy_id: Copy ID
 dev.user.button.copied_id: Copied ID
 dev.user.button.copy_email: Copy email address
 dev.user.button.copied_email: Copied email address
+dev.user.button.copy_json: Copy JSON
+dev.user.button.copied_json: Copied JSON
 
 dev.user.empty: No users match your filters.
 

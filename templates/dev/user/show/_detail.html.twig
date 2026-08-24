@@ -1,0 +1,180 @@
+{#
+  Dev user show detail fields.
+
+  Required variables (include from parent):
+  - user: UserRecord
+#}
+
+{% set timestampFields = [
+  {
+    label: 'dev.user.column.created_at',
+    value: user.createdAt,
+  },
+  {
+    label: 'dev.user.column.updated_at',
+    value: user.updatedAt,
+  },
+  {
+    label: 'dev.user.column.disabled_at',
+    value: user.disabledAt,
+  },
+  {
+    label: 'dev.user.column.suspended_at',
+    value: user.suspendedAt,
+  },
+  {
+    label: 'dev.user.column.deleted_at',
+    value: user.deletedAt,
+  },
+] %}
+
+<div
+  class="
+    flex
+    items-start
+    justify-between lg:justify-start
+    gap-8
+    w-full
+  "
+>
+  <dl
+    class="
+      flex flex-col
+      gap-4
+      shrink-0
+      w-full max-w-lg
+    "
+  >
+    <div>
+      <dt
+        class="
+          mb-1
+          text-sm text-slate-500
+        "
+      >
+        {{ 'dev.user.column.status'|trans }}
+      </dt>
+
+      <dd>
+        {% include 'components/user/status.html.twig' with {
+          user: user,
+          variant: 'badge',
+        } only %}
+      </dd>
+    </div>
+
+    <div>
+      <dt
+        class="
+          mb-1
+          text-sm text-slate-500
+        "
+      >
+        {{ 'dev.user.column.id'|trans }}
+      </dt>
+
+      <dd
+        class="
+          flex
+          items-center
+          gap-1
+          min-w-0
+        "
+      >
+        <code
+          class="
+            break-all
+            font-mono text-sm text-slate-700
+          "
+          title="{{ user.id }}"
+        >
+          {{ user.id }}
+        </code>
+
+        {% include 'components/button/clipboard_button.html.twig' with {
+          text: user.id,
+          copyLabel: 'dev.user.button.copy_id'|trans,
+          copiedLabel: 'dev.user.button.copied_id'|trans,
+        } only %}
+      </dd>
+    </div>
+
+    <div>
+      <dt
+        class="
+          mb-1
+          text-sm text-slate-500
+        "
+      >
+        {{ 'dev.user.column.email'|trans }}
+      </dt>
+
+      <dd
+        class="
+          flex
+          items-center
+          gap-1
+          min-w-0
+        "
+      >
+        <span
+          class="
+            break-all
+            font-mono text-sm text-slate-700
+          "
+          title="{{ user.email }}"
+        >
+          {{ user.email }}
+        </span>
+
+        {% include 'components/button/clipboard_button.html.twig' with {
+          text: user.email,
+          copyLabel: 'dev.user.button.copy_email'|trans,
+          copiedLabel: 'dev.user.button.copied_email'|trans,
+        } only %}
+      </dd>
+    </div>
+  </dl>
+
+  <dl
+    class="
+      flex flex-col
+      gap-4
+      shrink-0
+      w-max
+      p-4 pr-8
+      bg-white
+      border border-slate-200
+      rounded-lg
+    "
+  >
+    {% for field in timestampFields %}
+      <div>
+        <dt
+          class="
+            mb-1
+            whitespace-nowrap
+            text-xs text-slate-500
+          "
+        >
+          {{ field.label|trans }}
+        </dt>
+
+        <dd
+          class="
+            whitespace-nowrap
+            font-mono text-xs text-slate-700
+          "
+        >
+          {% if field.value %}
+            <time datetime="{{ field.value|date('c') }}">
+              {{ field.value|date('Y-m-d H:i:s') }}
+            </time>
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+      </div>
+    {% endfor %}
+  </dl>
+</div>

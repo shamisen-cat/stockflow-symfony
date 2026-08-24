@@ -1,0 +1,70 @@
+{#
+  User status presentation (icon or text badge).
+
+  Required variables (include ... with):
+  - user: object with status.name (e.g. UserRecord)
+  - variant: 'icon' | 'badge'
+#}
+
+{% if user.status.name == 'Active' %}
+  {% set statusIcon = 'lucide:circle-check' %}
+  {% set statusLabel = 'user.status.active'|trans %}
+  {% set statusColor = 'text-emerald-700' %}
+{% elseif user.status.name == 'Unverified' %}
+  {% set statusIcon = 'lucide:circle-dashed' %}
+  {% set statusLabel = 'user.status.unverified'|trans %}
+  {% set statusColor = 'text-sky-700' %}
+{% elseif user.status.name == 'Disabled' %}
+  {% set statusIcon = 'lucide:circle-minus' %}
+  {% set statusLabel = 'user.status.disabled'|trans %}
+  {% set statusColor = 'text-slate-700' %}
+{% elseif user.status.name == 'Suspended' %}
+  {% set statusIcon = 'lucide:circle-pause' %}
+  {% set statusLabel = 'user.status.suspended'|trans %}
+  {% set statusColor = 'text-amber-700' %}
+{% elseif user.status.name == 'Deleted' %}
+  {% set statusIcon = 'lucide:circle-x' %}
+  {% set statusLabel = 'user.status.deleted'|trans %}
+  {% set statusColor = 'text-red-700' %}
+{% else %}
+  {% set statusIcon = 'lucide:circle-help' %}
+  {% set statusLabel = 'user.status.unknown'|trans %}
+  {% set statusColor = 'text-slate-500' %}
+{% endif %}
+
+{% if variant == 'icon' %}
+  <span
+    class="
+      inline-flex
+      items-center justify-center
+      shrink-0
+      {{ statusColor }}
+    "
+    title="{{ statusLabel }}"
+    aria-label="{{ statusLabel }}"
+  >
+    {{ ux_icon(
+      statusIcon,
+      { class: 'size-4' },
+    ) }}
+  </span>
+{% else %}
+  <span
+    class="
+      inline-flex
+      items-center
+      gap-1.5
+      shrink-0
+      whitespace-nowrap
+      text-sm
+      {{ statusColor }}
+    "
+  >
+    {{ ux_icon(
+      statusIcon,
+      { class: 'size-4' },
+    ) }}
+
+    {{ statusLabel }}
+  </span>
+{% endif %}

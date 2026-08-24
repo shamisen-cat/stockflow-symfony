@@ -1,0 +1,52 @@
+{#
+  Dev user show page header (heading and actions).
+
+  No variables required from parent.
+  min-h-11 keeps the heading aligned with list header actions.
+#}
+
+<div
+  class="
+    flex flex-row
+    items-center justify-between
+    min-h-11
+  "
+>
+  <h1
+    class="
+      inline-flex
+      items-center
+      gap-2
+      shrink-0
+      text-2xl font-semibold text-slate-900
+    "
+  >
+    {{ ux_icon(
+      'lucide:users',
+      { class: 'shrink-0 size-6' },
+    ) }}
+
+    <span>{{ 'dev.user.show.heading'|trans }}</span>
+  </h1>
+
+  <div
+    class="
+      flex
+      gap-4
+      shrink-0
+    "
+  >
+    {% include 'components/button/icon_link.html.twig' with {
+      href: '#',
+      label: 'dev.user.button.edit'|trans,
+      icon: 'lucide:pencil',
+      shadow: true,
+    } only %}
+
+    {% include 'components/button/icon_button.html.twig' with {
+      label: 'dev.user.button.copy_json'|trans,
+      icon: 'lucide:braces',
+      shadow: true,
+    } only %}
+  </div>
+</div>

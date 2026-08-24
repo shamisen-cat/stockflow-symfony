@@ -10,4 +10,6 @@ use App\Application\User\ListUsers\ListUsersResult;
 interface UserReaderInterface
 {
     public function paginate(ListUsersInput $input): ListUsersResult;
+
+    public function findById(string $id): ?UserRecord;
 }

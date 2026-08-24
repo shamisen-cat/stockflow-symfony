@@ -14,6 +14,7 @@ use App\Infrastructure\Shared\Sort\SortResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Uid\Uuid;
 
 final readonly class UserReader implements UserReaderInterface
 {
@@ -95,5 +96,40 @@ final readonly class UserReader implements UserReaderInterface
             currentSortDirection: $sort->direction,
             searchEmail: $input->email,
         );
+    }
+
+    /**
+     * @see UserReaderInterface
+     */
+    #[\Override]
+    public function findById(string $id): ?UserRecord
+    {
+        $uuid = Uuid::fromString($id);
+
+        $result = $this->entityManager->createQueryBuilder()
+            ->select(sprintf(
+                'NEW %s(
+                    u.id,
+                    u.email.value,
+                    u.status,
+                    u.createdAt,
+                    u.updatedAt,
+                    u.disabledAt,
+                    u.suspendedAt,
+                    u.deletedAt
+                )',
+                UserRecord::class,
+            ))
+            ->from(User::class, 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (!$result instanceof UserRecord) {
+            return null;
+        }
+
+        return $result;
     }
 }
