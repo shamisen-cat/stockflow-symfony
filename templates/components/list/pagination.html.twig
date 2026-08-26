@@ -9,7 +9,8 @@
   {% set buttonEnabled = '
     inline-flex
     items-center justify-center
-    w-10 h-7
+    shrink-0
+    w-8 h-8
     bg-white hover:bg-slate-100
     border border-slate-200
     rounded-lg
@@ -23,7 +24,8 @@
   {% set buttonDisabled = '
     inline-flex
     items-center justify-center
-    w-10 h-7
+    shrink-0
+    w-8 h-8
     bg-white
     border border-slate-100
     rounded-lg
@@ -36,6 +38,7 @@
       items-center
       min-h-11
       px-4
+      pb-[env(safe-area-inset-bottom)]
       border-t border-slate-200
     "
     aria-label="Pagination"
@@ -61,7 +64,7 @@
           href="{{ path(
             app.request.attributes.get('_route'),
             app.request.query.all|merge({
-              page: pagination.previousPage
+              page: pagination.previousPage,
             }),
           ) }}"
           class="{{ buttonEnabled }}"
@@ -92,7 +95,7 @@
           href="{{ path(
             app.request.attributes.get('_route'),
             app.request.query.all|merge({
-              page: pagination.nextPage
+              page: pagination.nextPage,
             }),
           ) }}"
           class="{{ buttonEnabled }}"

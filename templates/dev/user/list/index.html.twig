@@ -31,7 +31,7 @@
     class="
       flex flex-col flex-1
       min-h-0
-      pt-4
+      pt-2
     "
   >
     {% include 'components/flash_messages.html.twig' %}
@@ -62,6 +62,7 @@
         class="
           flex-1
           overflow-auto
+          [scrollbar-gutter:stable]
           min-h-0
           bg-white
         "
@@ -93,7 +94,8 @@
       <footer
         class="
           shrink-0
-          pb-[max(0.75rem,env(safe-area-inset-bottom))]
+          overflow-hidden
+          [scrollbar-gutter:stable]
         "
       >
         {% include 'components/list/pagination.html.twig' with {

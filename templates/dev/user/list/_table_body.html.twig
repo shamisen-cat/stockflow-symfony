@@ -81,8 +81,8 @@
       <div
         class="
           flex
-          items-center
-          gap-2
+          items-center justify-end
+          gap-4
         "
       >
         {% include 'components/button/icon_link.html.twig' with {
@@ -93,12 +93,14 @@
           label: 'dev.user.button.show'|trans,
           icon: 'lucide:eye',
           size: 'sm',
+          shadow: true,
         } only %}
 
         {% include 'components/button/icon_button.html.twig' with {
           label: 'dev.user.button.copy_json'|trans,
           icon: 'lucide:braces',
           size: 'sm',
+          shadow: true,
           tabindex: -1,
         } only %}
       </div>
