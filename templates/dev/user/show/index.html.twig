@@ -1,9 +1,8 @@
 {#
-  Dev user new page (UserDevController::new).
+  Dev user show page (UserDevController::show).
 
   Variables from the controller:
-  - email: string submitted email for redisplay (empty on GET)
-  - error: string|null error code for field highlighting (message via flash)
+  - user: UserRecord
   - sidebarLinks: DevSidebarLink[] parent sidebar navigation links
   - sidebarSubLinks: DevSidebarLink[] sub links for the current section
   - currentSection: DevSidebarLinkId parent section id
@@ -12,7 +11,7 @@
 
 {% extends 'layout/two_column.html.twig' %}
 
-{% block title %}{{ 'dev.user.create.title'|trans }}{% endblock %}
+{% block title %}{{ 'dev.user.show.title'|trans }}{% endblock %}
 
 {% block sidebar %}
   {% include 'components/sidebar.html.twig' with {
@@ -36,6 +35,7 @@
     <div
       class="
         flex flex-col flex-1
+        w-full xl:max-w-4xl
         min-h-0
       "
     >
@@ -45,7 +45,7 @@
           shrink-0
         "
       >
-        {% include 'dev/user/new/_header.html.twig' only %}
+        {% include 'dev/user/show/_header.html.twig' only %}
       </header>
 
       <section
@@ -58,15 +58,14 @@
           overflow-y-auto
         "
       >
-        {% include 'dev/user/new/_form.html.twig' with {
-          email: email,
-          error: error,
+        {% include 'dev/user/show/_detail.html.twig' with {
+          user: user,
         } only %}
 
         <footer>
           {% include 'components/button/outline_link.html.twig' with {
             href: path('app_dev_users'),
-            label: 'dev.user.create.cancel'|trans,
+            label: 'dev.user.show.back'|trans,
             icon: 'lucide:arrow-left',
             size: 'sm',
             shadow: true,

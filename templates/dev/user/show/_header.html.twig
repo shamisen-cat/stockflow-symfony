@@ -1,8 +1,8 @@
 {#
-  Dev user list page header (heading and actions).
+  Dev user show page header (heading and actions).
 
   No variables required from parent.
-  CSV export preserves the current request query string via app.request.
+  min-h matches list header for consistent page chrome height.
 #}
 
 <div
@@ -28,7 +28,7 @@
       { class: 'size-6 xl:size-5 shrink-0' },
     ) }}
 
-    <span>{{ 'dev.user.heading'|trans }}</span>
+    <span>{{ 'dev.user.show.heading'|trans }}</span>
   </h1>
 
   <div
@@ -39,20 +39,16 @@
     "
   >
     {% include 'components/button/icon_link.html.twig' with {
-      href: path('app_dev_users_new'),
-      label: 'dev.user.button.create'|trans,
-      icon: 'lucide:plus',
+      href: '#',
+      label: 'dev.user.button.edit'|trans,
+      icon: 'lucide:pencil',
       size: 'responsive',
       shadow: true,
     } only %}
 
-    {% include 'components/button/icon_link.html.twig' with {
-      href: path(
-        'app_dev_users_export',
-        app.request.query.all,
-      ),
-      label: 'dev.user.button.csv_download'|trans,
-      icon: 'lucide:download',
+    {% include 'components/button/icon_button.html.twig' with {
+      label: 'dev.user.button.copy_json'|trans,
+      icon: 'lucide:braces',
       size: 'responsive',
       shadow: true,
     } only %}

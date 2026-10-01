@@ -2,7 +2,7 @@
   Dev user list page (UserDevController::index).
 
   Variables from the controller:
-  - users: User[] current page results
+  - users: UserRecord[] current page results
   - pagination: Pagerfanta instance
   - currentKey: active sort key (id, email, updated_at)
   - currentDirection: 'asc' or 'desc'
@@ -30,12 +30,18 @@
   <div
     class="
       flex flex-col flex-1
-      min-h-0 pt-3
+      min-h-0
+      pt-2
     "
   >
     {% include 'components/flash_messages.html.twig' %}
 
-    <header class="shrink-0 px-4 pb-3">
+    <header
+      class="
+        px-4 pb-4
+        shrink-0
+      "
+    >
       {% include 'dev/user/list/_header.html.twig' only %}
     </header>
 
@@ -49,16 +55,28 @@
       class="
         flex flex-col flex-1
         min-h-0
-        border-y border-slate-200
+        border-y
+        border-slate-200
       "
     >
       <div
         class="
-          flex-1 overflow-auto
-          min-h-0 bg-white
+          flex-1
+          min-h-0
+          overflow-auto
+          [scrollbar-gutter:stable]
+          bg-white
         "
       >
-        <table class="min-w-full text-left text-xs">
+        <table
+          class="
+            table-fixed
+            w-full
+            text-left
+            text-xs
+            text-slate-700
+          "
+        >
           <thead class="bg-slate-50">
             <tr>
               {% include 'dev/user/list/_table_head.html.twig' with {
@@ -68,7 +86,12 @@
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-slate-100">
+          <tbody
+            class="
+              divide-y
+              divide-slate-100
+            "
+          >
             {% include 'dev/user/list/_table_body.html.twig' with {
               users: users,
             } only %}
@@ -79,7 +102,8 @@
       <footer
         class="
           shrink-0
-          pb-[max(0.75rem,env(safe-area-inset-bottom))]
+          overflow-hidden
+          [scrollbar-gutter:stable]
         "
       >
         {% include 'components/list/pagination.html.twig' with {

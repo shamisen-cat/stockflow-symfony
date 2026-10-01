@@ -8,10 +8,24 @@
 <form
   method="get"
   action="{{ path('app_dev_users') }}"
-  class="flex flex-col gap-4"
+  class="
+    flex flex-col
+    gap-4
+  "
 >
-  <div class="flex flex-row items-end gap-4">
-    <div class="w-full min-w-0 max-w-lg">
+  <div
+    class="
+      flex flex-row
+      items-end
+      gap-4
+    "
+  >
+    <div
+      class="
+        min-w-0 max-w-lg
+        w-full
+      "
+    >
       {% include 'components/form/text_input.html.twig' with {
         type: 'search',
         id: 'search-email',
@@ -23,37 +37,57 @@
       } only %}
     </div>
 
-    <div class="flex shrink-0 gap-3">
+    <div
+      class="
+        flex
+        gap-2
+        shrink-0
+      "
+    >
       {% include 'components/button/primary_button.html.twig' with {
         label: 'dev.user.search.submit'|trans,
+        shadow: true,
       } only %}
 
       {% if searchEmail %}
         {% include 'components/button/outline_link.html.twig' with {
           href: path('app_dev_users'),
           label: 'dev.user.search.clear'|trans,
+          size: 'responsive',
+          shadow: true,
         } only %}
       {% endif %}
     </div>
   </div>
 
-  <details class="group flex flex-col gap-2">
+  <details
+    class="
+      group/search-details
+      flex flex-col
+      gap-2
+    "
+  >
     <summary
       class="
-        inline-flex self-start items-center gap-1
+        inline-flex
+        items-center
+        self-start
+        gap-1
         rounded
-        text-sm text-slate-700
+        focus:outline-none
+        focus:ring-2
+        focus:ring-offset-2
+        focus:ring-blue-400
+        text-sm
+        text-slate-700 hover:text-slate-900
+        transition
         cursor-pointer
         select-none
-        transition
-        hover:text-slate-900
-        focus:outline-none
-        focus:ring-2 focus:ring-offset-2 focus:ring-slate-700
       "
     >
       {{ 'dev.user.search.details'|trans }}
     </summary>
 
-    <div></div>
+    <div>test</div>
   </details>
 </form>

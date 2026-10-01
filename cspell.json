@@ -1,38 +1,43 @@
 {
-    "version": "0.2",
-    "language": "en",
-    "words": [
-        "autofocus",
-        "disablable",
-        "fieldset",
-        "frankenphp",
-        "focusin",
-        "focusout",
-        "hotwired",
-        "iconify",
-        "lucide",
-        "mercure",
-        "mouseenter",
-        "mouseleave",
-        "nowrap",
-        "novalidate",
-        "pagerfanta",
-        "phpstan",
-        "phpunit",
-        "stockflow",
-        "suspendable",
-        "symfony",
-        "tabindex",
-        "timestampable",
-        "unsuspended"
-    ],
-    "overrides": [
-        {
-            "filename": "**/*.twig",
-            "ignoreRegExpList": [
-                "/\\{%[\\s\\S]*?%\\}/",
-                "/\\{\\{[\\s\\S]*?\\}\\}/"
-            ]
-        }
-    ]
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "autofocus",
+    "describedby",
+    "disablable",
+    "dnsmasq",
+    "fieldset",
+    "frankenphp",
+    "focusin",
+    "focusout",
+    "hotwired",
+    "iconify",
+    "labelledby",
+    "lucide",
+    "mercure",
+    "mouseenter",
+    "mouseleave",
+    "nowrap",
+    "novalidate",
+    "pagerfanta",
+    "phpstan",
+    "phpunit",
+    "stockflow",
+    "suspendable",
+    "symfony",
+    "tabindex",
+    "timestampable",
+    "unsuspended",
+    "viewports",
+    "vulcain"
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.twig",
+      "ignoreRegExpList": [
+        "/\\{%[\\s\\S]*?%\\}/",
+        "/\\{\\{[\\s\\S]*?\\}\\}/"
+      ]
+    }
+  ]
 }

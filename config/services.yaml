@@ -25,17 +25,20 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Application\Shared\Transaction\TransactionManagerInterface:
+        alias: App\Infrastructure\Shared\Transaction\TransactionManager
+
+    App\Application\User\UserReaderInterface:
+        alias: App\Infrastructure\User\UserReader
+
+    App\Domain\Shared\Uuid\UuidGeneratorInterface:
+        alias: App\Infrastructure\Shared\Uuid\UuidGenerator
+
     App\Domain\User\Password\PlainPasswordHasherInterface:
         alias: App\Infrastructure\User\Password\PlainPasswordHasher
 
     App\Domain\User\UserRepositoryInterface:
         alias: App\Infrastructure\User\UserRepository
-
-    App\Application\User\UserReaderInterface:
-        alias: App\Infrastructure\User\UserReader
-
-    App\Application\Shared\Transaction\TransactionManagerInterface:
-        alias: App\Infrastructure\Shared\Transaction\TransactionManager
 
     Symfony\Component\Clock\ClockInterface:
         class: Symfony\Component\Clock\NativeClock

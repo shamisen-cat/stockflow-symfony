@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\User;
 
+use App\Application\User\ListUsers\ListUsersInput;
 use App\Application\User\ListUsers\ListUsersResult;
 use App\Application\User\UserReaderInterface;
 use App\Application\User\UserRecord;
@@ -13,6 +14,7 @@ use App\Infrastructure\Shared\Sort\SortResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Uid\Uuid;
 
 final readonly class UserReader implements UserReaderInterface
 {
@@ -35,13 +37,8 @@ final readonly class UserReader implements UserReaderInterface
      * @see UserReaderInterface
      */
     #[\Override]
-    public function paginate(
-        string $email,
-        string $sortKey,
-        string $direction,
-        int $page,
-        int $maxPerPage,
-    ): ListUsersResult {
+    public function paginate(ListUsersInput $input): ListUsersResult
+    {
         $queryBuilder = $this->entityManager->createQueryBuilder()
             ->select(sprintf(
                 'NEW %s(
@@ -58,8 +55,8 @@ final readonly class UserReader implements UserReaderInterface
             ))
             ->from(User::class, 'u');
 
-        if ($email !== '') {
-            $escapedEmail = addcslashes($email, '%_\\');
+        if ($input->email !== '') {
+            $escapedEmail = addcslashes($input->email, '%_\\');
 
             $queryBuilder
                 ->andWhere('u.email.value LIKE :email')
@@ -68,8 +65,8 @@ final readonly class UserReader implements UserReaderInterface
 
         $sort = $this->sortResolver->resolve(
             sortMap: self::SORT_MAP,
-            sortKey: $sortKey,
-            direction: $direction,
+            sortKey: $input->sortKey,
+            direction: $input->direction,
             defaultKey: self::DEFAULT_SORT_KEY,
             defaultDirection: SortDirection::Desc,
         );
@@ -89,15 +86,50 @@ final readonly class UserReader implements UserReaderInterface
         /** @var Pagerfanta<UserRecord> $pager */
         $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: $adapter,
-            currentPage: max(1, $page),
-            maxPerPage: max(1, $maxPerPage),
+            currentPage: $input->page,
+            maxPerPage: $input->maxPerPage,
         );
 
         return new ListUsersResult(
             pagination: $pager,
             currentSortKey: $sort->key,
             currentSortDirection: $sort->direction,
-            searchEmail: $email,
+            searchEmail: $input->email,
         );
+    }
+
+    /**
+     * @see UserReaderInterface
+     */
+    #[\Override]
+    public function findById(string $id): ?UserRecord
+    {
+        $uuid = Uuid::fromString($id);
+
+        $result = $this->entityManager->createQueryBuilder()
+            ->select(sprintf(
+                'NEW %s(
+                    u.id,
+                    u.email.value,
+                    u.status,
+                    u.createdAt,
+                    u.updatedAt,
+                    u.disabledAt,
+                    u.suspendedAt,
+                    u.deletedAt
+                )',
+                UserRecord::class,
+            ))
+            ->from(User::class, 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (!$result instanceof UserRecord) {
+            return null;
+        }
+
+        return $result;
     }
 }

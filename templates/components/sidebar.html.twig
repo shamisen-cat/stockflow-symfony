@@ -8,41 +8,78 @@
   - currentLink: DevSidebarLinkId active page link id
 #}
 
-{% set linkBase = '
-  inline-flex items-center gap-2
-  w-full py-2
-  text-sm
+{% set linkActive = '
+  inline-flex
+  items-center
+  gap-1.5 xl:gap-1
+  w-full
+  h-11 xl:h-8
+  px-4
+  bg-slate-100
   focus:outline-none
-  focus:ring-2 focus:ring-inset focus:ring-slate-700
-' %}
-
-{% set linkActive = linkBase ~ '
-  pl-4 bg-slate-100
+  focus:ring-2
+  focus:ring-inset
+  focus:ring-blue-400
+  text-sm xl:text-xs
   text-slate-900
 ' %}
 
-{% set linkInactive = linkBase ~ '
-  pl-4
-  text-slate-700
-  transition
+{% set linkInactive = '
+  inline-flex
+  items-center
+  gap-1.5 xl:gap-1
+  w-full
+  h-11 xl:h-8
+  px-4
   hover:bg-slate-100
-  hover:text-slate-900
+  focus:outline-none
+  focus:ring-2
+  focus:ring-inset
+  focus:ring-blue-400
+  text-sm xl:text-xs
+  text-slate-700 hover:text-slate-900
+  transition
 ' %}
 
-{% set linkSubActive = linkBase ~ '
-  pl-6 bg-slate-100
+{% set linkSubActive = '
+  inline-flex
+  items-center
+  gap-1.5 xl:gap-1
+  w-full
+  h-11 xl:h-8
+  pl-6 pr-4
+  bg-slate-100
+  focus:outline-none
+  focus:ring-2
+  focus:ring-inset
+  focus:ring-blue-400
+  text-sm xl:text-xs
   text-slate-900
 ' %}
 
-{% set linkSubInactive = linkBase ~ '
-  pl-6
-  text-slate-700
-  transition
+{% set linkSubInactive = '
+  inline-flex
+  items-center
+  gap-1.5 xl:gap-1
+  w-full
+  h-11 xl:h-8
+  pl-6 pr-4
   hover:bg-slate-100
-  hover:text-slate-900
+  focus:outline-none
+  focus:ring-2
+  focus:ring-inset
+  focus:ring-blue-400
+  text-sm xl:text-xs
+  text-slate-700 hover:text-slate-900
+  transition
 ' %}
 
-<ul class="divide-y divide-slate-100">
+<ul
+  class="
+    divide-y
+    divide-slate-100
+  "
+>
   {% for link in sidebarLinks %}
     {% set isCurrentPage = link.id == currentLink %}
     {% set isCurrentSection = link.id == currentSection %}
@@ -58,7 +95,7 @@
       >
         {{ ux_icon(
           link.icon,
-          { class: 'shrink-0 size-4' },
+          { class: 'size-4 xl:size-3.5 shrink-0' },
         ) }}
 
         <span>{{ link.label|trans }}</span>
@@ -80,7 +117,7 @@
               >
                 {{ ux_icon(
                   subLink.icon,
-                  { class: 'shrink-0 size-4' },
+                  { class: 'size-4 xl:size-3.5 shrink-0' },
                 ) }}
 
                 <span>{{ subLink.label|trans }}</span>

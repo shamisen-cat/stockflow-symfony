@@ -7,6 +7,7 @@ namespace App\Infrastructure\Dev;
 use App\Application\Shared\Transaction\TransactionManagerInterface;
 use App\Application\User\CreateUser\CreateUserHandler;
 use App\Application\User\CreateUser\CreateUserInput;
+use App\Domain\Shared\Exception\InvalidValueObjectException;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -22,6 +23,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 )]
 final class CreateUserCommand extends Command
 {
+    private const string DEFAULT_EMAIL = 'dev@example.com';
+    private const string DEFAULT_PASSWORD = 'stockflow-dev';
+
     public function __construct(
         #[Autowire(param: 'kernel.environment')]
         private readonly string $kernelEnvironment,
@@ -43,19 +47,23 @@ final class CreateUserCommand extends Command
             return Command::FAILURE;
         }
 
-        $email = 'dev@example.com';
-        $password = 'stockflow-dev';
-
-        $createUserInput = CreateUserInput::create(
-            email: $email,
-            password: $password,
-            createdAt: $this->clock->now(),
-        );
+        $email = self::DEFAULT_EMAIL;
+        $password = self::DEFAULT_PASSWORD;
 
         try {
+            $createUserInput = new CreateUserInput(
+                email: $email,
+                password: $password,
+                createdAt: $this->clock->now(),
+            );
+
             $this->transactionManager->transactional(
                 fn () => $this->createUserHandler->handle($createUserInput),
             );
+        } catch (InvalidValueObjectException $exception) {
+            $io->error($exception->getMessage());
+
+            return Command::FAILURE;
         } catch (UserAlreadyExistsException) {
             $io->error(sprintf('User already exists: %s.', $email));
 

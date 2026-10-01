@@ -2,11 +2,16 @@
   Sortable table header cell.
 
   Required variables (include ... with):
-  - label: Column header text
-  - sortKey: Key for the ?sort= query parameter (must match sortMap in the controller)
-  - currentKey: Currently active sort key (from the controller)
+  - label: column header text
+  - sortKey: key for the ?sort= query parameter (must match sortMap in the controller)
+  - currentKey: currently active sort key (from the controller)
   - currentDirection: 'asc' or 'desc' (from the controller)
+
+  Optional variables:
+  - widthClass: when set, applied as a Tailwind width utility (e.g. w-28)
 #}
+
+{% set widthClass = widthClass|default('') %}
 
 {% if currentKey == sortKey %}
   {% set ariaSort = currentDirection == 'asc' ? 'ascending' : 'descending' %}
@@ -19,10 +24,14 @@
 <th
   scope="col"
   class="
-    sticky top-0 z-10
-    px-4 py-2.5 bg-slate-50
-    border-b border-slate-200
-    whitespace-nowrap
+    sticky
+    top-0 z-10
+    {{ widthClass }}
+    h-10 xl:h-8
+    p-0
+    bg-slate-50
+    border-b
+    border-slate-200
   "
   aria-sort="{{ ariaSort }}"
 >
@@ -36,20 +45,27 @@
       }),
     ) }}"
     class="
-      inline-flex items-center gap-1
-      rounded
-      text-slate-700
-      transition
-      hover:text-slate-900
+      flex
+      items-center
+      gap-1
+      w-full h-full
+      px-4 xl:px-3
+      hover:bg-slate-100
       focus:outline-none
-      focus:ring-2 focus:ring-offset-2 focus:ring-slate-700
+      focus:ring-2
+      focus:ring-inset
+      focus:ring-blue-400
+      text-xs
+      text-slate-700 hover:text-slate-900
+      whitespace-nowrap
+      transition
     "
   >
     {{ label }}
 
     {% if currentKey == sortKey %}
       <span
-        class="text-slate-400"
+        class="text-blue-500"
         aria-hidden="true"
       >
         {{ currentDirection == 'asc' ? '↑' : '↓' }}

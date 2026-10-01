@@ -49,7 +49,9 @@ export default class extends Controller {
     /** @type {number | null} */
     timerStartedAt = null;
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     connect() {
         if (this.dismissAfterValue <= 0) {
             return;
@@ -59,19 +61,25 @@ export default class extends Controller {
         this.startTimer();
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     disconnect() {
         this.clearTimer();
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     dismiss() {
         this.clearTimer();
         this.dispatch('dismissed', { bubbles: true });
         this.element.remove();
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     pauseTimer() {
         if (this.timerId === null) {
             return;
@@ -81,7 +89,9 @@ export default class extends Controller {
         this.clearTimer();
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     resumeTimer() {
         if (this.dismissAfterValue <= 0 || this.remainingMs <= 0) {
             return;
@@ -90,14 +100,18 @@ export default class extends Controller {
         this.startTimer();
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     startTimer() {
         this.clearTimer();
         this.timerStartedAt = Date.now();
         this.timerId = setTimeout(() => this.dismiss(), this.remainingMs);
     }
 
-    /** @this {FlashMessageControllerContext} */
+    /**
+     * @this {FlashMessageControllerContext}
+     */
     clearTimer() {
         if (this.timerId !== null) {
             clearTimeout(this.timerId);

@@ -1,16 +1,18 @@
 {#
-  Square icon link (header actions, etc.).
+  Square icon button (table actions, etc.).
 
   Required variables (include ... with):
-  - href: link destination
   - label: title / aria-label text
-  - icon: UX Iconify name (e.g. lucide:plus)
+  - icon: UX Iconify name (e.g. lucide:braces)
 
   Optional variables:
+  - type: button type (defaults to button)
   - size: 'sm' | 'md' (default) | 'lg' | 'responsive' (md below xl, sm at xl+)
   - shadow: when true, adds shadow-sm (defaults to false)
+  - tabindex: when set, applied to the button element
 #}
 
+{% set type = type|default('button') %}
 {% set size = size|default('md') %}
 {% set shadow = shadow|default(false) %}
 
@@ -34,8 +36,13 @@
   {% set iconSize = 'size-5' %}
 {% endif %}
 
-<a
-  href="{{ href }}"
+<button
+  type="{{ type }}"
+
+  {% if tabindex is defined %}
+    tabindex="{{ tabindex }}"
+  {% endif %}
+
   class="
     inline-flex
     items-center justify-center
@@ -60,4 +67,4 @@
     icon,
     { class: iconSize },
   ) }}
-</a>
+</button>

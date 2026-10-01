@@ -46,12 +46,16 @@ export default class extends Controller {
         hideLabel: String,
     };
 
-    /** @this {PasswordVisibilityControllerContext} */
+    /**
+     * @this {PasswordVisibilityControllerContext}
+     */
     toggle() {
         this.visibleValue = !this.visibleValue;
     }
 
-    /** @this {PasswordVisibilityControllerContext} */
+    /**
+     * @this {PasswordVisibilityControllerContext}
+     */
     visibleValueChanged() {
         const visible = this.visibleValue;
         this.inputTarget.type = visible ? 'text' : 'password';

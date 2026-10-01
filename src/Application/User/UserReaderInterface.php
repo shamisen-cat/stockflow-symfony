@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Application\User\ListUsers\ListUsersInput;
 use App\Application\User\ListUsers\ListUsersResult;
 
 interface UserReaderInterface
 {
-    public function paginate(
-        string $email,
-        string $sortKey,
-        string $direction,
-        int $page,
-        int $maxPerPage,
-    ): ListUsersResult;
+    public function paginate(ListUsersInput $input): ListUsersResult;
+
+    public function findById(string $id): ?UserRecord;
 }

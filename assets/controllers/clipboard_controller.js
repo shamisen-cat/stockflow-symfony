@@ -53,7 +53,9 @@ export default class extends Controller {
     /** @type {ReturnType<typeof setTimeout> | null} */
     resetTimerId = null;
 
-    /** @this {ClipboardControllerContext} */
+    /**
+     * @this {ClipboardControllerContext}
+     */
     disconnect() {
         if (this.resetTimerId !== null) {
             clearTimeout(this.resetTimerId);
@@ -61,7 +63,9 @@ export default class extends Controller {
         }
     }
 
-    /** @this {ClipboardControllerContext} */
+    /**
+     * @this {ClipboardControllerContext}
+     */
     async copy() {
         try {
             await navigator.clipboard.writeText(this.textValue);
@@ -71,7 +75,9 @@ export default class extends Controller {
         }
     }
 
-    /** @this {ClipboardControllerContext} */
+    /**
+     * @this {ClipboardControllerContext}
+     */
     showCopied() {
         this.copyIconTarget.classList.add('hidden');
         this.checkIconTarget.classList.remove('hidden');
@@ -86,7 +92,9 @@ export default class extends Controller {
         this.resetTimerId = setTimeout(() => this.reset(), COPIED_RESET_MS);
     }
 
-    /** @this {ClipboardControllerContext} */
+    /**
+     * @this {ClipboardControllerContext}
+     */
     reset() {
         this.copyIconTarget.classList.remove('hidden');
         this.checkIconTarget.classList.add('hidden');

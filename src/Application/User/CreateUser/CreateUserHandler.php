@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\CreateUser;
 
+use App\Domain\Shared\Uuid\UuidGeneratorInterface;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\Password\PlainPasswordHasherInterface;
 use App\Domain\User\User;
@@ -14,6 +15,7 @@ final readonly class CreateUserHandler
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
+        private UuidGeneratorInterface $uuidGenerator,
         private PlainPasswordHasherInterface $plainPasswordHasher,
     ) {
     }
@@ -26,10 +28,11 @@ final readonly class CreateUserHandler
             throw UserAlreadyExistsException::forEmail($input->email->value());
         }
 
+        $id = $this->uuidGenerator->generate();
         $hashedPassword = $this->plainPasswordHasher->hash($input->password);
 
         $user = User::create(
-            id: Uuid::v7(),
+            id: $id,
             email: $input->email,
             password: $hashedPassword,
             createdAt: $input->createdAt,

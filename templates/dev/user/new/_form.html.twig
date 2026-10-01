@@ -8,20 +8,34 @@
 
 {% set emailHasError = false %}
 {% set passwordHasError = false %}
+{% set emailErrorMessage = null %}
+{% set passwordErrorMessage = null %}
 
 {% if error is not null %}
   {% set emailHasError = error starts with 'email.' or error == 'user.already_exists' %}
   {% set passwordHasError = error starts with 'password.' %}
+
+  {% if emailHasError %}
+    {% set emailErrorMessage = ('dev.user.error.' ~ error)|trans %}
+  {% endif %}
+
+  {% if passwordHasError %}
+    {% set passwordErrorMessage = ('dev.user.error.' ~ error)|trans %}
+  {% endif %}
 {% endif %}
 
 <form
   method="post"
   action="{{ path('app_dev_users_create') }}"
   novalidate
-  class="w-full max-w-lg"
+  class="max-w-lg w-full"
 >
   <div
-    class="flex flex-col gap-2 mb-4"
+    class="
+      flex flex-col
+      gap-2
+      mb-4
+    "
     data-controller="email-generator"
     data-email-generator-input-id-value="email"
   >
@@ -35,9 +49,16 @@
       autocomplete: 'off',
       autofocus: true,
       invalid: emailHasError,
+      errorMessage: emailErrorMessage,
     } only %}
 
-    <div class="flex flex-col items-start gap-3">
+    <div
+      class="
+        flex flex-col
+        items-start
+        gap-2
+      "
+    >
       {% include 'components/form/radio_group.html.twig' with {
         legend: 'dev.user.create.email_local_part_length'|trans,
         name: 'email-local-part-length',
@@ -46,28 +67,17 @@
           { value: '16', label: '16' },
           { value: '32', label: '32' },
         ],
-        checkedValue: '16',
+        checkedValue: '8',
         targetController: 'email-generator',
         targetName: 'length',
       } only %}
 
-      <button
-        type="button"
-        class="
-          inline-flex items-center justify-center
-          px-3 py-1.5 bg-blue-50
-          border border-blue-200 rounded-lg shadow-sm
-          text-xs font-medium text-blue-700
-          transition
-          hover:bg-blue-100
-          hover:text-blue-900
-          focus:outline-none
-          focus:ring-2 focus:ring-slate-700
-        "
-        data-action="click->email-generator#generate"
-      >
-        {{ 'dev.user.create.email_generate_random'|trans }}
-      </button>
+      {% include 'components/button/outline_button.html.twig' with {
+        label: 'dev.user.create.email_generate_random'|trans,
+        size: 'sm',
+        shadow: true,
+        dataAction: 'click->email-generator#generate',
+      } only %}
     </div>
   </div>
 
@@ -81,6 +91,7 @@
       placeholder: 'dev.user.create.password_placeholder'|trans,
       autocomplete: 'new-password',
       invalid: passwordHasError,
+      errorMessage: passwordErrorMessage,
     } only %}
   </div>
 
@@ -90,16 +101,9 @@
     value="{{ csrf_token('dev_user_create') }}"
   >
 
-  <div class="mb-8">
-    {% include 'components/button/primary_button.html.twig' with {
-      label: 'dev.user.create.submit'|trans,
-      fullWidth: true,
-    } only %}
-  </div>
-
-  {% include 'components/button/outline_link.html.twig' with {
-    href: path('app_dev_users'),
-    label: 'dev.user.create.cancel'|trans,
-    icon: 'lucide:arrow-left',
+  {% include 'components/button/primary_button.html.twig' with {
+    label: 'dev.user.create.submit'|trans,
+    fullWidth: true,
+    shadow: true,
   } only %}
 </form>
