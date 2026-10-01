@@ -6,16 +6,21 @@
   - name: radio input name
   - options: list of { value: string, label: string }
 
-  Optional:
+  Optional variables:
   - checkedValue: selected value (defaults to empty)
-  - targetController: Stimulus controller name for target attr
-  - targetName: Stimulus target name for target attr
+  - targetController: when set with targetName, applied as Stimulus target controller
+  - targetName: when set with targetController, applied as Stimulus target name
 #}
 
 {% set checkedValue = checkedValue|default('') %}
 
 <fieldset class="flex flex-col">
-  <legend class="text-xs text-slate-700">
+  <legend
+    class="
+      text-sm
+      text-slate-700
+    "
+  >
     {{ legend }}
   </legend>
 
@@ -24,7 +29,7 @@
       flex
       items-center
       gap-3
-      mt-1
+      mt-1.5
     "
   >
     {% for option in options %}
@@ -32,25 +37,39 @@
         class="
           inline-flex
           items-center
-          gap-1
-          text-xs text-slate-700
+          gap-1.5
+          text-sm
+          text-slate-700
         "
       >
-        <input
-          type="radio"
-          name="{{ name }}"
-          value="{{ option.value }}"
-
-          {% if option.value == checkedValue %}
-            checked
-          {% endif %}
-
-          class="h-4 w-4"
-
-          {% if targetController is defined and targetName is defined %}
-            data-{{ targetController }}-target="{{ targetName }}"
-          {% endif %}
+        <span
+          class="
+            inline-flex
+            rounded-full
+            has-[:focus-visible]:ring-2
+            has-[:focus-visible]:ring-blue-400
+          "
         >
+          <input
+            type="radio"
+            name="{{ name }}"
+            value="{{ option.value }}"
+
+            {% if option.value == checkedValue %}
+              checked
+            {% endif %}
+
+            class="
+              h-4 w-4
+              accent-blue-500
+              focus:outline-none
+            "
+
+            {% if targetController is defined and targetName is defined %}
+              data-{{ targetController }}-target="{{ targetName }}"
+            {% endif %}
+          >
+        </span>
 
         <span>{{ option.label }}</span>
       </label>

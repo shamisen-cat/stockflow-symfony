@@ -1,19 +1,20 @@
 {#
-  Labeled text-style input (email, search, text, etc.).
+  Labeled text input (email, search, text, etc.).
 
   Required variables (include ... with):
-  - id: input id (also used for label for=)
+  - id: input id (also used as the label for attribute)
   - name: input name
   - label: visible label text
 
-  Optional:
-  - type: defaults to text
-  - value: defaults to empty
-  - placeholder: omitted when empty
-  - autocomplete: omitted when empty
-  - required: defaults to false
-  - autofocus: defaults to false
-  - invalid: defaults to false (red border + aria-invalid)
+  Optional variables:
+  - type: input type (defaults to text)
+  - value: input value (defaults to empty)
+  - placeholder: when set, applied as placeholder
+  - autocomplete: when set, applied as autocomplete
+  - required: when true, marks input as required (defaults to false)
+  - autofocus: when true, focuses the input on load (defaults to false)
+  - invalid: when true, red border + aria-invalid (defaults to false)
+  - errorMessage: when set, validation message shown below the input
 #}
 
 {% set type = type|default('text') %}
@@ -23,16 +24,20 @@
 {% set required = required|default(false) %}
 {% set autofocus = autofocus|default(false) %}
 {% set invalid = invalid|default(false) %}
+{% set errorMessage = errorMessage|default(null) %}
 
 <div
   class="
     flex flex-col
-    gap-1
+    gap-1.5
   "
 >
   <label
     for="{{ id }}"
-    class="text-sm text-slate-700"
+    class="
+      text-sm
+      text-slate-700
+    "
   >
     {{ label }}
   </label>
@@ -62,21 +67,48 @@
     class="
       block
       w-full
-      px-4 py-2
+      h-10 xl:h-8
+      px-4 xl:px-3
       bg-white
       border
       {{ invalid
-        ? 'border-red-200 focus:border-red-700'
-        : 'border-slate-200 focus:border-slate-700'
+        ? 'border-red-400 focus:border-transparent'
+        : 'border-slate-200 focus:border-transparent'
       }}
-      rounded-lg
-      shadow-sm
+      rounded
       focus:outline-none
-      focus:ring-2 focus:ring-slate-700
-      text-sm text-slate-700
+      focus:ring-2
+      focus:ring-blue-400
+      text-sm
+      text-slate-700
       placeholder:text-slate-500
       transition
     "
     aria-invalid="{{ invalid ? 'true' : 'false' }}"
+
+    {% if errorMessage %}
+      aria-describedby="{{ id }}-error"
+    {% endif %}
   >
+
+  {% if errorMessage %}
+    <p
+      id="{{ id }}-error"
+      role="alert"
+      class="
+        flex
+        items-center
+        gap-1
+        text-xs
+        text-red-500
+      "
+    >
+      {{ ux_icon(
+        'lucide:circle-alert',
+        { class: 'size-3 shrink-0' },
+      ) }}
+
+      <span>{{ errorMessage }}</span>
+    </p>
+  {% endif %}
 </div>

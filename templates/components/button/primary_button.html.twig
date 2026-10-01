@@ -4,30 +4,38 @@
   Required variables (include ... with):
   - label: visible button text
 
-  Optional:
-  - type: defaults to submit
-  - fullWidth: defaults to false (adds w-full when true)
+  Optional variables:
+  - type: button type (defaults to submit)
+  - fullWidth: when true, adds w-full (defaults to false)
+  - shadow: when true, adds shadow-sm (defaults to false)
 #}
 
 {% set type = type|default('submit') %}
 {% set fullWidth = fullWidth|default(false) %}
+{% set shadow = shadow|default(false) %}
 
 <button
   type="{{ type }}"
   class="
     inline-flex
     items-center justify-center
-    shrink-0
     {{ fullWidth ? 'w-full' : '' }}
-    px-4 py-2
+    h-10 xl:h-8
+    px-4 xl:px-3
+    shrink-0
     bg-blue-600 hover:bg-blue-700
-    rounded-lg
-    shadow-sm
+    rounded
+    {{ shadow ? 'shadow-sm' : '' }}
     focus:outline-none
-    focus:ring-2 focus:ring-slate-700
+    focus:ring-2
+    focus:ring-offset-2
+    focus:ring-blue-400
+    text-sm xl:text-xs
+    font-medium
+    text-white
     whitespace-nowrap
-    text-sm font-medium text-white
     transition
+    select-none
   "
 >
   {{ label }}

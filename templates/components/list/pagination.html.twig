@@ -9,41 +9,52 @@
   {% set buttonEnabled = '
     inline-flex
     items-center justify-center
-    shrink-0
     w-8 h-8
+    shrink-0
     bg-white hover:bg-slate-100
-    border border-slate-200
-    rounded-lg
+    border
+    border-slate-200 focus:border-transparent
+    rounded
     shadow-sm
     focus:outline-none
-    focus:ring-2 focus:ring-slate-700
+    focus:ring-2
+    focus:ring-blue-400
     text-slate-700 hover:text-slate-900
     transition
+    select-none
   ' %}
 
   {% set buttonDisabled = '
     inline-flex
     items-center justify-center
-    shrink-0
     w-8 h-8
+    shrink-0
     bg-white
-    border border-slate-100
-    rounded-lg
+    border
+    border-slate-100
+    rounded
     text-slate-300
+    select-none
   ' %}
 
   <nav
     class="
       flex flex-row
-      items-center
-      min-h-11
+      items-center justify-between
+      min-h-10
       px-4
       pb-[env(safe-area-inset-bottom)]
-      border-t border-slate-200
+      border-t
+      border-slate-200
     "
     aria-label="Pagination"
   >
-    <p class="text-xs text-slate-700">
+    <p
+      class="
+        text-xs
+        text-slate-700
+      "
+    >
       {{ 'pagination.summary'|trans({
         '%start%': pagination.currentPageOffsetStart,
         '%end%': pagination.currentPageOffsetEnd,
@@ -54,8 +65,7 @@
     <div
       class="
         flex
-        gap-4
-        ml-auto
+        gap-3
         shrink-0
       "
     >

@@ -15,12 +15,14 @@
   class="
     inline-flex
     items-center justify-center
-    shrink-0
     w-6 h-6
+    shrink-0
+    hover:bg-black/5
     rounded
     focus:outline-none
     text-slate-700 hover:text-slate-900
     transition
+    select-none
   "
   title="{{ copyLabel }}"
   aria-label="{{ copyLabel }}"
@@ -33,7 +35,7 @@
   <span data-clipboard-target="copyIcon">
     {{ ux_icon(
       'lucide:copy',
-      { class: 'size-3.5' },
+      { class: 'size-3' },
     ) }}
   </span>
 
@@ -43,7 +45,7 @@
   >
     {{ ux_icon(
       'lucide:check',
-      { class: 'size-3.5' },
+      { class: 'size-3' },
     ) }}
   </span>
 </button>

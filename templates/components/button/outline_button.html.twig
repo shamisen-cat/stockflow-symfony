@@ -1,18 +1,20 @@
 {#
-  Outline action link.
+  Outline action button.
 
   Required variables (include ... with):
-  - href: link destination
-  - label: visible link text
+  - label: visible button text
 
   Optional variables:
-  - icon: UX Iconify name (e.g. lucide:arrow-left)
+  - type: button type (defaults to button)
+  - icon: UX Iconify name (e.g. lucide:circle-minus)
   - fullWidth: when true, adds w-full (defaults to false)
   - size: 'sm' | 'md' (default) | 'lg' | 'responsive' (md below xl, sm at xl+)
   - tone: 'default' (default) | 'danger'
   - shadow: when true, adds shadow-sm (defaults to false)
+  - dataAction: when set, applied as data-action (e.g. Stimulus)
 #}
 
+{% set type = type|default('button') %}
 {% set fullWidth = fullWidth|default(false) %}
 {% set size = size|default('md') %}
 {% set tone = tone|default('default') %}
@@ -64,8 +66,8 @@
   {% set textColor = 'text-slate-700 hover:text-slate-900' %}
 {% endif %}
 
-<a
-  href="{{ href }}"
+<button
+  type="{{ type }}"
   class="
     inline-flex
     items-center justify-center
@@ -90,6 +92,10 @@
     transition
     select-none
   "
+
+  {% if dataAction is defined %}
+    data-action="{{ dataAction }}"
+  {% endif %}
 >
   {% if icon is defined and icon %}
     {{ ux_icon(
@@ -99,4 +105,4 @@
   {% endif %}
 
   <span>{{ label }}</span>
-</a>
+</button>

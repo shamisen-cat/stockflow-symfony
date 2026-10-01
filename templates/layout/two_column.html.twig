@@ -9,11 +9,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <body class="
+  <body
+    class="
       group/sidebar
       flex flex-col
-      overflow-hidden
       h-dvh
+      overflow-hidden
       bg-slate-50
       text-slate-700
       antialiased
@@ -30,11 +31,13 @@
         z-20
         flex
         items-center
+        h-12 xl:h-10
+        pl-2
+        pr-18 xl:pr-4
         shrink-0
-        h-14 xl:h-12
-        pr-19 xl:pr-4
         bg-white
-        border-b border-slate-200
+        border-b
+        border-slate-200
       "
       data-sidebar-target="header"
     >
@@ -42,7 +45,7 @@
         class="
           flex
           items-center justify-between
-          w-full min-w-0
+          min-w-0 w-full
         "
       >
         <a
@@ -50,21 +53,24 @@
           class="
             inline-flex
             items-center justify-center
-            gap-1
+            gap-1.5 xl:gap-1
+            h-10 xl:h-8
+            px-2
             shrink-0
-            min-h-11 xl:h-9
-            px-4
-            rounded-lg
+            rounded
             focus:outline-none
-            focus:ring-2 focus:ring-slate-700
-            text-lg font-semibold
+            focus:ring-2
+            focus:ring-blue-400
+            text-lg xl:text-base
+            font-semibold
             text-slate-900 hover:text-slate-700
             transition
+            select-none
           "
         >
           {{ ux_icon(
             'lucide:package',
-            { class: 'shrink-0 size-5' },
+            { class: 'size-5 xl:size-4 shrink-0' },
           ) }}
 
           <span>Stockflow</span>
@@ -82,20 +88,22 @@
             class="
               inline-flex
               items-center justify-center
-              min-w-11 xl:w-9
-              min-h-11 xl:h-9
+              w-10 xl:w-8
+              h-10 xl:h-8
               hover:bg-slate-100
-              rounded-lg
+              rounded
               focus:outline-none
-              focus:ring-2 focus:ring-slate-700
+              focus:ring-2
+              focus:ring-blue-400
               text-slate-700 hover:text-slate-900
               transition
+              select-none
             "
             aria-label="{{ 'layout.user_settings'|trans }}"
           >
             {{ ux_icon(
               'lucide:circle-user',
-              { class: 'size-6' },
+              { class: 'size-7 xl:size-6' },
             ) }}
           </a>
         </div>
@@ -107,16 +115,18 @@
       class="
         group/toggle
         fixed
-        top-1.5 right-4 z-50
+        top-1 right-4 z-50
         xl:hidden
         inline-flex
         items-center justify-center
-        w-11 h-11
+        w-10 h-10
         bg-transparent hover:bg-slate-100
-        rounded-lg
+        rounded
         focus:outline-none
-        focus:ring-2 focus:ring-slate-700
+        focus:ring-2
+        focus:ring-blue-400
         transition
+        select-none
       "
       aria-label="{{ 'layout.sidebar.open'|trans }}"
       aria-controls="app-sidebar"
@@ -124,56 +134,7 @@
       data-sidebar-target="toggle"
       data-action="click->sidebar#toggle"
     >
-      <span
-        class="
-          relative
-          block
-          w-6 h-6
-        "
-      >
-        <span
-          class="
-            absolute
-            top-0 left-0
-            origin-center
-            group-aria-expanded/toggle:top-1/2
-            group-aria-expanded/toggle:-translate-y-1/2
-            group-aria-expanded/toggle:rotate-45
-            block
-            w-6 h-0.5
-            bg-slate-900
-            transition-all duration-300
-          "
-        ></span>
-        <span
-          class="
-            absolute
-            top-2.5 left-0
-            origin-center
-            group-aria-expanded/toggle:top-1/2
-            group-aria-expanded/toggle:-translate-y-1/2
-            block
-            w-6 h-0.5
-            bg-slate-900
-            group-aria-expanded/toggle:opacity-0
-            transition-all duration-300
-          "
-        ></span>
-        <span
-          class="
-            absolute
-            top-5 left-0
-            origin-center
-            group-aria-expanded/toggle:top-1/2
-            group-aria-expanded/toggle:-translate-y-1/2
-            group-aria-expanded/toggle:-rotate-45
-            block
-            w-6 h-0.5
-            bg-slate-900
-            transition-all duration-300
-          "
-        ></span>
-      </span>
+      {% include 'layout/_sidebar_toggle_icon.html.twig' %}
     </button>
 
     <div
@@ -193,11 +154,12 @@
           translate-x-full xl:translate-x-0
           max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
           flex flex-col
+          w-64 xl:w-52
+          min-h-0
           xl:shrink-0
-          w-64 min-h-0
           bg-white
           xl:border-r
-          border-slate-200
+          xl:border-slate-200
           shadow-xl xl:shadow-none
           transition-transform duration-300
         "
@@ -208,15 +170,19 @@
             xl:hidden
             flex
             items-center
+            h-12
+            pl-4 pr-15
             shrink-0
-            h-14
-            pl-4 pr-16
-            border-b border-slate-200
+            border-b
+            border-slate-200
           "
-        >
+          >
           <span
             id="app-sidebar-title"
-            class="text-sm text-slate-700"
+            class="
+              text-sm
+              text-slate-700
+            "
           >
             {{ 'layout.menu'|trans }}
           </span>
@@ -225,8 +191,8 @@
         <nav
           class="
             flex-1
-            overflow-y-auto
             min-h-0
+            overflow-y-auto
           "
         >
           {% block sidebar %}{% endblock %}
@@ -234,8 +200,8 @@
 
         <div
           class="
-            shrink-0
             pb-[max(0.75rem,env(safe-area-inset-bottom))]
+            shrink-0
           "
         >
           <form
@@ -253,21 +219,25 @@
               class="
                 inline-flex
                 items-center
-                gap-2
-                w-full min-h-11
-                pl-4
+                gap-1.5 xl:gap-1
+                w-full
+                h-11 xl:h-8
+                px-4
                 hover:bg-slate-100
                 focus:outline-none
-                focus:ring-2 focus:ring-inset focus:ring-slate-700
-                text-sm
+                focus:ring-2
+                focus:ring-inset
+                focus:ring-blue-400
+                text-sm xl:text-xs
                 text-slate-700 hover:text-slate-900
                 transition
+                select-none
               "
               aria-label="{{ 'layout.logout'|trans }}"
             >
               {{ ux_icon(
                 'lucide:log-out',
-                { class: 'shrink-0 size-4' },
+                { class: 'size-4 xl:size-3.5 shrink-0' },
               ) }}
 
               <span>{{ 'layout.logout'|trans }}</span>
@@ -279,8 +249,8 @@
       <main
         class="
           flex flex-col flex-1
-          overflow-hidden
           min-w-0 min-h-0
+          overflow-hidden
         "
         data-sidebar-target="main"
       >
@@ -297,9 +267,9 @@
         bg-slate-900/50
         opacity-0
         max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
+        transition-opacity duration-300
         pointer-events-none
         max-xl:group-data-[sidebar-open-value=true]/sidebar:pointer-events-auto
-        transition-opacity duration-300
       "
       aria-hidden="true"
       data-action="click->sidebar#close"

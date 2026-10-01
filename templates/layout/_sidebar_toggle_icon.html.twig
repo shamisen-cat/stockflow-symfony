@@ -1,0 +1,57 @@
+{#
+  Hamburger / close icon for the two_column sidebar toggle.
+
+  Layout partial for two_column.html.twig.
+  Expects a parent with group/toggle and aria-expanded.
+#}
+
+<span
+  class="
+    relative
+    block
+    w-6 h-6
+  "
+>
+  <span
+    class="
+      absolute
+      top-0 left-0
+      origin-center
+      group-aria-expanded/toggle:top-1/2
+      group-aria-expanded/toggle:-translate-y-1/2
+      group-aria-expanded/toggle:rotate-45
+      block
+      w-6 h-0.5
+      bg-slate-900
+      transition-all duration-300
+    "
+  ></span>
+  <span
+    class="
+      absolute
+      top-2.5 left-0
+      origin-center
+      group-aria-expanded/toggle:top-1/2
+      group-aria-expanded/toggle:-translate-y-1/2
+      block
+      w-6 h-0.5
+      bg-slate-900
+      group-aria-expanded/toggle:opacity-0
+      transition-all duration-300
+    "
+  ></span>
+  <span
+    class="
+      absolute
+      top-5 left-0
+      origin-center
+      group-aria-expanded/toggle:top-1/2
+      group-aria-expanded/toggle:-translate-y-1/2
+      group-aria-expanded/toggle:-rotate-45
+      block
+      w-6 h-0.5
+      bg-slate-900
+      transition-all duration-300
+    "
+  ></span>
+</span>
