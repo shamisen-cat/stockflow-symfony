@@ -276,10 +276,6 @@ final class UserDevController extends AbstractController
             $error = 'user.already_exists';
         }
 
-        $flashMessage = $translator->trans('dev.user.error.'.$error);
-
-        $this->addFlash('error', $flashMessage);
-
         $sidebar = $devSidebarFactory->create(DevSidebarLinkId::UserCreate);
 
         return $this->render('dev/user/new/new.html.twig', [
@@ -329,7 +325,8 @@ final class UserDevController extends AbstractController
         $this->addFlash('success', $flashMessage);
 
         return $this->redirectToRoute(
-            route: 'app_dev_users',
+            route: 'app_dev_users_show',
+            parameters: ['id' => $id],
             status: Response::HTTP_SEE_OTHER,
         );
     }
