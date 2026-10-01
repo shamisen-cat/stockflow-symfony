@@ -2,19 +2,19 @@
   Dev user list table body rows.
 
   Required variables (include from parent):
-  - users
+  - users: UserRecord[] current page results
 #}
 
 {% for user in users %}
   <tr class="hover:bg-slate-100">
-    <td class="px-4 py-2.5">
-      {% include 'components/user/status.html.twig' with {
+    <td class="px-4 py-2">
+      {% include 'components/user_status.html.twig' with {
         user: user,
         variant: 'icon',
       } only %}
     </td>
 
-    <td class="px-4 py-2.5">
+    <td class="px-4 py-2">
       <div
         class="
           flex
@@ -22,12 +22,12 @@
           gap-1
         "
       >
-        <span
+        <code
           class="font-mono"
           title="{{ user.id }}"
         >
           {{ user.id|slice(0, 8) }}…
-        </span>
+        </code>
 
         {% include 'components/button/clipboard_button.html.twig' with {
           text: user.id,
@@ -37,7 +37,7 @@
       </div>
     </td>
 
-    <td class="px-4 py-2.5">
+    <td class="px-4 py-2">
       <div
         class="
           flex
@@ -67,9 +67,9 @@
 
     <td
       class="
-        px-4 py-2.5
-        whitespace-nowrap
+        px-4 py-2
         font-mono
+        whitespace-nowrap
       "
     >
       <time datetime="{{ user.updatedAt|date('c') }}">
@@ -82,7 +82,7 @@
         class="
           flex
           items-center justify-end
-          gap-4
+          gap-3
         "
       >
         {% include 'components/button/icon_link.html.twig' with {

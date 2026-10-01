@@ -1,3 +1,13 @@
+{#
+  HTML document shell (extended by layouts).
+
+  Blocks:
+  - title: document title (defaults to Stockflow)
+  - javascripts: head scripts (defaults to app importmap)
+  - importmap: nested under javascripts; override to customize entry
+  - body: full <body> element (provided by layouts)
+#}
+
 <!DOCTYPE html>
 
 <html lang="{{ app.request.locale }}">

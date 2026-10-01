@@ -8,23 +8,33 @@
 
 {% set emailHasError = false %}
 {% set passwordHasError = false %}
+{% set emailErrorMessage = null %}
+{% set passwordErrorMessage = null %}
 
 {% if error is not null %}
   {% set emailHasError = error starts with 'email.' or error == 'user.already_exists' %}
   {% set passwordHasError = error starts with 'password.' %}
+
+  {% if emailHasError %}
+    {% set emailErrorMessage = ('dev.user.error.' ~ error)|trans %}
+  {% endif %}
+
+  {% if passwordHasError %}
+    {% set passwordErrorMessage = ('dev.user.error.' ~ error)|trans %}
+  {% endif %}
 {% endif %}
 
 <form
   method="post"
   action="{{ path('app_dev_users_create') }}"
   novalidate
-  class="w-full max-w-lg"
+  class="max-w-lg w-full"
 >
   <div
     class="
       flex flex-col
-      gap-3
-      mb-6
+      gap-2
+      mb-4
     "
     data-controller="email-generator"
     data-email-generator-input-id-value="email"
@@ -39,13 +49,14 @@
       autocomplete: 'off',
       autofocus: true,
       invalid: emailHasError,
+      errorMessage: emailErrorMessage,
     } only %}
 
     <div
       class="
         flex flex-col
         items-start
-        gap-3
+        gap-2
       "
     >
       {% include 'components/form/radio_group.html.twig' with {
@@ -61,30 +72,16 @@
         targetName: 'length',
       } only %}
 
-      <button
-        type="button"
-        class="
-          inline-flex
-          items-center justify-center
-          px-3 py-1.5
-          bg-blue-50 hover:bg-blue-100
-          border border-blue-200
-          rounded-lg
-          shadow-sm
-          focus:outline-none
-          focus:ring-2 focus:ring-slate-700
-          text-xs font-medium
-          text-blue-700 hover:text-blue-900
-          transition
-        "
-        data-action="click->email-generator#generate"
-      >
-        {{ 'dev.user.create.email_generate_random'|trans }}
-      </button>
+      {% include 'components/button/outline_button.html.twig' with {
+        label: 'dev.user.create.email_generate_random'|trans,
+        size: 'sm',
+        shadow: true,
+        dataAction: 'click->email-generator#generate',
+      } only %}
     </div>
   </div>
 
-  <div class="mb-8">
+  <div class="mb-6">
     {% include 'components/form/password_input.html.twig' with {
       id: 'password',
       name: 'password',
@@ -94,6 +91,7 @@
       placeholder: 'dev.user.create.password_placeholder'|trans,
       autocomplete: 'new-password',
       invalid: passwordHasError,
+      errorMessage: passwordErrorMessage,
     } only %}
   </div>
 
@@ -106,5 +104,6 @@
   {% include 'components/button/primary_button.html.twig' with {
     label: 'dev.user.create.submit'|trans,
     fullWidth: true,
+    shadow: true,
   } only %}
 </form>

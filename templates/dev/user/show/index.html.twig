@@ -41,8 +41,8 @@
     >
       <header
         class="
-          shrink-0
           px-4 pb-4
+          shrink-0
         "
       >
         {% include 'dev/user/show/_header.html.twig' only %}
@@ -52,10 +52,10 @@
         class="
           flex flex-col flex-1
           gap-8
-          overflow-y-auto
           min-h-0
           px-4
           pb-[max(0.75rem,env(safe-area-inset-bottom))]
+          overflow-y-auto
         "
       >
         {% include 'dev/user/show/_detail.html.twig' with {
@@ -67,6 +67,8 @@
             href: path('app_dev_users'),
             label: 'dev.user.show.back'|trans,
             icon: 'lucide:arrow-left',
+            size: 'sm',
+            shadow: true,
           } only %}
         </footer>
       </section>

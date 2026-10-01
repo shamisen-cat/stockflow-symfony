@@ -9,21 +9,23 @@
   class="
     flex flex-row
     items-center justify-between
-    min-h-11
+    min-h-10 xl:min-h-8
   "
 >
   <h1
     class="
       inline-flex
       items-center
-      gap-2
+      gap-2 xl:gap-1.5
       shrink-0
-      text-2xl font-semibold text-slate-900
+      text-xl xl:text-lg
+      font-semibold
+      text-slate-900
     "
   >
     {{ ux_icon(
       'lucide:users',
-      { class: 'shrink-0 size-6' },
+      { class: 'size-6 xl:size-5 shrink-0' },
     ) }}
 
     <span>{{ 'dev.user.heading'|trans }}</span>
@@ -32,7 +34,7 @@
   <div
     class="
       flex
-      gap-4
+      gap-4 xl:gap-3
       shrink-0
     "
   >
@@ -40,6 +42,7 @@
       href: path('app_dev_users_new'),
       label: 'dev.user.button.create'|trans,
       icon: 'lucide:plus',
+      size: 'responsive',
       shadow: true,
     } only %}
 
@@ -50,6 +53,7 @@
       ),
       label: 'dev.user.button.csv_download'|trans,
       icon: 'lucide:download',
+      size: 'responsive',
       shadow: true,
     } only %}
   </div>

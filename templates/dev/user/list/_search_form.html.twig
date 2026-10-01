@@ -8,7 +8,10 @@
 <form
   method="get"
   action="{{ path('app_dev_users') }}"
-  class="flex flex-col gap-4"
+  class="
+    flex flex-col
+    gap-4
+  "
 >
   <div
     class="
@@ -17,7 +20,12 @@
       gap-4
     "
   >
-    <div class="w-full min-w-0 max-w-lg">
+    <div
+      class="
+        min-w-0 max-w-lg
+        w-full
+      "
+    >
       {% include 'components/form/text_input.html.twig' with {
         type: 'search',
         id: 'search-email',
@@ -32,18 +40,21 @@
     <div
       class="
         flex
-        gap-3
+        gap-2
         shrink-0
       "
     >
       {% include 'components/button/primary_button.html.twig' with {
         label: 'dev.user.search.submit'|trans,
+        shadow: true,
       } only %}
 
       {% if searchEmail %}
         {% include 'components/button/outline_link.html.twig' with {
           href: path('app_dev_users'),
           label: 'dev.user.search.clear'|trans,
+          size: 'responsive',
+          shadow: true,
         } only %}
       {% endif %}
     </div>
@@ -60,21 +71,23 @@
       class="
         inline-flex
         items-center
-        gap-1
         self-start
+        gap-1
         rounded
         focus:outline-none
-        focus:ring-2 focus:ring-offset-2 focus:ring-slate-700
+        focus:ring-2
+        focus:ring-offset-2
+        focus:ring-blue-400
         text-sm
         text-slate-700 hover:text-slate-900
+        transition
         cursor-pointer
         select-none
-        transition
       "
     >
       {{ 'dev.user.search.details'|trans }}
     </summary>
 
-    <div></div>
+    <div>test</div>
   </details>
 </form>

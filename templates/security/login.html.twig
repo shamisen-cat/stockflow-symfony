@@ -1,3 +1,11 @@
+{#
+  Login page (security login).
+
+  Variables from the controller / security:
+  - last_username: string last submitted username (email)
+  - error: AuthenticationException|null login error when present
+#}
+
 {% extends 'layout/centered.html.twig' %}
 
 {% block title %}{{ 'login.title'|trans }}{% endblock %}
@@ -5,10 +13,11 @@
 {% block content %}
   <section
     class="
+      max-w-md w-full
       overflow-hidden
-      w-full max-w-md
-      border border-slate-200
-      rounded-xl
+      border
+      border-slate-200
+      rounded
       shadow-sm
     "
   >
@@ -17,22 +26,25 @@
         flex
         items-center
         h-10
-        pl-4
+        px-4
         bg-white
-        border-b border-slate-200
+        border-b
+        border-slate-200
       "
     >
       <div
         class="
           inline-flex
           items-center
-          gap-1
-          text-lg font-semibold text-slate-900
+          gap-1.5
+          text-lg
+          font-semibold
+          text-slate-900
         "
       >
         {{ ux_icon(
           'lucide:package',
-          { class: 'shrink-0 size-5' },
+          { class: 'size-5 shrink-0' },
         ) }}
 
         <span>Stockflow</span>
@@ -43,20 +55,22 @@
       class="
         flex flex-col
         gap-4
-        px-6 pt-6 pb-8
+        p-8 pt-4
       "
     >
       <h1
         class="
           flex
           items-center justify-center
-          gap-2
-          text-2xl font-semibold text-slate-900
+          gap-2 xl:gap-1.5
+          text-xl xl:text-lg
+          font-semibold
+          text-slate-900
         "
       >
         {{ ux_icon(
           'lucide:log-in',
-          { class: 'shrink-0 size-6' },
+          { class: 'size-6 xl:size-5 shrink-0' },
         ) }}
 
         <span>{{ 'login.heading'|trans }}</span>
@@ -68,17 +82,19 @@
           class="
             flex
             items-center
-            gap-1
+            gap-1.5
             px-4 py-2
             bg-red-50
-            border border-red-200
-            rounded-lg
-            text-sm text-red-700
+            border
+            border-red-200
+            rounded
+            text-sm
+            text-red-700
           "
         >
           {{ ux_icon(
             'lucide:circle-alert',
-            { class: 'shrink-0 size-4' },
+            { class: 'size-4 shrink-0' },
           ) }}
 
           <span class="min-w-0">
@@ -94,7 +110,8 @@
         <p
           class="
             mb-4
-            text-sm text-slate-700
+            text-sm
+            text-slate-700
           "
         >
           {{ 'login.instructions'|trans }}
@@ -114,7 +131,7 @@
           } only %}
         </div>
 
-        <div class="mb-8">
+        <div class="mb-6">
           {% include 'components/form/password_input.html.twig' with {
             id: 'password',
             name: '_password',
@@ -134,6 +151,7 @@
         {% include 'components/button/primary_button.html.twig' with {
           label: 'login.button.submit'|trans,
           fullWidth: true,
+          shadow: true,
         } only %}
       </form>
     </div>

@@ -2,28 +2,30 @@
   Dev user new page header (heading only).
 
   No variables required from parent.
-  min-h-11 keeps the heading aligned with list header actions.
+  min-h matches list header for consistent page chrome height.
 #}
 
 <div
   class="
     flex flex-row
     items-center
-    min-h-11
+    min-h-10 xl:min-h-8
   "
 >
   <h1
     class="
       inline-flex
       items-center
-      gap-2
+      gap-2 xl:gap-1.5
       shrink-0
-      text-2xl font-semibold text-slate-900
+      text-xl xl:text-lg
+      font-semibold
+      text-slate-900
     "
   >
     {{ ux_icon(
       'lucide:users',
-      { class: 'shrink-0 size-6' },
+      { class: 'size-6 xl:size-5 shrink-0' },
     ) }}
 
     <span>{{ 'dev.user.create.heading'|trans }}</span>

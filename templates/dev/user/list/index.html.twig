@@ -2,7 +2,7 @@
   Dev user list page (UserDevController::index).
 
   Variables from the controller:
-  - users: User[] current page results
+  - users: UserRecord[] current page results
   - pagination: Pagerfanta instance
   - currentKey: active sort key (id, email, updated_at)
   - currentDirection: 'asc' or 'desc'
@@ -38,8 +38,8 @@
 
     <header
       class="
-        shrink-0
         px-4 pb-4
+        shrink-0
       "
     >
       {% include 'dev/user/list/_header.html.twig' only %}
@@ -55,15 +55,16 @@
       class="
         flex flex-col flex-1
         min-h-0
-        border-y border-slate-200
+        border-y
+        border-slate-200
       "
     >
       <div
         class="
           flex-1
+          min-h-0
           overflow-auto
           [scrollbar-gutter:stable]
-          min-h-0
           bg-white
         "
       >
@@ -71,7 +72,9 @@
           class="
             table-fixed
             w-full
-            text-left text-xs text-slate-700
+            text-left
+            text-xs
+            text-slate-700
           "
         >
           <thead class="bg-slate-50">
@@ -83,7 +86,12 @@
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-slate-100">
+          <tbody
+            class="
+              divide-y
+              divide-slate-100
+            "
+          >
             {% include 'dev/user/list/_table_body.html.twig' with {
               users: users,
             } only %}
