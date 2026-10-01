@@ -1,0 +1,8 @@
+---
+description: Pull Request の書き方
+alwaysApply: true
+---
+
+# Pull Request
+
+- Test plan はチェックボックス（`- [ ]`）を使わず、箇条書き（`-`）にする
