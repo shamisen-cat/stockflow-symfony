@@ -1,5 +1,28 @@
 # Stockflow
 
+- [Stockflow](#stockflow)
+  - [Getting Started](#getting-started)
+  - [License](#license)
+  - [Credits](#credits)
+
+## Getting Started
+
+1. Build CSS assets:
+
+   ```console
+   php bin/console tailwind:build
+   ```
+
+2. Create a development user:
+
+   ```console
+   php bin/console app:dev:user:create
+   ```
+
+   Default credentials: `dev@example.com` / `stockflow-dev`
+
+3. Open `https://localhost/login` in your browser.
+
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).
