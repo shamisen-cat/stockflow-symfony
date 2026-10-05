@@ -27,89 +27,65 @@
 {% endblock %}
 
 {% block main %}
-  <div
-    class="
-      flex flex-col flex-1
-      min-h-0
-      pt-2
-    "
-  >
-    {% include 'components/flash_messages.html.twig' %}
+  <div class="flex flex-col flex-1 min-h-0">
+    <div class="shrink-0 overflow-y-auto scrollbar-gutter-stable">
+      <div class="max-w-5xl w-full mx-auto px-4 py-2">
+        {% include 'components/flash_messages.html.twig' %}
 
-    <header
-      class="
-        px-4 pb-4
-        shrink-0
-      "
-    >
-      {% include 'dev/user/list/_header.html.twig' only %}
-    </header>
-
-    <div class="px-4 pb-2">
-      {% include 'dev/user/list/_search_form.html.twig' with {
-        searchEmail: searchEmail,
-      } only %}
+        <header>
+          {% include 'dev/user/list/_header.html.twig' only %}
+        </header>
+      </div>
     </div>
 
-    <section
-      class="
-        flex flex-col flex-1
-        min-h-0
-        border-y
-        border-slate-200
-      "
-    >
+    <div class="flex-1 overflow-auto scrollbar-gutter-stable min-h-0">
       <div
         class="
-          flex-1
-          min-h-0
-          overflow-auto
-          [scrollbar-gutter:stable]
-          bg-white
+          min-w-180 max-w-5xl w-full mx-auto
+          px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]
         "
       >
-        <table
-          class="
-            table-fixed
-            w-full
-            text-left
-            text-xs
-            text-slate-700
-          "
-        >
-          <thead class="bg-slate-50">
-            <tr>
-              {% include 'dev/user/list/_table_head.html.twig' with {
-                currentKey: currentKey,
-                currentDirection: currentDirection,
-              } only %}
-            </tr>
-          </thead>
+        <div class="mb-2">
+          {% include 'dev/user/list/_search_form.html.twig' with {
+            searchEmail: searchEmail,
+          } only %}
+        </div>
 
-          <tbody
+        <section class="bg-surface border-x border-b border-line">
+          <table
             class="
-              divide-y
-              divide-slate-100
+              table-fixed w-full border-separate border-spacing-0
+              text-left text-xs text-foreground
             "
           >
-            {% include 'dev/user/list/_table_body.html.twig' with {
-              users: users,
-            } only %}
-          </tbody>
-        </table>
-      </div>
+            <thead>
+              <tr>
+                {% include 'dev/user/list/_table_head.html.twig' with {
+                  currentKey: currentKey,
+                  currentDirection: currentDirection,
+                } only %}
+              </tr>
+            </thead>
 
-      <footer
-        class="
-          shrink-0
-          overflow-hidden
-          [scrollbar-gutter:stable]
-        "
-      >
-        {% include 'components/list/pagination.html.twig' with {
-          pagination: pagination,
-        } only %}
-      </footer>
-    </section>
+            <tbody
+              class="
+                [&_tr:not(:first-child)_td]:border-t
+                [&_tr:not(:first-child)_td]:border-line-subtle
+              "
+            >
+              {% include 'dev/user/list/_table_body.html.twig' with {
+                users: users,
+              } only %}
+            </tbody>
+          </table>
+
+          <footer>
+            {% include 'components/list/pagination.html.twig' with {
+              pagination: pagination,
+            } only %}
+          </footer>
+        </section>
+      </div>
+    </div>
   </div>
 {% endblock %}

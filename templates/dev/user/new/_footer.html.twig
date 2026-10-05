@@ -1,0 +1,15 @@
+{#
+  Dev user new page footer (cancel / back to list).
+
+  No variables required from parent.
+#}
+
+<footer>
+  {% include 'components/button/outline_link.html.twig' with {
+    href: path('app_dev_users'),
+    label: 'dev.user.create.cancel'|trans,
+    icon: 'lucide:arrow-left',
+    size: 'sm',
+    shadow: true,
+  } only %}
+</footer>

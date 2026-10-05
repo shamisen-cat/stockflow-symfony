@@ -23,55 +23,34 @@
 {% endblock %}
 
 {% block main %}
-  <div
-    class="
-      flex flex-col flex-1
-      min-h-0
-      pt-2
-    "
-  >
-    {% include 'components/flash_messages.html.twig' %}
+  <div class="flex flex-col flex-1 min-h-0">
+    <div class="shrink-0 overflow-y-auto scrollbar-gutter-stable">
+      <div class="max-w-5xl w-full mx-auto px-4 py-2">
+        {% include 'components/flash_messages.html.twig' %}
 
-    <div
-      class="
-        flex flex-col flex-1
-        w-full xl:max-w-4xl
-        min-h-0
-      "
-    >
-      <header
+        <header>
+          {% include 'dev/user/show/_header.html.twig' only %}
+        </header>
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto scrollbar-gutter-stable min-h-0">
+      <div
         class="
-          px-4 pb-4
-          shrink-0
+          max-w-5xl w-full mx-auto
+          px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]
         "
       >
-        {% include 'dev/user/show/_header.html.twig' only %}
-      </header>
+        <section class="w-full mb-4">
+          {% include 'dev/user/show/_detail.html.twig' with {
+            user: user,
+          } only %}
+        </section>
 
-      <section
-        class="
-          flex flex-col flex-1
-          gap-8
-          min-h-0
-          px-4
-          pb-[max(0.75rem,env(safe-area-inset-bottom))]
-          overflow-y-auto
-        "
-      >
-        {% include 'dev/user/show/_detail.html.twig' with {
+        {% include 'dev/user/show/_footer.html.twig' with {
           user: user,
         } only %}
-
-        <footer>
-          {% include 'components/button/outline_link.html.twig' with {
-            href: path('app_dev_users'),
-            label: 'dev.user.show.back'|trans,
-            icon: 'lucide:arrow-left',
-            size: 'sm',
-            shadow: true,
-          } only %}
-        </footer>
-      </section>
+      </div>
     </div>
   </div>
 {% endblock %}

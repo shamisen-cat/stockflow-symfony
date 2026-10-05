@@ -24,14 +24,10 @@
 <th
   scope="col"
   class="
-    sticky
-    top-0 z-10
+    sticky top-0 z-10
     {{ widthClass }}
-    h-10 xl:h-8
-    p-0
-    bg-slate-50
-    border-b
-    border-slate-200
+    h-10 p-0 bg-surface border-y border-line
+    xl:h-8
   "
   aria-sort="{{ ariaSort }}"
 >
@@ -45,29 +41,18 @@
       }),
     ) }}"
     class="
-      flex
-      items-center
-      gap-1
-      w-full h-full
-      px-4 xl:px-3
-      hover:bg-slate-100
-      focus:outline-none
-      focus:ring-2
-      focus:ring-inset
-      focus:ring-blue-400
-      text-xs
-      text-slate-700 hover:text-slate-900
-      whitespace-nowrap
+      flex items-center gap-1
+      w-full h-full px-4
+      text-xs text-foreground whitespace-nowrap
       transition
+      hover:bg-hover
+      focus:outline-none focus:ring-2 focus:ring-outline focus:ring-inset
     "
   >
     {{ label }}
 
     {% if currentKey == sortKey %}
-      <span
-        class="text-blue-500"
-        aria-hidden="true"
-      >
+      <span class="text-selected-foreground" aria-hidden="true">
         {{ currentDirection == 'asc' ? '↑' : '↓' }}
       </span>
     {% endif %}

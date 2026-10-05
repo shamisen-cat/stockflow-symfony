@@ -13,19 +13,15 @@
   type="button"
   tabindex="-1"
   class="
-    inline-flex
-    items-center justify-center
-    w-6 h-6
-    shrink-0
-    hover:bg-black/5
-    rounded
+    inline-flex items-center justify-center shrink-0
+    w-6 h-6 bg-transparent rounded text-foreground-muted
+    transition select-none
+    hover:text-foreground
     focus:outline-none
-    text-slate-700 hover:text-slate-900
-    transition
-    select-none
   "
   title="{{ copyLabel }}"
   aria-label="{{ copyLabel }}"
+
   data-controller="clipboard"
   data-clipboard-text-value="{{ text }}"
   data-clipboard-copy-label-value="{{ copyLabel }}"
@@ -33,19 +29,10 @@
   data-action="click->clipboard#copy"
 >
   <span data-clipboard-target="copyIcon">
-    {{ ux_icon(
-      'lucide:copy',
-      { class: 'size-3' },
-    ) }}
+    {{ ux_icon('lucide:copy', { class: 'size-3' }) }}
   </span>
 
-  <span
-    class="hidden"
-    data-clipboard-target="checkIcon"
-  >
-    {{ ux_icon(
-      'lucide:check',
-      { class: 'size-3' },
-    ) }}
+  <span class="hidden" data-clipboard-target="checkIcon">
+    {{ ux_icon('lucide:check', { class: 'size-3' }) }}
   </span>
 </button>

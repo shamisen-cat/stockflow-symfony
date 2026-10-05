@@ -6,7 +6,7 @@
 #}
 
 {% for user in users %}
-  <tr class="hover:bg-slate-100">
+  <tr class="hover:bg-hover">
     <td class="px-4 py-2">
       {% include 'components/user_status.html.twig' with {
         user: user,
@@ -15,17 +15,8 @@
     </td>
 
     <td class="px-4 py-2">
-      <div
-        class="
-          flex
-          items-center
-          gap-1
-        "
-      >
-        <code
-          class="font-mono"
-          title="{{ user.id }}"
-        >
+      <div class="flex items-center gap-1">
+        <code class="font-mono" title="{{ user.id }}">
           {{ user.id|slice(0, 8) }}…
         </code>
 
@@ -38,22 +29,8 @@
     </td>
 
     <td class="px-4 py-2">
-      <div
-        class="
-          flex
-          items-center
-          gap-1
-          min-w-0 max-w-full
-        "
-      >
-        <span
-          class="
-            min-w-0
-            truncate
-            font-mono
-          "
-          title="{{ user.email }}"
-        >
+      <div class="flex items-center gap-1 min-w-0 max-w-full">
+        <span class="min-w-0 font-mono truncate" title="{{ user.email }}">
           {{ user.email }}
         </span>
 
@@ -65,13 +42,7 @@
       </div>
     </td>
 
-    <td
-      class="
-        px-4 py-2
-        font-mono
-        whitespace-nowrap
-      "
-    >
+    <td class="px-4 py-2 font-mono whitespace-nowrap">
       <time datetime="{{ user.updatedAt|date('c') }}">
         {{ user.updatedAt|date('Y-m-d H:i') }}
       </time>
@@ -80,9 +51,8 @@
     <td class="px-4 py-1">
       <div
         class="
-          flex
-          items-center justify-end
-          gap-3
+          flex items-center gap-4
+          xl:gap-3
         "
       >
         {% include 'components/button/icon_link.html.twig' with {
@@ -108,13 +78,7 @@
   </tr>
 {% else %}
   <tr>
-    <td
-      colspan="5"
-      class="
-        px-4 py-12
-        text-center
-      "
-    >
+    <td colspan="5" class="px-4 py-12 text-center">
       {{ 'dev.user.empty'|trans }}
     </td>
   </tr>
