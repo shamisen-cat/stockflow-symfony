@@ -1,6 +1,155 @@
 @import "tailwindcss";
 
+@theme inline {
+  /* Base colors */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-hover: var(--hover);
+
+  --color-line: var(--line);
+  --color-line-subtle: var(--line-subtle);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+
+  --color-outline: var(--outline);
+
+  /* Primary colors */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* Selected colors */
+  --color-selected: var(--selected);
+  --color-selected-foreground: var(--selected-foreground);
+
+  /* Success colors */
+  --color-success: var(--success);
+  --color-success-line: var(--success-line);
+  --color-success-foreground: var(--success-foreground);
+
+  /* Info colors */
+  --color-info: var(--info);
+  --color-info-line: var(--info-line);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Warning colors */
+  --color-warning: var(--warning);
+  --color-warning-line: var(--warning-line);
+  --color-warning-foreground: var(--warning-foreground);
+
+  /* Danger colors */
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+
+  --color-danger-line: var(--danger-line);
+  --color-danger-line-emphasis: var(--danger-line-emphasis);
+
+  --color-danger-foreground: var(--danger-foreground);
+}
+
 @layer base {
+  :root {
+    /* Base colors */
+    --background: #f8fafc; /* slate-50 */
+    --surface: #ffffff;
+
+    --hover: #f1f5f9; /* slate-100 */
+
+    --line: #e2e8f0; /* slate-200 */
+    --line-subtle: #f1f5f9; /* slate-100 */
+
+    --foreground: #334155; /* slate-700 */
+    --foreground-muted: #64748b; /* slate-500 */
+    --foreground-subtle: #cbd5e1; /* slate-300 */
+
+    --outline: #60a5fa; /* blue-400 */
+
+    /* Primary colors */
+    --primary: #2563eb; /* blue-600 */
+    --primary-hover: #1d4ed8; /* blue-700 */
+    --primary-foreground: #ffffff;
+
+    /* Selected colors */
+    --selected: #eff6ff; /* blue-50 */
+    --selected-foreground: #1d4ed8; /* blue-700 */
+
+    /* Success colors */
+    --success: #ecfdf5; /* emerald-50 */
+    --success-line: #a7f3d0; /* emerald-200 */
+    --success-foreground: #047857; /* emerald-700 */
+
+    /* Info colors */
+    --info: #f0f9ff; /* sky-50 */
+    --info-line: #bae6fd; /* sky-200 */
+    --info-foreground: #0369a1; /* sky-700 */
+
+    /* Warning colors */
+    --warning: #fffbeb; /* amber-50 */
+    --warning-line: #fde68a; /* amber-200 */
+    --warning-foreground: #b45309; /* amber-700 */
+
+    /* Danger colors */
+    --danger: #fef2f2; /* red-50 */
+    --danger-hover: #fee2e2; /* red-100 */
+
+    --danger-line: #fecaca; /* red-200 */
+    --danger-line-emphasis: #f87171; /* red-400 */
+
+    --danger-foreground: #b91c1c; /* red-700 */
+  }
+
+  .dark {
+    /* Base colors */
+    --background: #020617; /* slate-950 */
+    --surface: #0f172a; /* slate-900 */
+
+    --hover: #1e293b; /* slate-800 */
+
+    --line: #334155; /* slate-700 */
+    --line-subtle: #1e293b; /* slate-800 */
+
+    --foreground: #e2e8f0; /* slate-200 */
+    --foreground-muted: #94a3b8; /* slate-400 */
+    --foreground-subtle: #475569; /* slate-600 */
+
+    --outline: #60a5fa; /* blue-400 */
+
+    /* Primary colors */
+    --primary: #3b82f6; /* blue-500 */
+    --primary-hover: #2563eb; /* blue-600 */
+    --primary-foreground: #ffffff;
+
+    /* Selected colors */
+    --selected: #1e3a8a; /* blue-900 */
+    --selected-foreground: #93c5fd; /* blue-300 */
+
+    /* Success colors */
+    --success: #064e3b; /* emerald-900 */
+    --success-line: #065f46; /* emerald-800 */
+    --success-foreground: #6ee7b7; /* emerald-300 */
+
+    /* Info colors */
+    --info: #0c4a6e; /* sky-900 */
+    --info-line: #075985; /* sky-800 */
+    --info-foreground: #7dd3fc; /* sky-300 */
+
+    /* Warning colors */
+    --warning: #78350f; /* amber-900 */
+    --warning-line: #92400e; /* amber-800 */
+    --warning-foreground: #fcd34d; /* amber-300 */
+
+    /* Danger colors */
+    --danger: #7f1d1d; /* red-900 */
+    --danger-hover: #991b1b; /* red-800 */
+
+    --danger-line: #991b1b; /* red-800 */
+    --danger-line-emphasis: #dc2626; /* red-600 */
+
+    --danger-foreground: #fca5a5; /* red-300 */
+  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
@@ -9,4 +158,8 @@
   button:disabled {
     cursor: not-allowed;
   }
+}
+
+@utility scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
 }

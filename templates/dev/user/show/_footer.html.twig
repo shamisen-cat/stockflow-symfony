@@ -1,0 +1,89 @@
+{#
+  Dev user show page footer (back and status actions).
+
+  Required variables (include from parent):
+  - user: UserRecord
+#}
+
+{% set statusName = user.status.name %}
+
+<footer class="flex items-start justify-between gap-4">
+  {% include 'components/button/outline_link.html.twig' with {
+    href: path('app_dev_users'),
+    label: 'dev.user.show.back'|trans,
+    icon: 'lucide:arrow-left',
+    size: 'sm',
+    shadow: true,
+  } only %}
+
+  <div
+    class="
+      flex flex-wrap items-center justify-end gap-4
+      xl:gap-3
+    "
+  >
+    {% if statusName != 'Deleted' %}
+      {% if statusName in ['Active', 'Unverified'] %}
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.disable'|trans,
+          icon: 'lucide:circle-minus',
+          size: 'sm',
+          shadow: true,
+        } only %}
+      {% elseif statusName == 'Disabled' %}
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.enable'|trans,
+          icon: 'lucide:circle-check',
+          size: 'sm',
+          shadow: true,
+        } only %}
+      {% endif %}
+
+      {% if statusName in ['Active', 'Unverified', 'Disabled'] %}
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.suspend'|trans,
+          icon: 'lucide:circle-pause',
+          size: 'sm',
+          shadow: true,
+        } only %}
+      {% elseif statusName == 'Suspended' %}
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.unsuspend'|trans,
+          icon: 'lucide:circle-play',
+          size: 'sm',
+          shadow: true,
+        } only %}
+      {% endif %}
+
+      <form
+        method="post"
+        action="{{ path('app_dev_users_delete', { id: user.id }) }}"
+      >
+        <input type="hidden" name="_token" value="{{ csrf_token('dev_user_delete') }}">
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.delete'|trans,
+          type: 'submit',
+          icon: 'lucide:trash-2',
+          size: 'sm',
+          tone: 'danger',
+          shadow: true,
+        } only %}
+      </form>
+    {% else %}
+      <form
+        method="post"
+        action="{{ path('app_dev_users_purge', { id: user.id }) }}"
+      >
+        <input type="hidden" name="_token" value="{{ csrf_token('dev_user_purge') }}">
+        {% include 'components/button/outline_button.html.twig' with {
+          label: 'dev.user.button.purge'|trans,
+          type: 'submit',
+          icon: 'lucide:eraser',
+          size: 'sm',
+          tone: 'danger',
+          shadow: true,
+        } only %}
+      </form>
+    {% endif %}
+  </div>
+</footer>

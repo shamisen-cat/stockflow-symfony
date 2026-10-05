@@ -8,78 +8,35 @@
   - currentLink: DevSidebarLinkId active page link id
 #}
 
-{% set linkActive = '
-  inline-flex
-  items-center
-  gap-1.5 xl:gap-1
-  w-full
-  h-11 xl:h-8
-  px-4
-  bg-slate-100
-  focus:outline-none
-  focus:ring-2
-  focus:ring-inset
-  focus:ring-blue-400
-  text-sm xl:text-xs
-  text-slate-900
+{% set linkBase = '
+  inline-flex items-center gap-1.5
+  w-full h-11 pr-4 text-sm
+  select-none
+  xl:gap-1 xl:h-8 xl:text-xs
+  focus:outline-none focus:ring-2 focus:ring-outline focus:ring-inset
 ' %}
 
-{% set linkInactive = '
-  inline-flex
-  items-center
-  gap-1.5 xl:gap-1
-  w-full
-  h-11 xl:h-8
-  px-4
-  hover:bg-slate-100
-  focus:outline-none
-  focus:ring-2
-  focus:ring-inset
-  focus:ring-blue-400
-  text-sm xl:text-xs
-  text-slate-700 hover:text-slate-900
+{% set linkActive = linkBase ~ '
+  pl-4 bg-selected text-selected-foreground
+' %}
+
+{% set linkInactive = linkBase ~ '
+  pl-4 bg-transparent text-foreground
   transition
+  hover:bg-hover
 ' %}
 
-{% set linkSubActive = '
-  inline-flex
-  items-center
-  gap-1.5 xl:gap-1
-  w-full
-  h-11 xl:h-8
-  pl-6 pr-4
-  bg-slate-100
-  focus:outline-none
-  focus:ring-2
-  focus:ring-inset
-  focus:ring-blue-400
-  text-sm xl:text-xs
-  text-slate-900
+{% set linkSubActive = linkBase ~ '
+  pl-6 bg-selected text-selected-foreground
 ' %}
 
-{% set linkSubInactive = '
-  inline-flex
-  items-center
-  gap-1.5 xl:gap-1
-  w-full
-  h-11 xl:h-8
-  pl-6 pr-4
-  hover:bg-slate-100
-  focus:outline-none
-  focus:ring-2
-  focus:ring-inset
-  focus:ring-blue-400
-  text-sm xl:text-xs
-  text-slate-700 hover:text-slate-900
+{% set linkSubInactive = linkBase ~ '
+  pl-6 bg-transparent text-foreground
   transition
+  hover:bg-hover
 ' %}
 
-<ul
-  class="
-    divide-y
-    divide-slate-100
-  "
->
+<ul class="divide-y divide-line">
   {% for link in sidebarLinks %}
     {% set isCurrentPage = link.id == currentLink %}
     {% set isCurrentSection = link.id == currentSection %}
@@ -93,11 +50,7 @@
           aria-current="page"
         {% endif %}
       >
-        {{ ux_icon(
-          link.icon,
-          { class: 'size-4 xl:size-3.5 shrink-0' },
-        ) }}
-
+        {{ ux_icon(link.icon, { class: 'shrink-0 size-4 xl:size-3.5' }) }}
         <span>{{ link.label|trans }}</span>
       </a>
 
@@ -115,11 +68,7 @@
                   aria-current="page"
                 {% endif %}
               >
-                {{ ux_icon(
-                  subLink.icon,
-                  { class: 'size-4 xl:size-3.5 shrink-0' },
-                ) }}
-
+                {{ ux_icon(subLink.icon, { class: 'shrink-0 size-4 xl:size-3.5' }) }}
                 <span>{{ subLink.label|trans }}</span>
               </a>
             </li>

@@ -7,95 +7,62 @@
 
   Optional variables:
   - icon: UX Iconify name (e.g. lucide:arrow-left)
-  - fullWidth: when true, adds w-full (defaults to false)
   - size: 'sm' | 'md' (default) | 'lg' | 'responsive' (md below xl, sm at xl+)
-  - tone: 'default' (default) | 'danger'
+  - tone: 'danger' | 'default' (default)
+  - fullWidth: when true, adds w-full (defaults to false)
   - shadow: when true, adds shadow-sm (defaults to false)
 #}
 
-{% set fullWidth = fullWidth|default(false) %}
 {% set size = size|default('md') %}
 {% set tone = tone|default('default') %}
+{% set fullWidth = fullWidth|default(false) %}
 {% set shadow = shadow|default(false) %}
 
 {% if size == 'sm' %}
-  {% set height = 'h-8' %}
-  {% set padding = 'px-3' %}
-  {% set textSize = 'text-xs' %}
+  {% set sizeClass = 'gap-1 h-8 px-3 text-xs' %}
   {% set iconSize = 'size-3.5' %}
-  {% set iconGap = 'gap-1' %}
-{% elseif size == 'md' %}
-  {% set height = 'h-10' %}
-  {% set padding = 'px-4' %}
-  {% set textSize = 'text-sm' %}
-  {% set iconSize = 'size-4' %}
-  {% set iconGap = 'gap-1.5' %}
 {% elseif size == 'lg' %}
-  {% set height = 'h-12' %}
-  {% set padding = 'px-5' %}
-  {% set textSize = 'text-base' %}
+  {% set sizeClass = 'gap-2 h-12 px-5 text-base' %}
   {% set iconSize = 'size-4.5' %}
-  {% set iconGap = 'gap-2' %}
 {% elseif size == 'responsive' %}
-  {% set height = 'h-10 xl:h-8' %}
-  {% set padding = 'px-4 xl:px-3' %}
-  {% set textSize = 'text-sm xl:text-xs' %}
+  {% set sizeClass = '
+    gap-1.5 h-10 px-4 text-sm
+    xl:gap-1 xl:h-8 xl:px-3 xl:text-xs
+  ' %}
   {% set iconSize = 'size-4 xl:size-3.5' %}
-  {% set iconGap = 'gap-1.5 xl:gap-1' %}
 {% else %}
-  {% set height = 'h-10' %}
-  {% set padding = 'px-4' %}
-  {% set textSize = 'text-sm' %}
+  {% set sizeClass = 'gap-1.5 h-10 px-4 text-sm' %}
   {% set iconSize = 'size-4' %}
-  {% set iconGap = 'gap-1.5' %}
 {% endif %}
 
-{% if tone == 'default' %}
-  {% set bg = 'bg-white hover:bg-slate-100' %}
-  {% set borderColor = 'border-slate-200' %}
-  {% set textColor = 'text-slate-700 hover:text-slate-900' %}
-{% elseif tone == 'danger' %}
-  {% set bg = 'bg-red-100 hover:bg-red-200' %}
-  {% set borderColor = 'border-red-200' %}
-  {% set textColor = 'text-red-700 hover:text-red-900' %}
+{% if tone == 'danger' %}
+  {% set toneClass = '
+    bg-danger border-danger-line text-danger-foreground
+    hover:bg-danger-hover
+  ' %}
 {% else %}
-  {% set bg = 'bg-white hover:bg-slate-100' %}
-  {% set borderColor = 'border-slate-200' %}
-  {% set textColor = 'text-slate-700 hover:text-slate-900' %}
+  {% set toneClass = '
+    bg-surface border-line text-foreground
+    hover:bg-hover
+  ' %}
 {% endif %}
 
 <a
   href="{{ href }}"
   class="
-    inline-flex
-    items-center justify-center
-    {{ icon is defined and icon ? iconGap : '' }}
+    inline-flex items-center justify-center shrink-0
+    border rounded font-medium whitespace-nowrap
+    {{ sizeClass }}
+    {{ toneClass }}
     {{ fullWidth ? 'w-full' : '' }}
-    {{ height }}
-    {{ padding }}
-    shrink-0
-    {{ bg }}
-    border
-    {{ borderColor }}
-    focus:border-transparent
-    rounded
     {{ shadow ? 'shadow-sm' : '' }}
-    focus:outline-none
-    focus:ring-2
-    focus:ring-blue-400
-    {{ textSize }}
-    font-medium
-    {{ textColor }}
-    whitespace-nowrap
-    transition
-    select-none
+    transition select-none
+    focus:border-transparent
+    focus:outline-none focus:ring-2 focus:ring-outline
   "
 >
   {% if icon is defined and icon %}
-    {{ ux_icon(
-      icon,
-      { class: iconSize ~ ' shrink-0' },
-    ) }}
+    {{ ux_icon(icon, { class:iconSize ~ ' shrink-0' }) }}
   {% endif %}
 
   <span>{{ label }}</span>

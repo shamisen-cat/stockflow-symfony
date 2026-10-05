@@ -9,62 +9,49 @@
 {% if user.status.name == 'Active' %}
   {% set statusIcon = 'lucide:circle-check' %}
   {% set statusLabel = 'user.status.active'|trans %}
-  {% set textColor = 'text-emerald-500' %}
+  {% set textColor = 'text-success-foreground' %}
 {% elseif user.status.name == 'Unverified' %}
   {% set statusIcon = 'lucide:circle-dashed' %}
   {% set statusLabel = 'user.status.unverified'|trans %}
-  {% set textColor = 'text-sky-500' %}
+  {% set textColor = 'text-info-foreground' %}
 {% elseif user.status.name == 'Disabled' %}
   {% set statusIcon = 'lucide:circle-minus' %}
   {% set statusLabel = 'user.status.disabled'|trans %}
-  {% set textColor = 'text-slate-500' %}
+  {% set textColor = 'text-foreground-muted' %}
 {% elseif user.status.name == 'Suspended' %}
   {% set statusIcon = 'lucide:circle-pause' %}
   {% set statusLabel = 'user.status.suspended'|trans %}
-  {% set textColor = 'text-amber-500' %}
+  {% set textColor = 'text-warning-foreground' %}
 {% elseif user.status.name == 'Deleted' %}
   {% set statusIcon = 'lucide:circle-x' %}
   {% set statusLabel = 'user.status.deleted'|trans %}
-  {% set textColor = 'text-red-500' %}
+  {% set textColor = 'text-danger-foreground' %}
 {% else %}
   {% set statusIcon = 'lucide:circle-help' %}
   {% set statusLabel = 'user.status.unknown'|trans %}
-  {% set textColor = 'text-slate-500' %}
+  {% set textColor = 'text-foreground-subtle' %}
 {% endif %}
 
 {% if variant == 'icon' %}
   <span
     class="
-      inline-flex
-      items-center justify-center
-      shrink-0
+      inline-flex items-center justify-center shrink-0
       {{ textColor }}
     "
     title="{{ statusLabel }}"
     aria-label="{{ statusLabel }}"
   >
-    {{ ux_icon(
-      statusIcon,
-      { class: 'size-4' },
-    ) }}
+    {{ ux_icon(statusIcon, { class: 'size-4' }) }}
   </span>
 {% else %}
   <span
     class="
-      inline-flex
-      items-center
-      gap-1.5
-      shrink-0
-      text-sm
+      inline-flex items-center shrink-0 gap-1.5
+      text-sm whitespace-nowrap
       {{ textColor }}
-      whitespace-nowrap
     "
   >
-    {{ ux_icon(
-      statusIcon,
-      { class: 'size-4' },
-    ) }}
-
+    {{ ux_icon(statusIcon, { class: 'size-4' }) }}
     {{ statusLabel }}
   </span>
 {% endif %}

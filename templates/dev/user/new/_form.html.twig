@@ -31,11 +31,7 @@
   class="max-w-lg w-full"
 >
   <div
-    class="
-      flex flex-col
-      gap-2
-      mb-4
-    "
+    class="flex flex-col gap-2 mb-4"
     data-controller="email-generator"
     data-email-generator-input-id-value="email"
   >
@@ -52,13 +48,7 @@
       errorMessage: emailErrorMessage,
     } only %}
 
-    <div
-      class="
-        flex flex-col
-        items-start
-        gap-2
-      "
-    >
+    <div class="flex flex-col items-start gap-2">
       {% include 'components/form/radio_group.html.twig' with {
         legend: 'dev.user.create.email_local_part_length'|trans,
         name: 'email-local-part-length',
@@ -95,12 +85,7 @@
     } only %}
   </div>
 
-  <input
-    type="hidden"
-    name="_token"
-    value="{{ csrf_token('dev_user_create') }}"
-  >
-
+  <input type="hidden" name="_token" value="{{ csrf_token('dev_user_create') }}">
   {% include 'components/button/primary_button.html.twig' with {
     label: 'dev.user.create.submit'|trans,
     fullWidth: true,

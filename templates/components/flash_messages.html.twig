@@ -8,29 +8,21 @@
 {% set flashStyles = {
   success: {
     icon: 'lucide:circle-check',
-    bg: 'bg-emerald-50',
-    borderColor: 'border-emerald-200',
-    textColor: 'text-emerald-700',
+    tone: 'bg-success border-success-line text-success-foreground',
   },
   warning: {
     icon: 'lucide:triangle-alert',
-    bg: 'bg-amber-50',
-    borderColor: 'border-amber-200',
-    textColor: 'text-amber-700',
+    tone: 'bg-warning border-warning-line text-warning-foreground',
   },
   error: {
     icon: 'lucide:circle-alert',
-    bg: 'bg-red-50',
-    borderColor: 'border-red-200',
-    textColor: 'text-red-700',
+    tone: 'bg-danger border-danger-line text-danger-foreground',
   },
 } %}
 
 {% set flashStyleFallback = {
   icon: 'lucide:circle-alert',
-  bg: 'bg-white',
-  borderColor: 'border-slate-200',
-  textColor: 'text-slate-700',
+  tone: 'bg-surface border-line text-foreground',
 } %}
 
 {% set flashDismissAfter = {
@@ -43,11 +35,7 @@
 
 {% if flashes is not empty %}
   <div
-    class="
-      space-y-2
-      px-4 pb-2
-      shrink-0
-    "
+    class="shrink-0 space-y-2 mb-2"
     aria-live="polite"
     data-controller="flash-messages"
     data-action="flash-message:dismissed->flash-messages#onDismissed"
@@ -60,16 +48,9 @@
         <div
           role="alert"
           class="
-            flex
-            items-center
-            gap-1.5
-            p-2 pl-4
-            {{ flashStyle.bg }}
-            border
-            {{ flashStyle.borderColor }}
-            rounded
-            text-sm
-            {{ flashStyle.textColor }}
+            flex items-center gap-1.5
+            pl-4 pr-2 py-2 border rounded text-sm
+            {{ flashStyle.tone }}
           "
           data-controller="flash-message"
           data-flash-message-dismiss-after-value="{{ dismissAfter }}"
@@ -80,43 +61,23 @@
             focusout->flash-message#resumeTimer
           "
         >
-          {{ ux_icon(
-            flashStyle.icon,
-            { class: 'size-4 shrink-0' },
-          ) }}
-
-          <span
-            class="
-              flex-1
-              min-w-0
-            "
-          >
+          {{ ux_icon(flashStyle.icon, { class: 'shrink-0 size-4' }) }}
+          <span class="flex-1 min-w-0">
             {{ message }}
           </span>
 
           <button
             type="button"
             class="
-              inline-flex
-              items-center justify-center
-              w-8 h-8
-              shrink-0
-              hover:bg-black/5
-              rounded
-              focus:outline-none
-              focus:ring-2
-              focus:ring-blue-400
-              opacity-70 hover:opacity-100 focus:opacity-100
-              transition
-              select-none
+              inline-flex items-center justify-center shrink-0
+              w-8 h-8 bg-transparent rounded
+              transition select-none
+              focus:outline-none focus:ring-2 focus:ring-outline
             "
             aria-label="{{ 'flash.close'|trans }}"
             data-action="click->flash-message#dismiss"
           >
-            {{ ux_icon(
-              'lucide:x',
-              { class: 'size-4' },
-            ) }}
+            {{ ux_icon('lucide:x', { class: 'size-4' }) }}
           </button>
         </div>
       {% endfor %}

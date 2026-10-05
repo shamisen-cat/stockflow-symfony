@@ -17,25 +17,15 @@
 <button
   type="{{ type }}"
   class="
-    inline-flex
-    items-center justify-center
+    inline-flex items-center justify-center shrink-0
     {{ fullWidth ? 'w-full' : '' }}
-    h-10 xl:h-8
-    px-4 xl:px-3
-    shrink-0
-    bg-blue-600 hover:bg-blue-700
-    rounded
+    h-10 px-4 bg-primary rounded
     {{ shadow ? 'shadow-sm' : '' }}
-    focus:outline-none
-    focus:ring-2
-    focus:ring-offset-2
-    focus:ring-blue-400
-    text-sm xl:text-xs
-    font-medium
-    text-white
-    whitespace-nowrap
-    transition
-    select-none
+    text-sm font-medium text-primary-foreground whitespace-nowrap
+    transition select-none
+    xl:h-8 xl:px-3 xl:text-xs
+    hover:bg-primary-hover
+    focus:outline-none focus:ring-2 focus:ring-outline focus:ring-offset-2
   "
 >
   {{ label }}

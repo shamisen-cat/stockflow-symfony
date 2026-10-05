@@ -12,12 +12,8 @@
   <body
     class="
       group/sidebar
-      flex flex-col
-      h-dvh
-      overflow-hidden
-      bg-slate-50
-      text-slate-700
-      antialiased
+      flex flex-col overflow-hidden h-dvh
+      bg-background text-foreground antialiased
     "
     data-controller="sidebar"
     data-sidebar-open-value="false"
@@ -27,84 +23,42 @@
   >
     <header
       class="
-        relative
-        z-20
-        flex
-        items-center
-        h-12 xl:h-10
-        pl-2
-        pr-18 xl:pr-4
-        shrink-0
-        bg-white
-        border-b
-        border-slate-200
+        relative z-20
+        flex items-center shrink-0
+        h-12 pl-2 pr-18 bg-surface border-b border-line
+        xl:h-10 xl:pr-4
       "
       data-sidebar-target="header"
     >
-      <div
-        class="
-          flex
-          items-center justify-between
-          min-w-0 w-full
-        "
-      >
+      <div class="flex items-center justify-between min-w-0 w-full">
         <a
           href="#"
           class="
-            inline-flex
-            items-center justify-center
-            gap-1.5 xl:gap-1
-            h-10 xl:h-8
-            px-2
-            shrink-0
-            rounded
-            focus:outline-none
-            focus:ring-2
-            focus:ring-blue-400
-            text-lg xl:text-base
-            font-semibold
-            text-slate-900 hover:text-slate-700
-            transition
-            select-none
+            inline-flex items-center justify-center shrink-0 gap-1.5
+            h-10 px-2 rounded
+            text-lg font-semibold text-foreground
+            transition select-none
+            xl:gap-1 xl:h-8 xl:text-base
+            focus:outline-none focus:ring-2 focus:ring-outline
           "
         >
-          {{ ux_icon(
-            'lucide:package',
-            { class: 'size-5 xl:size-4 shrink-0' },
-          ) }}
-
+          {{ ux_icon('lucide:package', { class: 'shrink-0 size-5 xl:size-4' }) }}
           <span>Stockflow</span>
         </a>
 
-        <div
-          class="
-            flex
-            items-center
-            shrink-0
-          "
-        >
+        <div class="flex items-center shrink-0">
           <a
             href="#"
             class="
-              inline-flex
-              items-center justify-center
-              w-10 xl:w-8
-              h-10 xl:h-8
-              hover:bg-slate-100
-              rounded
-              focus:outline-none
-              focus:ring-2
-              focus:ring-blue-400
-              text-slate-700 hover:text-slate-900
-              transition
-              select-none
+              inline-flex items-center justify-center
+              w-10 h-10 rounded text-foreground
+              transition select-none
+              xl:w-8 xl:h-8
+              focus:outline-none focus:ring-2 focus:ring-outline
             "
             aria-label="{{ 'layout.user_settings'|trans }}"
           >
-            {{ ux_icon(
-              'lucide:circle-user',
-              { class: 'size-7 xl:size-6' },
-            ) }}
+            {{ ux_icon('lucide:circle-user', { class: 'size-7 xl:size-6' }) }}
           </a>
         </div>
       </div>
@@ -114,19 +68,13 @@
       type="button"
       class="
         group/toggle
-        fixed
-        top-1 right-4 z-50
+        fixed top-1 right-4 z-50
+        inline-flex items-center justify-center
+        w-10 h-10 bg-transparent rounded
+        transition select-none
         xl:hidden
-        inline-flex
-        items-center justify-center
-        w-10 h-10
-        bg-transparent hover:bg-slate-100
-        rounded
-        focus:outline-none
-        focus:ring-2
-        focus:ring-blue-400
-        transition
-        select-none
+        hover:bg-hover
+        focus:outline-none focus:ring-2 focus:ring-outline
       "
       aria-label="{{ 'layout.sidebar.open'|trans }}"
       aria-controls="app-sidebar"
@@ -137,109 +85,54 @@
       {% include 'layout/_sidebar_toggle_icon.html.twig' %}
     </button>
 
-    <div
-      class="
-        flex flex-1
-        min-w-0 min-h-0
-      "
-    >
+    <div class="flex flex-1 min-w-0 min-h-0">
       <aside
         id="app-sidebar"
         tabindex="-1"
         class="
-          fixed xl:static
-          right-0
-          z-40 xl:z-auto
-          inset-y-0
-          translate-x-full xl:translate-x-0
-          max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
-          flex flex-col
-          w-64 xl:w-52
-          min-h-0
-          xl:shrink-0
-          bg-white
-          xl:border-r
-          xl:border-slate-200
-          shadow-xl xl:shadow-none
+          fixed inset-y-0 right-0 z-40 translate-x-full
+          flex flex-col w-64 min-h-0 bg-surface border-line shadow-lg
           transition-transform duration-300
+          xl:static xl:z-auto xl:shrink-0
+          xl:w-52 xl:border-r xl:shadow-none
+          xl:translate-x-0
+          max-xl:group-data-[sidebar-open-value=true]/sidebar:translate-x-0
         "
         data-sidebar-target="sidebar"
       >
         <div
           class="
+            flex items-center shrink-0
+            h-12 pl-4 pr-15 border-b border-line
             xl:hidden
-            flex
-            items-center
-            h-12
-            pl-4 pr-15
-            shrink-0
-            border-b
-            border-slate-200
           "
           >
-          <span
-            id="app-sidebar-title"
-            class="
-              text-sm
-              text-slate-700
-            "
-          >
+          <span id="app-sidebar-title" class="text-sm text-foreground">
             {{ 'layout.menu'|trans }}
           </span>
         </div>
 
-        <nav
-          class="
-            flex-1
-            min-h-0
-            overflow-y-auto
-          "
-        >
+        <nav class="flex-1 overflow-y-auto min-h-0">
           {% block sidebar %}{% endblock %}
         </nav>
 
-        <div
-          class="
-            pb-[max(0.75rem,env(safe-area-inset-bottom))]
-            shrink-0
-          "
-        >
-          <form
-            method="post"
-            action="{{ logout_path() }}"
-          >
-            <input
-              type="hidden"
-              name="_csrf_token"
-              value="{{ csrf_token('logout') }}"
-            >
-
+        <div class="shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <form method="post" action="{{ logout_path() }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
             <button
               type="submit"
               class="
-                inline-flex
-                items-center
-                gap-1.5 xl:gap-1
-                w-full
-                h-11 xl:h-8
-                px-4
-                hover:bg-slate-100
-                focus:outline-none
-                focus:ring-2
-                focus:ring-inset
-                focus:ring-blue-400
-                text-sm xl:text-xs
-                text-slate-700 hover:text-slate-900
-                transition
-                select-none
+                inline-flex items-center gap-1.5
+                w-full h-11 px-4 bg-transparent
+                text-sm text-foreground
+                transition select-none
+                xl:gap-1 xl:h-8 xl:text-xs
+                hover:bg-hover
+                focus:outline-none focus:ring-2 focus:ring-outline focus:ring-inset
               "
               aria-label="{{ 'layout.logout'|trans }}"
             >
-              {{ ux_icon(
-                'lucide:log-out',
-                { class: 'size-4 xl:size-3.5 shrink-0' },
-              ) }}
-
+              {{ ux_icon('lucide:log-out', { class: 'shrink-0 size-4 xl:size-3.5' }) }}
               <span>{{ 'layout.logout'|trans }}</span>
             </button>
           </form>
@@ -247,11 +140,7 @@
       </aside>
 
       <main
-        class="
-          flex flex-col flex-1
-          min-w-0 min-h-0
-          overflow-hidden
-        "
+        class="flex flex-col flex-1 overflow-hidden min-w-0 min-h-0"
         data-sidebar-target="main"
       >
         {% block main %}{% endblock %}
@@ -260,15 +149,11 @@
 
     <div
       class="
-        fixed
-        z-30
-        inset-0
-        xl:hidden
-        bg-slate-900/50
-        opacity-0
-        max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
+        fixed inset-0 z-30 opacity-0 bg-black/50
         transition-opacity duration-300
         pointer-events-none
+        xl:hidden
+        max-xl:group-data-[sidebar-open-value=true]/sidebar:opacity-100
         max-xl:group-data-[sidebar-open-value=true]/sidebar:pointer-events-auto
       "
       aria-hidden="true"

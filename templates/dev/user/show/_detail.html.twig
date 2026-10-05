@@ -5,8 +5,6 @@
   - user: UserRecord
 #}
 
-{% set statusName = user.status.name %}
-
 {% set timestampFields = [
   {
     label: 'dev.user.column.created_at',
@@ -32,266 +30,68 @@
 
 <div
   class="
-    flex
-    items-stretch
-    md:justify-between lg:justify-start xl:justify-between
-    gap-8
-    min-w-0 w-full
+    flex flex-col gap-4 min-w-0 w-full
+    px-6 py-4 bg-surface border border-line
+    md:flex-row md:items-start md:gap-8
   "
 >
-  <div
-    class="
-      flex flex-col flex-1
-      gap-8
-      min-w-0 max-w-lg
-    "
-  >
-    <dl
-      class="
-        flex flex-col
-        gap-4
-      "
-    >
-      <div
-        class="
-          flex flex-col
-          gap-1
-        "
-      >
-        <dt
-          class="
-            text-xs
-            text-slate-500
-          "
-        >
-          {{ 'dev.user.column.status'|trans }}
-        </dt>
+  <dl class="flex flex-col gap-4 min-w-0 max-w-lg w-full">
+    <div class="flex flex-col gap-1">
+      <dt class="text-xs text-foreground-muted">
+        {{ 'dev.user.column.id'|trans }}
+      </dt>
 
-        <dd
-          class="
-            flex flex-col
-            gap-2
-          "
-        >
-          {% include 'components/user_status.html.twig' with {
-            user: user,
-            variant: 'badge',
-          } only %}
-
-          {% if statusName != 'Deleted' %}
-            <div
-              class="
-                flex flex-wrap
-                items-center
-                gap-3
-              "
-            >
-              {% if statusName in ['Active', 'Unverified'] %}
-                {% include 'components/button/outline_button.html.twig' with {
-                  label: 'dev.user.button.disable'|trans,
-                  icon: 'lucide:circle-minus',
-                  size: 'sm',
-                  shadow: true,
-                } only %}
-              {% elseif statusName == 'Disabled' %}
-                {% include 'components/button/outline_button.html.twig' with {
-                  label: 'dev.user.button.enable'|trans,
-                  icon: 'lucide:circle-check',
-                  size: 'sm',
-                  shadow: true,
-                } only %}
-              {% endif %}
-
-              {% if statusName in ['Active', 'Unverified', 'Disabled'] %}
-                {% include 'components/button/outline_button.html.twig' with {
-                  label: 'dev.user.button.suspend'|trans,
-                  icon: 'lucide:circle-pause',
-                  size: 'sm',
-                  shadow: true,
-                } only %}
-              {% elseif statusName == 'Suspended' %}
-                {% include 'components/button/outline_button.html.twig' with {
-                  label: 'dev.user.button.unsuspend'|trans,
-                  icon: 'lucide:circle-play',
-                  size: 'sm',
-                  shadow: true,
-                } only %}
-              {% endif %}
-            </div>
-          {% endif %}
-        </dd>
-      </div>
-
-      <div
-        class="
-          flex flex-col
-          gap-1
-        "
-      >
-        <dt
-          class="
-            text-xs
-            text-slate-500
-          "
-        >
-          {{ 'dev.user.column.id'|trans }}
-        </dt>
-
-        <dd
-          class="
-            flex
-            items-center
-            gap-1
-            min-w-0
-          "
-        >
-          <code
-            class="
-              font-mono
-              text-sm
-              text-slate-700
-              break-all
-            "
-            title="{{ user.id }}"
-          >
-            {{ user.id }}
-          </code>
-
-          {% include 'components/button/clipboard_button.html.twig' with {
-            text: user.id,
-            copyLabel: 'dev.user.button.copy_id'|trans,
-            copiedLabel: 'dev.user.button.copied_id'|trans,
-          } only %}
-        </dd>
-      </div>
-
-      <div
-        class="
-          flex flex-col
-          gap-1
-        "
-      >
-        <dt
-          class="
-            text-xs
-            text-slate-500
-          "
-        >
-          {{ 'dev.user.column.email'|trans }}
-        </dt>
-
-        <dd
-          class="
-            flex
-            items-center
-            gap-1
-            min-w-0
-          "
-        >
-          <span
-            class="
-              font-mono
-              text-sm
-              text-slate-700
-              break-all
-            "
-            title="{{ user.email }}"
-          >
-            {{ user.email }}
-          </span>
-
-          {% include 'components/button/clipboard_button.html.twig' with {
-            text: user.email,
-            copyLabel: 'dev.user.button.copy_email'|trans,
-            copiedLabel: 'dev.user.button.copied_email'|trans,
-          } only %}
-        </dd>
-      </div>
-    </dl>
-
-    <div class="mt-auto mb-4">
-      {% if statusName == 'Deleted' %}
-        <form
-          method="post"
-          action="{{ path('app_dev_users_purge', { id: user.id }) }}"
-        >
-          <input
-            type="hidden"
-            name="_token"
-            value="{{ csrf_token('dev_user_purge') }}"
-          >
-
-          {% include 'components/button/outline_button.html.twig' with {
-            label: 'dev.user.button.purge'|trans,
-            type: 'submit',
-            icon: 'lucide:eraser',
-            size: 'sm',
-            tone: 'danger',
-            shadow: true,
-          } only %}
-        </form>
-      {% else %}
-        <form
-          method="post"
-          action="{{ path('app_dev_users_delete', { id: user.id }) }}"
-        >
-          <input
-            type="hidden"
-            name="_token"
-            value="{{ csrf_token('dev_user_delete') }}"
-          >
-
-          {% include 'components/button/outline_button.html.twig' with {
-            label: 'dev.user.button.delete'|trans,
-            type: 'submit',
-            icon: 'lucide:trash-2',
-            size: 'sm',
-            tone: 'danger',
-            shadow: true,
-          } only %}
-        </form>
-      {% endif %}
+      <dd class="flex items-center gap-1 min-w-0">
+        <code class="font-mono text-sm text-foreground break-all" title="{{ user.id }}">
+          {{ user.id }}
+        </code>
+        {% include 'components/button/clipboard_button.html.twig' with {
+          text: user.id,
+          copyLabel: 'dev.user.button.copy_id'|trans,
+          copiedLabel: 'dev.user.button.copied_id'|trans,
+        } only %}
+      </dd>
     </div>
-  </div>
 
-  <dl
-    class="
-      flex flex-col
-      gap-4
-      w-max
-      p-4 pr-8
-      shrink-0
-      bg-white
-      border
-      border-slate-200
-      rounded
-    "
-  >
+    <div class="flex flex-col gap-1">
+      <dt class="text-xs text-foreground-muted">
+        {{ 'dev.user.column.email'|trans }}
+      </dt>
+
+      <dd class="flex items-center gap-1 min-w-0">
+        <span class="font-mono text-sm text-foreground break-all" title="{{ user.email }}">
+          {{ user.email }}
+        </span>
+        {% include 'components/button/clipboard_button.html.twig' with {
+          text: user.email,
+          copyLabel: 'dev.user.button.copy_email'|trans,
+          copiedLabel: 'dev.user.button.copied_email'|trans,
+        } only %}
+      </dd>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <dt class="text-xs text-foreground-muted">
+        {{ 'dev.user.column.status'|trans }}
+      </dt>
+
+      <dd>
+        {% include 'components/user_status.html.twig' with {
+          user: user,
+          variant: 'badge',
+        } only %}
+      </dd>
+    </div>
+  </dl>
+
+  <dl class="flex flex-wrap gap-4 min-w-0 max-w-[calc(2*11rem+1rem)]">
     {% for field in timestampFields %}
-      <div
-        class="
-          flex flex-col
-          gap-1
-        "
-      >
-        <dt
-          class="
-            text-xs
-            text-slate-500
-            whitespace-nowrap
-          "
-        >
+      <div class="flex flex-col shrink-0 gap-1 w-44">
+        <dt class="text-xs text-foreground-muted whitespace-nowrap">
           {{ field.label|trans }}
         </dt>
 
-        <dd
-          class="
-            font-mono
-            text-sm
-            text-slate-700
-            whitespace-nowrap
-          "
-        >
+        <dd class="font-mono text-xs text-foreground whitespace-nowrap">
           {% if field.value %}
             <time datetime="{{ field.value|date('c') }}">
               {{ field.value|date('Y-m-d H:i:s') }}

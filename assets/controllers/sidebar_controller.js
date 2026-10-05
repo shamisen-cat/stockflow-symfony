@@ -17,6 +17,7 @@ import { Controller } from '@hotwired/stimulus';
  * @property {MediaQueryList} desktopQuery
  * @property {(event: MediaQueryListEvent) => void} onViewportChange
  *
+ * @property {function(): void} initialize
  * @property {function(): void} connect
  * @property {function(): void} disconnect
  * @property {function(boolean, boolean=): void} openValueChanged
@@ -68,9 +69,14 @@ export default class extends Controller {
     /**
      * @this {SidebarControllerContext}
      */
-    connect() {
+    initialize() {
         this.desktopQuery = window.matchMedia(DESKTOP_MEDIA);
+    }
 
+    /**
+     * @this {SidebarControllerContext}
+     */
+    connect() {
         this.onViewportChange = () => {
             if (this.isDesktop()) {
                 this.openValue = false;
@@ -157,7 +163,7 @@ export default class extends Controller {
      * @returns {boolean}
      */
     isDesktop() {
-        return window.matchMedia(DESKTOP_MEDIA).matches;
+        return this.desktopQuery.matches;
     }
 
     /**

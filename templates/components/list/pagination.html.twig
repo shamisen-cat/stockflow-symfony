@@ -7,54 +7,30 @@
 
 {% if pagination.nbResults > 0 %}
   {% set buttonEnabled = '
-    inline-flex
-    items-center justify-center
-    w-8 h-8
-    shrink-0
-    bg-white hover:bg-slate-100
-    border
-    border-slate-200 focus:border-transparent
-    rounded
-    shadow-sm
-    focus:outline-none
-    focus:ring-2
-    focus:ring-blue-400
-    text-slate-700 hover:text-slate-900
-    transition
-    select-none
+    inline-flex items-center justify-center shrink-0
+    w-8 h-8 bg-surface border border-line rounded shadow-sm
+    text-foreground
+    transition select-none
+    hover:bg-hover
+    focus:border-transparent
+    focus:outline-none focus:ring-2 focus:ring-outline
   ' %}
 
   {% set buttonDisabled = '
-    inline-flex
-    items-center justify-center
-    w-8 h-8
-    shrink-0
-    bg-white
-    border
-    border-slate-100
-    rounded
-    text-slate-300
+    inline-flex items-center justify-center shrink-0
+    w-8 h-8 bg-surface border border-line-subtle rounded
+    text-foreground-subtle
     select-none
   ' %}
 
   <nav
     class="
-      flex flex-row
-      items-center justify-between
-      min-h-10
-      px-4
-      pb-[env(safe-area-inset-bottom)]
-      border-t
-      border-slate-200
+      flex flex-row items-center justify-between
+      h-10 px-4 border-t border-line
     "
     aria-label="Pagination"
   >
-    <p
-      class="
-        text-xs
-        text-slate-700
-      "
-    >
+    <p class="text-xs text-foreground">
       {{ 'pagination.summary'|trans({
         '%start%': pagination.currentPageOffsetStart,
         '%end%': pagination.currentPageOffsetEnd,
@@ -62,13 +38,7 @@
       }) }}
     </p>
 
-    <div
-      class="
-        flex
-        gap-3
-        shrink-0
-      "
-    >
+    <div class="flex shrink-0 gap-3">
       {% if pagination.hasPreviousPage %}
         <a
           href="{{ path(
@@ -81,10 +51,7 @@
           title="{{ 'pagination.previous'|trans }}"
           aria-label="{{ 'pagination.previous'|trans }}"
         >
-          {{ ux_icon(
-            'lucide:chevron-left',
-            { class: 'size-4' },
-          ) }}
+          {{ ux_icon('lucide:chevron-left', { class: 'size-4' }) }}
         </a>
       {% else %}
         <span
@@ -93,10 +60,7 @@
           aria-label="{{ 'pagination.previous'|trans }}"
           aria-disabled="true"
         >
-          {{ ux_icon(
-            'lucide:chevron-left',
-            { class: 'size-4' },
-          ) }}
+          {{ ux_icon('lucide:chevron-left', { class: 'size-4' }) }}
         </span>
       {% endif %}
 
@@ -112,10 +76,7 @@
           title="{{ 'pagination.next'|trans }}"
           aria-label="{{ 'pagination.next'|trans }}"
         >
-          {{ ux_icon(
-            'lucide:chevron-right',
-            { class: 'size-4' },
-          ) }}
+          {{ ux_icon('lucide:chevron-right', { class: 'size-4' }) }}
         </a>
       {% else %}
         <span
@@ -124,10 +85,7 @@
           aria-label="{{ 'pagination.next'|trans }}"
           aria-disabled="true"
         >
-          {{ ux_icon(
-            'lucide:chevron-right',
-            { class: 'size-4' },
-          ) }}
+          {{ ux_icon('lucide:chevron-right', { class: 'size-4' }) }}
         </span>
       {% endif %}
     </div>
