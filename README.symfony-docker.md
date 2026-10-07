@@ -3,7 +3,7 @@
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
 with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
 
-Coding-agents ready: ships with a [Dev Container](https://containers.dev/) and a [one-page guide](docs/agents.md)
+Coding-agents ready: ships with a [Dev Container](https://containers.dev/) and a [one-page guide](docs/ai-coding-agents.md)
 to run [OpenCode](https://opencode.ai), [Claude Code](https://claude.ai/claude-code), or any AI coding assistant
 inside a network-sandboxed environment (agents are not pre-installed).
 
@@ -31,7 +31,7 @@ inside a network-sandboxed environment (agents are not pre-installed).
 - Native [XDebug](docs/xdebug.md) integration
 - [Hot Reloading](https://frankenphp.dev/docs/hot-reload/)
 - [Dev Container](https://containers.dev/) support
-- [AI coding agents](docs/agents.md) with network sandboxing out of the box
+- [AI coding agents](docs/ai-coding-agents.md) with network sandboxing out of the box
 - Rootless, slim production image
 
 **Enjoy!**
@@ -49,7 +49,7 @@ inside a network-sandboxed environment (agents are not pre-installed).
 9. [Using a Makefile](docs/makefile.md)
 10. [Updating the template](docs/updating.md)
 11. [Troubleshooting](docs/troubleshooting.md)
-12. [Using AI Coding Agents](docs/agents.md)
+12. [Using AI Coding Agents](docs/ai-coding-agents.md)
 
 ## License
 
