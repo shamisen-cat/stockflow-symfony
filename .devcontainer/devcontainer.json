@@ -8,7 +8,7 @@
     "service": "php",
     "workspaceFolder": "/app",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {}
+        "ghcr.io/devcontainers/features/node:2": {}
     },
     "remoteUser": "nonroot",
     "postCreateCommand": "npm install -g intelephense && ln -sf .devcontainer/AGENTS.md AGENTS.md",
