@@ -1,8 +1,8 @@
 ---
-description: Pull Request の書き方
+description: How to write pull requests
 alwaysApply: true
 ---
 
-# Pull Request
+# Pull requests
 
-- Test plan はチェックボックス（`- [ ]`）を使わず、箇条書き（`-`）にする
+- In the Test plan, use plain bullet points (`-`), not checkboxes (`- [ ]`)

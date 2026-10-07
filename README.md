@@ -23,6 +23,12 @@
 
 3. Open `https://localhost/login` in your browser.
 
+Optional: after cloning, install Node.js dependencies if you need ESLint or Prettier:
+
+```console
+npm install
+```
+
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).

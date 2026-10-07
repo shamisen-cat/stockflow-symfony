@@ -1,27 +1,40 @@
-# プロジェクト
+# Stockflow
 
-このプロジェクトは [Symfony Docker](https://github.com/dunglas/symfony-docker) で生成された、[FrankenPHP](https://frankenphp.dev) 上で動作する Symfony アプリケーションです。
+This project is a Symfony application running on [FrankenPHP](https://frankenphp.dev), generated using [Symfony Docker](https://github.com/dunglas/symfony-docker).
 
-スタックには以下が含まれます。
+The Dockerfile uses a multi-stage build with separate development (dev) and production (prod) targets.
 
-- Caddy（FrankenPHP 経由）
-- リアルタイム通信用の [Mercure](https://mercure.rocks)
-- プリロード用の [Vulcain](https://vulcain.rocks)
+## Stack
 
-Dockerfile は開発用（dev）と本番用（prod）を分けたマルチステージビルド構成です。
+- FrankenPHP with Caddy
+- [Mercure](https://mercure.rocks) for real-time
+- [Vulcain](https://vulcain.rocks) for preloading
+- PostgreSQL
 
-## Dev Container 環境
+App setup steps are in `README.md`.
 
-このプロジェクトは Dev Container 内で動作し、外向き通信は明示的に許可されたドメイン以外を遮断するファイアウォール設定になっています。
+## Dev Container Environment
 
-## ドメインの許可リスト追加
+This project runs inside a Dev Container with an outbound firewall that blocks all traffic except explicitly allowed domains.
 
-外向き通信が失敗する場合（例: `curl`、`composer require`、新しいレジストリへの `npm install`）は、そのドメインをファイアウォールの許可リストに追加する必要がある可能性があります。
+## Whitelisting a Domain
 
-`.devcontainer/init-firewall.sh` を編集し、dnsmasq 設定ブロック内の `ipset=` 行に対象ドメインを追加してください。
+If an outbound request fails (e.g., `curl`, `composer require`, `npm install` to a new registry), the domain may need to be added to the firewall allowlist.
+
+Edit `.devcontainer/init-firewall.sh` and add the domain to the `ipset=` line in the dnsmasq configuration block:
 
 ```bash
 ipset=/github.com/anthropic.com/.../NEW_DOMAIN.COM/allowed-domains
 ```
 
-変更を反映するには Dev Container を再ビルドしてください。
+Then rebuild the Dev Container to apply the change.
+
+## Language
+
+- English for code, comments, documentation, and user-facing strings
+- Prefer natural phrasing over literal translation from Japanese
+- Japanese only for commit messages and pull requests (see `.cursor/rules/`)
+
+## Cursor Rules
+
+Project-specific agent instructions live in `.cursor/rules/` (commits, pull requests, language).
