@@ -37,4 +37,4 @@ Then rebuild the Dev Container to apply the change.
 
 ## Cursor Rules
 
-Project-specific agent instructions live in `.cursor/rules/` (commits, pull requests, language).
+Project-specific agent instructions live in `.cursor/rules/` (git, pull requests, language).
