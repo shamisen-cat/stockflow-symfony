@@ -1,9 +1,0 @@
----
-description: Project language conventions (English vs Japanese)
-alwaysApply: true
----
-
-# Language
-
-Follow the Language section in `AGENTS.md`.
-For commit messages and pull requests, also follow `git-commits` and `pull-requests`.

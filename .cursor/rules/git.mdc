@@ -1,0 +1,25 @@
+---
+description: Git branch flow and commit message conventions
+alwaysApply: true
+---
+
+# Git
+
+## Branches
+
+- Branch flow: work branches → `develop` → `main`
+- Create work branches from `develop` as `<type>/<short-description>` in English kebab-case (e.g., `feat/user-auth`)
+- Do not commit directly to `develop` or `main`
+- Do not merge into `develop` or `main` unless explicitly asked
+- Merge work branches into `develop`, and `develop` into `main`, with `git merge --no-ff`, keeping Git's default merge message
+- After merging a work branch into `develop`, delete it with `git branch -d`
+
+## Commit messages
+
+- Follow the Conventional Commits format
+- Use one of these types: `chore` / `docs` / `feat` / `fix` / `refactor` / `style` / `test`
+- Omit the scope
+- Write the description in Japanese, ending with a noun rather than a verb (e.g., 「追加」, not 「追加する」)
+- Omit the body if the subject line says it all
+- When a body is needed, write it as a `-` bulleted list, with each item ending in a noun
+- Omit incidental changes unrelated to the main purpose (formatting, reordering, minor comment tweaks, typo fixes, adding words to `cspell.json`, etc.)
