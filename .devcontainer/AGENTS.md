@@ -22,7 +22,7 @@ The Dockerfile uses a multi-stage build with separate development (dev) and prod
 
 ## Tech Stack
 
-- PHP 8.4 (`>=8.4 <8.5` in `composer.json`)
+- PHP 8.4 (`~8.4.0` in `composer.json`)
 - Symfony 7.4
 - FrankenPHP with Caddy (Mercure, Vulcain)
 - PostgreSQL 18 with Doctrine ORM
