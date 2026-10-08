@@ -1,8 +1,13 @@
 ---
-description: How to write pull requests
+description: Pull request creation and writing conventions
 alwaysApply: true
 ---
 
 # Pull requests
 
-- In the Test plan, use plain bullet points (`-`), not checkboxes (`- [ ]`)
+- Propose the title and body, wait for confirmation, then create the pull request
+- Target `develop` from work branches
+- Write the title in Conventional Commits format, following the Commit messages section in `git`
+- Write the body in Japanese
+- Use `## Summary` and `## Test plan` sections in the body
+- Use plain bullet points (`-`) in the Test plan, not checkboxes (`- [ ]`)
