@@ -40,9 +40,7 @@ final readonly class HashedPassword extends AbstractValueObject
         }
 
         $passwordInfo = password_get_info($hashedPassword);
-
-        /** @var string $algorithm */
-        $algorithm = $passwordInfo['algoName'] ?? 'unknown';
+        $algorithm = $passwordInfo['algoName'];
 
         if ($algorithm !== 'argon2id') {
             throw InvalidHashedPasswordException::unsupportedAlgorithm($algorithm);
