@@ -72,6 +72,7 @@ RUN <<-EOF
 		ipset \
 		iptables \
 		jq \
+		openssh-client \
 		sudo
 	install-php-extensions xdebug
 	rm -rf /var/lib/apt/lists/*
