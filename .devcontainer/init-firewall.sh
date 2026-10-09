@@ -107,6 +107,7 @@ ipset=/data.jsdelivr.com/allowed-domains
 ipset=/iconify.design/allowed-domains
 
 # Git / source control
+ipset=/api.github.com/allowed-domains
 ipset=/github.com/allowed-domains
 ipset=/release-assets.githubusercontent.com/allowed-domains
 
