@@ -53,14 +53,4 @@ See `database` in `.cursor/rules/`
 
 ## Outbound Firewall
 
-This project runs inside a Dev Container with an outbound firewall that blocks all traffic except explicitly allowed domains.
-
-If an outbound request fails (e.g., `curl`, `composer require`, `npm install` to a new registry), the domain may need to be added to the firewall allowlist.
-
-Edit `.devcontainer/init-firewall.sh` and add the domain to the `ipset=` line in the dnsmasq configuration block:
-
-```bash
-ipset=/github.com/anthropic.com/.../NEW_DOMAIN.COM/allowed-domains
-```
-
-Then rebuild the Dev Container to apply the change.
+If outbound requests fail, see `outbound-firewall` in `.cursor/rules/`
