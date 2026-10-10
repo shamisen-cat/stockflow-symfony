@@ -1,8 +1,8 @@
 # markdownlint configuration
 
 MD001: true   # Require heading levels to increase by one (keeps the outline accessible)
-MD013: false  # Disable the 80-character line limit (GitHub wraps long lines)
-MD026: false  # Allow trailing punctuation such as ? and ! in headings
+MD013: false  # Disable the 80-character line limit (prefer soft-wrapped prose)
+MD026: false  # Allow trailing punctuation in headings
 MD028: false  # Allow blank lines inside blockquotes
 MD034: false  # Allow bare URLs (GitHub autolinks them)
 MD036: false  # Allow emphasis used as a fake heading (e.g. **Title**)
@@ -12,13 +12,13 @@ MD007:
   indent: 2
 
 # Allowed HTML elements
-# Permit tags that GitHub renders safely
+# Permit HTML tags commonly supported on GitHub
 MD033:
   allowed_elements:
     - "details"  # collapsible section
     - "summary"  # collapsible section title
     - "br"       # line break
-    - "img"      # image sizing
+    - "img"      # images
     - "kbd"      # keyboard shortcuts (e.g. <kbd>Ctrl</kbd> + <kbd>C</kbd>)
     - "sup"      # superscript
     - "sub"      # subscript
