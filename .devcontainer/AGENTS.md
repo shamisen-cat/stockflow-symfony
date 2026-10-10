@@ -43,9 +43,7 @@ See `architecture` in `.cursor/rules/`
 
 ## Database
 
-- Host `database:5432`, database name `app`; connection is set via the `DATABASE_URL` environment variable
-- `psql` may be unavailable; use `bin/console dbal:run-sql` for ad-hoc queries
-- Manage schema changes with Doctrine migrations (`doctrine:migrations:diff` / `doctrine:migrations:migrate`); never use `doctrine:schema:update --force`
+See `database` in `.cursor/rules/`
 
 ## Environment Variables and Secrets
 
