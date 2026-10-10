@@ -1,0 +1,10 @@
+---
+description: Layered architecture under src/
+globs: src/**
+alwaysApply: false
+---
+
+# Architecture
+
+- Layered structure under `src/`: `Domain`, `Application`, `Infrastructure`
+- Keep domain logic free of framework and infrastructure details

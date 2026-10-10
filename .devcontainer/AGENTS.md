@@ -33,8 +33,7 @@ The Dockerfile uses a multi-stage build with separate development (dev) and prod
 
 ## Architecture
 
-- Layered structure under `src/`: `Domain`, `Application`, `Infrastructure`
-- Keep domain logic free of framework and infrastructure details
+See `architecture` in `.cursor/rules/`
 
 ## Development Environment
 
