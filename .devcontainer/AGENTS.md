@@ -52,7 +52,7 @@ The Dockerfile uses a multi-stage build with separate development (dev) and prod
 
 - `.env` is committed and holds only placeholder or default values; real values go in `.env.local` or `.env.*.local`, which are not committed
 - When adding an environment variable, also add it to `.env` with a placeholder value
-- Reading `.env.local` files is blocked; ask the user if their values are needed
+- Reading `.env.local` or `.env.*.local` files is blocked; ask the user if their values are needed
 
 ## Outbound Firewall
 
